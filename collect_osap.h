@@ -6,7 +6,7 @@ class CollectOSAP : public NonProperty {
     static int collectionAmount = 200;
 
 public:
-    CollectOSAP();
+    CollectOSAP(int location);
     void visit(Player &p);
 };
 

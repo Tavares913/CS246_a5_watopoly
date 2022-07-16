@@ -4,7 +4,7 @@
 
 class DCTimsLine : public NonProperty {
     public:
-        DCTimsLine();
+        DCTimsLine(int location);
         void visit(Player &p);
 };
 
