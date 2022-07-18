@@ -3,7 +3,7 @@
 #include "non_property.h"
 
 class CollectOSAP : public NonProperty {
-    static int collectionAmount = 200;
+    static int collectionAmount;
 
 public:
     CollectOSAP(int location);
