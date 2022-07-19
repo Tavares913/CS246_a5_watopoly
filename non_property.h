@@ -4,7 +4,7 @@
 
 class NonProperty : public Tile {
     public:
-        NonProperty(int location);
+        NonProperty(string name, int location);
 };
 
 #endif

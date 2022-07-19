@@ -3,7 +3,7 @@
 
 using namespace std;
 
-NeedlesHall::NeedlesHall(int location) : NonProperty{location} {}
+NeedlesHall::NeedlesHall(int location) : NonProperty{"Needles Hall", location} {}
 
 void NeedlesHall::visit(Player &p) {
 

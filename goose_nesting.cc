@@ -1,5 +1,5 @@
 #include "goose_nesting.h"
 
-GooseNesting::GooseNesting(int location) : NonProperty{location} {}
+GooseNesting::GooseNesting(int location) : NonProperty{"Goose Nesting", location} {}
 
 void GooseNesting::visit(Player &p) {}

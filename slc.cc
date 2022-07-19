@@ -3,7 +3,7 @@
 
 using namespace std;
 
-SLC::SLC(int location, DCTimsLine *dc, CollectOSAP *osap) : NonProperty{location}, dc{dc}, osap{osap} {}
+SLC::SLC(int location, DCTimsLine *dc, CollectOSAP *osap) : NonProperty{"SLC", location}, dc{dc}, osap{osap} {}
 
 void SLC::visit(Player &p) {
     int timsCupChance = rand() % 100;

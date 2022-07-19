@@ -1,3 +1,8 @@
 #include "tile.h"
+#include <string>
 
-Tile::Tile(int location) : location{location} {}
+using namespace std;
+
+Tile::Tile(string name, int location) : name{name}, location{location} {}
+
+string Tile::getName() { return name; }
