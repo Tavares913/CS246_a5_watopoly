@@ -7,8 +7,8 @@ Tuition::Tuition(int location) : NonProperty{"Tuition", location} {}
 
 void Tuition::visit(Player &p, bool flatPayment) {
     if (flatPayment) {
-        p.setMoney(p.getMoney - payment);
+        p.setMoney(p.getMoney() - payment);
     } else {
-        p.setMoney(p.getMoney() * rate);
+        p.setMoney(p.getMoney() - p.getMoney() * rate);
     }
 }

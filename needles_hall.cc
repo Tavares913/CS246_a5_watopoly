@@ -6,7 +6,6 @@ using namespace std;
 NeedlesHall::NeedlesHall(int location) : NonProperty{"Needles Hall", location} {}
 
 void NeedlesHall::visit(Player &p) {
-
     int timsCupChance = rand() % 100;
     if (timsCupChance == 0) {
         p.giveTimsCup();
