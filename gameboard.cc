@@ -38,7 +38,7 @@ void GameBoard::improve(Player &p, string propertyName) {
 void GameBoard::deteriorate(Player &p, string propertyName) {
     for (auto &t : board) {
         if (*t->getName().compare(propertyName) == 0) {
-            p.improve(t);
+            p.deteriorate(t);
         }
     }
 }
@@ -50,8 +50,8 @@ void GameBoard::all() {
 }
 
 void GameBoard::buyProperty(Player &p, string propertyName) {
-    for (auto &p : boughtProperties) {
-        if (p.getName().compare(propertyName) == 0) {
+    for (auto &prop : boughtProperties) {
+        if (prop.getName().compare(propertyName) == 0) {
             return;
         }
     }
