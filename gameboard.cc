@@ -20,6 +20,26 @@ void GameBoard::next() {
     }
 }
 
+static string &GameBoard::getChoice(const string &message, const vector<string> &validChoices) const {
+    while (true) {
+        cout << message << " ";
+        cout << "(";
+        bool addDelimiter = false;
+        for (auto &choice : validChoices) {
+            if (addDelimiter) cout << "/";
+            cout << choice;
+            addDelimiter = true;
+        }
+        cout << ") ";
+        string c;
+        cin >> c;
+        if (find(validChoices.begin(), validChoices.end(), c) != validChoices.end()) {
+            return c;
+        }
+        cout << "Invalid choice, please try again." << endl;
+  }
+}
+
 static pair<int, int> GameBoard::roll() {
     int die1 = rand() % 6 + 1;
     int die2 = rand() % 6 + 1;
