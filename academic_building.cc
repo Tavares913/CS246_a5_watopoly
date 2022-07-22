@@ -31,13 +31,3 @@ void AcademicBuilding::sellImprovement() {
   if (numImprovements == 0) throw; // cant deteriorate further error
   --numImprovements;
 }
-
-void AcademicBuilding::visit(Player &p) {
-  if (getOwner()) {
-    int tuition = getTuition();
-    p.payPlayer(tuition, *getOwner());
-    return;
-  }
-
-  p.offerProperty(*this);
-}

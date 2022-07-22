@@ -23,6 +23,15 @@ class Property : public Tile {
    void setPropertyBlock(const vector<Property *> &propertyBlock);
    int getNumOwned() const;
    bool monopoly() const;
+   void visit(Player &player) {
+    if (getOwner()) {
+      int tuition = getTuition();
+      p.payPlayer(tuition, *getOwner());
+      return;
+    }
+
+    p.offerProperty(*this);
+  }
 };
 
 #endif

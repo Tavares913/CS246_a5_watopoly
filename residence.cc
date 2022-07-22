@@ -10,14 +10,4 @@ class Residence : public Property {
   int Residence::getTuition() const override {
     return tuition * (2 ** getNumOwned());
   }
-
-  void Residence::visit(Player &player) {
-    if (getOwner()) {
-      int tuition = getTuition();
-      p.payPlayer(tuition, *getOwner());
-      return;
-    }
-
-    p.offerProperty(*this);
-  }
 };

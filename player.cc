@@ -103,17 +103,6 @@ float Player::getWorth() {
 }
 
 // misc thought - what if we used references everywhere instead of pointers?
-void Player::visit(Property &property) {
-  if (building.ownedBy) {
-    if (building.ownedBy != this) {
-      // pay rent
-      spendMoney(building.getTuition());
-    }
-  } else {
-    // offer property for purchase
-    // may should be in gameboard instead?
-    
-}
 
 void Player::visit(NonProperty &nonProperty) {
   nonProperty.visit(*this);
