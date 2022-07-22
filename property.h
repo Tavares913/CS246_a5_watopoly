@@ -13,7 +13,7 @@ class Property : public Tile {
   bool mortgaged;
 
  public:
-   Property(string name, int purchaseCost);
+   Property(string name, int location, int purchaseCost);
    virtual int getTuition() const = 0;
    virtual void visit(Player &player) = 0;
    virtual void mortgage();

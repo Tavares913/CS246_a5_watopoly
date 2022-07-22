@@ -14,7 +14,7 @@ class AcademicBuilding : public Property {
   int numImprovements = 0;
 
  public:
-  AcademicBuilding(string name, int purchaseCost, int improvementCost, vector<int> &tuition);
+  AcademicBuilding(string name, int location, int purchaseCost, int improvementCost, vector<int> &tuition);
   int getTuition() const override;
   void mortgage() override;
   void buyImprovement();

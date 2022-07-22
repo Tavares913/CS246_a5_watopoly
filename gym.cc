@@ -6,7 +6,7 @@
 
 using namespace std;
 
-Gym::Gym(string name, int purchaseCost) : Property{name, purchaseCost} {}
+Gym::Gym(string name, int purchaseCost) : Property{name, location, purchaseCost} {}
 
 int Gym::getTuition() const {
   pair<int, int> roll = GameBoard::roll();
