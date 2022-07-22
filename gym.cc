@@ -6,9 +6,10 @@ class Gym : public Property {
  public:
   Gym(string name, int purchaseCost) : name{name}, purchaseCost{purchaseCost} {}
   int getTuition() const override {
+    pair<int, int> roll = GameBoard::roll();
     switch (getNumOwned()) {
       case 1:
-        return GameBoard::roll() * 4;
+        return roll * 4;
       case 2:
         return GameBoard::roll() * 10;
       default:
