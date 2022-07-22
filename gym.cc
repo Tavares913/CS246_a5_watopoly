@@ -1,20 +1,23 @@
+#include "gym.h"
 #include "property.h"
+#include "gameboard.h"
+#include <utility>
+#include <string>
 
-class Player;
+using namespace std;
 
-class Gym : public Property {
- public:
-  Gym(string name, int purchaseCost) : name{name}, purchaseCost{purchaseCost} {}
-  int getTuition() const override {
-    pair<int, int> roll = GameBoard::roll();
-    switch (getNumOwned()) {
-      case 1:
-        return roll * 4;
-      case 2:
-        return GameBoard::roll() * 10;
-      default:
-        throw; // idk, this should not be possible
-    }
+Gym::Gym(string name, int purchaseCost) : Property{name, purchaseCost} {}
+
+int Gym::getTuition() const {
+  pair<int, int> roll = GameBoard::roll();
+
+  switch (getNumOwned()) {
+    case 1:
+      return roll * 4;
+    case 2:
+      return roll * 10;
+    default:
+      throw; // idk, this should not be possible
   }
-  void visit(Player &player);
-};
+}
+void visit(Player &player) {}

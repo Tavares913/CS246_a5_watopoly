@@ -1,14 +1,15 @@
 #include "property.h"
-
-class Player;
+#include "player.h"
 
 class Residence : public Property {
   int tuition;
+
  public:
-  Residence(string name, int purchaseCost, int tuition)
-    : name{name}, purchaseCost{purchaseCost}, tuition{tuition} {}
-  int getTuition() const override {
+  Residence(string name, int purchaseCost, int tuition) : Property{name, purchaseCost} tuition{tuition} {}
+
+  int Residence::getTuition() const override {
     return tuition * (2 ** getNumOwned());
   }
-  void visit(Player &player);
+
+  void Residence::visit(Player &player) {}
 };
