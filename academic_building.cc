@@ -5,7 +5,7 @@
 
 using namespace std;
 
-AcademicBuilding::AcademicBuilding(string name, int purchaseCost, int improvementCost, vector<int> &tuition) : name{name}, purchaseCost{purchaseCost}, improvementCost{improvementCost}, tuition{tuition} {}
+AcademicBuilding::AcademicBuilding(string name, int purchaseCost, int improvementCost, vector<int> &tuition) : Property{name, purchaseCost}, improvementCost{improvementCost}, tuition{tuition} {}
 
 int AcademicBuilding::getTuition() const {
   if (numImprovements == 0 && monopoly()) {
@@ -32,4 +32,12 @@ void AcademicBuilding::sellImprovement() {
   --numImprovements;
 }
 
-void AcademicBuilding::visit(Player &p) {}
+void AcademicBuilding::visit(Player &p) {
+  if (getOwner()) {
+    int tuition = getTuition();
+    p.payPlayer(tuition, *getOwner());
+    return;
+  }
+
+  p.offerProperty(*this);
+}

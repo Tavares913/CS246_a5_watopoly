@@ -20,4 +20,12 @@ int Gym::getTuition() const {
       throw; // idk, this should not be possible
   }
 }
-void visit(Player &player) {}
+void Gym::visit(Player &player) {
+  if (getOwner()) {
+    int tuition = getTuition();
+    p.payPlayer(tuition, *getOwner())
+    return;
+  }
+
+  p.offerProperty(*this);
+}
