@@ -40,7 +40,7 @@ void Auction::auction(int curPlayerIdx) {
     while (true) {
         if (withdrawnPlayers.size() == players.size() - 1) break;
         
-        if (propPrice > 0) cout << "Current Winner: " << curWinner().getName() << ", Winning Bid: " << propPrice << endl;
+        if (propPrice > 0) cout << "Winning Bid: " << propPrice << endl;
 
         int amountToRaise = 0;
         cout << "Player " << players[curPlayer]->getName() << ": Would you like to raise or withdraw? ";
