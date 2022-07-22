@@ -9,7 +9,7 @@ using namespace std;
 
 class Gym : public Property {
  public:
-     Gym(string name, int purchaseCost);
+     Gym(string name, int location, int purchaseCost);
      int getTuition() const override;
      void visit(Player &player);
 };

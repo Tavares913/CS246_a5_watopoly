@@ -1,13 +1,18 @@
 #ifndef __WATOPOLY_H__
 #define __WATOPOLY_H_
 #include <vector>
+#include "gameboard.h"
+
+using namespace std;
+
 class Player;
 class GameBoard;
+class Tile;
 
-class Watoloply {
+class Watopoly {
     vector<Player> players;
     vector<Tile> tiles;
-    GameBoard g;
+    GameBoard gameboard;
 
 public:
     void init();

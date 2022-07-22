@@ -2,7 +2,7 @@
 #include <string>
 #include <vector>
 
-Property::Property(string name, int purchaseCost) : name{name}, purchaseCost{purchaseCost}, owner{}, propertyBlock{}, mortgaged{false} {}
+Property::Property(string name, int location, int purchaseCost) : Tile{name, location}, purchaseCost{purchaseCost}, owner{nullptr}, propertyBlock{}, mortgaged{false} {}
 
 void Property::mortgage() { mortgaged = true; }
 
