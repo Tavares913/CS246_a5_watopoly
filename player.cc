@@ -2,23 +2,8 @@
 #include "property.h"
 
 Player::Player(string name, char symbol) : name{name}, symbol{symbol} {}
-// TODO move trade to gameboard; call give/receive Property/Money as appropriate
+
 void Player::move(int moveBy) { location += moveBy; }
-
-void Player::giveProperty(Property *property) {
-  for (auto it = ownedProperties.begin(); it != ownedProperties.end(); ++it) {
-    if (*it == property) {
-      ownedProperties.erase(it);
-      break;
-    }
-  }
-  property->setOwner(nullptr);
-}
-
-void Player::receiveProperty(Property *property) {
-  ownedProperties.push_back(property);
-  property->setOwner(this);
-}
 
 void Player::spendMoney(float amount) { 
   if (amount > money) throw; // not enough money error
@@ -26,22 +11,59 @@ void Player::spendMoney(float amount) {
 }
 
 void Player::receiveMoney(float amount) { spendMoney(-amount); }
-void Player::buyImprovement(AcademicBuilding *property) {
-  spendMoney(property->improvementCost);
-  property->buyImprovement();
+
+void Player::payPlayer(float amount, Player &payee) {
+    spendMoney(amount);
+    payee.receiveMoney(amount);
 }
-void Player::sellImprovement(AcademicBuilding **property) {
-  receiveMoney(property->improvementCost * 0.5);
-  property->sellImprovement();
+
+void Player::offerProperty(Property &property) {
+    string c = GameBoard::getChoice(
+        "Would you like to buy this property?",
+        vector{"y", "n"}
+    );
+    if (c == "y") {
+        buyProperty(property);
+    } else {
+        // TODO start auction
+    }
 }
-void mortgage(Property *property) {
-  receiveMoney(property->purchaseCost * 0.5);
-  property->mortgage();
+
+void Player::giveProperty(Property &property) {
+    ownedProperties.erase(find(ownedProperties.begin(), ownedProperties.end()));
+    property.setOwner(nullptr);
 }
-void Player::unmortgage(Property *property) {
-  spendMoney(property->purchaseCost * 0.6)
-  property->unmortgage();
+
+void Player::receiveProperty(Property &property) {
+    ownedProperties.push_back(&property);
+    property.setOwner(this);
 }
+
+void Player::buyProperty(Property &property, int purchaseCost = 0) {
+  spendMoney(purchaseCost ? purchaseCost : property.purchaseCost);
+  receiveProperty(property);
+}
+
+void Player::buyImprovement(AcademicBuilding &property) {
+  spendMoney(property.improvementCost);
+  property.buyImprovement();
+}
+
+void Player::sellImprovement(AcademicBuilding &property) {
+  receiveMoney(property.improvementCost * 0.5);
+  property.sellImprovement();
+}
+
+void Player::mortgage(Property &property) {
+  receiveMoney(property.purchaseCost * 0.5);
+  property.mortgage();
+}
+
+void Player::unmortgage(Property &property) {
+  spendMoney(property.purchaseCost * 0.6)
+  property.unmortgage();
+}
+
 void Player::assets() {
   cout << name << "'s assets:" << endl;
   cout << "Money: " << money << endl;
@@ -52,11 +74,6 @@ void Player::assets() {
     for (int i = 0; i < property.numImprovements; ++i) cout << "I";
     cout << endl;
   }
-}
-
-void Player::buyProperty(Property *property, int purchaseCost = 0) {
-  spendMoney(purchaseCost ? purchaseCost : property->purchaseCost);
-  receiveProperty(property);
 }
 
 void Player::goToTimsLine() {
