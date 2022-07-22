@@ -32,6 +32,4 @@ void AcademicBuilding::sellImprovement() {
   --numImprovements;
 }
 
-void AcademicBuilding::visit(Player &p) {
-  
-}
+void AcademicBuilding::visit(Player &p) {}
