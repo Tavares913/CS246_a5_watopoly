@@ -14,6 +14,7 @@ class Property : public Tile {
   virtual void mortgage() { mortgaged = true; }
   void unmortgage() { mortgaged = false; }
   void setOwner(const Player *owner) { this->owner = owner; }
+  Player *getOwner() const { return owner; }
   void setPropertyBlock(const vector<Property *> &propertyBlock) {
     this->propertyBlock = propertyBlock;
   }
