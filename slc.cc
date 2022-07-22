@@ -8,7 +8,7 @@ SLC::SLC(int location, DCTimsLine *dc, CollectOSAP *osap) : NonProperty{"SLC", l
 void SLC::visit(Player &p) {
     int timsCupChance = rand() % 100;
     if (timsCupChance == 0) {
-        p.giveTimsCup();
+        p.receiveRollUpRimCard();
     }
 
     int randNum = rand() % 24;
@@ -25,8 +25,8 @@ void SLC::visit(Player &p) {
     } else if (randNum < 22) {
         p.move(3);
     } else if (randNum < 23) {
-        p.visit(dc);
+        p.visit(*dc);
     } else if (randNum < 24) {
-        p.visit(osap);
+        p.visit(*osap);
     }
 }

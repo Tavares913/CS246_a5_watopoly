@@ -8,7 +8,7 @@ NeedlesHall::NeedlesHall(int location) : NonProperty{"Needles Hall", location} {
 void NeedlesHall::visit(Player &p) {
     int timsCupChance = rand() % 100;
     if (timsCupChance == 0) {
-        p.giveTimsCup();
+        p.receiveRollUpRimCard();
     }
 
     int randNum = rand() % 18;
@@ -30,5 +30,5 @@ void NeedlesHall::visit(Player &p) {
         moneyToAdd = 200;
     }
 
-    p.setMoney(p.getMoney() + moneyToAdd);
+    p.receiveMoneyy(moneyToAdd);
 }

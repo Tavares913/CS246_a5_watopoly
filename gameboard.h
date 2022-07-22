@@ -8,6 +8,7 @@ class Property;
 class Display;
 
 class GameBoard : public Subject {
+    // have a map that maps from property name to property tile pointer
     int curPlayer;
     vector<Player *> players;
     vector<Tile **> board;
@@ -16,7 +17,8 @@ class GameBoard : public Subject {
 
 public:
     GameBoard(vector<Player *> players, vector<Tile **> board);
-    void roll();
+    static void roll();
+    void moveCurPlayer();
     void next();
     void improve(Player &p, string propertyName);
     void deteriorate(Player &p, string propertyName);
