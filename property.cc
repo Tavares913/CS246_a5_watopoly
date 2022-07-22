@@ -26,3 +26,13 @@ int Property::getNumOwned() const {
 }
 
 bool Property::monopoly() const { return getNumOwned() == propertyBlock.size(); }
+
+void Property::visit(Player &player) {
+    if (getOwner()) {
+      int tuition = getTuition();
+      p.payPlayer(tuition, *getOwner());
+      return;
+    }
+
+    p.offerProperty(*this);
+}
