@@ -12,21 +12,7 @@ class Property : public Tile {
     vector<Property *> propertyBlock;
     bool mortgaged = false;
 
-<<<<<<< HEAD
   public:
-    Property(string name, int purchaseCost);
-    virtual int getTuition() const = 0;
-    virtual void visit(Player &player) = 0;
-    virtual void mortgage();
-    void unmortgage();
-    void setOwner(const Player *owner);
-    Player *getOwner() const;
-    void setPropertyBlock(const vector<Property *> &propertyBlock);
-    int getNumOwned() const;
-    bool monopoly() const;
-    void visit(Player &player);
-=======
- public:
    Property(string name, int location, int purchaseCost);
    virtual int getTuition() const = 0;
    virtual void visit(Player &player) = 0;
@@ -37,7 +23,7 @@ class Property : public Tile {
    void setPropertyBlock(const vector<Property *> &propertyBlock);
    int getNumOwned() const;
    bool monopoly() const;
->>>>>>> 086caec (changes)
+    void visit(Player &player);
 };
 
 #endif
