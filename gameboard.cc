@@ -18,12 +18,14 @@ void GameBoard::next() {
     }
 }
 
-void GameBoard::roll() {
+static int GameBoard::roll() {
     int die1 = rand() % 6 + 1;
     int die2 = rand() % 6 + 1;
+    return die1 + die2;
+}
 
-    players[curPlayer]->move(die1 + die2);
-
+void GameBoard::moveCurPlayer() {
+    players[curPlayer]->move(roll());
     next();
 }
 

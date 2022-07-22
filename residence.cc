@@ -2,24 +2,13 @@
 
 class Player;
 
-class Residence: public Property {
+class Residence : public Property {
+  int tuition;
  public:
-  Residence(
-    string name, int purchaseCost, vector<Property *> propertyBlock, int tuition
-  ) : name{name}, purchaseCost{purchaseCost}, propertyBlock{propertyBlock},
-    ownedBy{nullptr} {
-    this->tuition[0] = tuition;
-  }
-  int getNumOwned() const {
-    int numOwned = 0;
-    for (auto property : propertyBlock) {
-      if (property->ownedBy == ownedBy) ++numOwned;
-    }
-    return numOwned;
-  }
-  int getTuition() override {
-    int numOwned = getNumOwned();
-    return tuition[0] * (2 ** numOwned);
+  Residence(string name, int purchaseCost, int tuition)
+    : name{name}, purchaseCost{purchaseCost}, tuition{tuition} {}
+  int getTuition() const override {
+    return tuition * (2 ** getNumOwned());
   }
   void visit(Player &player);
 };

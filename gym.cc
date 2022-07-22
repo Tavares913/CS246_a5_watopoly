@@ -2,14 +2,18 @@
 
 class Player;
 
-class Gym: public Property {
+class Gym : public Property {
  public:
-  Gym(string name, int purchaseCost, int tuition, vector<Property *> propertyBlock)
-    : name{name}, purchaseCost{purchaseCost}, propertyBlock{propertyBlock}, ownedBy{nullptr} {
-    this->tuition[0] = tuition;
-  }
+  Gym(string name, int purchaseCost) : name{name}, purchaseCost{purchaseCost} {}
   int getTuition() const override {
-    return tuition[0];
+    switch (getNumOwned()) {
+      case 1:
+        return GameBoard::roll() * 4;
+      case 2:
+        return GameBoard::roll() * 10;
+      default:
+        throw; // idk, this should not be possible
+    }
   }
   void visit(Player &player);
 };
