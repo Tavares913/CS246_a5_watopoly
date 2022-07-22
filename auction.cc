@@ -37,5 +37,5 @@ void Auction::auction() {
         }
     }
 
-    players[0]->buy(property, propPrice);
+    players[0]->buyProperty(property, propPrice);
 }

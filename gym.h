@@ -14,5 +14,4 @@ class Gym : public Property {
      void visit(Player &player);
 };
 
-
 #endif

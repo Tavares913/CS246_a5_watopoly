@@ -2,6 +2,8 @@
 #include <string>
 #include <vector>
 
+Property::Property(string name, int purchaseCost) : name{name}, purchaseCost{purchaseCost}, owner{}, propertyBlock{}, mortgaged{false} {}
+
 void Property::mortgage() { mortgaged = true; }
 
 void Property::unmortgage() { mortgaged = false; }

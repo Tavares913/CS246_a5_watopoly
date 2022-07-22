@@ -13,15 +13,16 @@ class Property : public Tile {
   bool mortgaged;
 
  public:
-  virtual int getTuition() const = 0;
-  virtual void visit(Player &player) = 0;
-  virtual void mortgage();
-  void unmortgage();
-  void setOwner(const Player *owner);
-  Player *getOwner() const;
-  void setPropertyBlock(const vector<Property *> &propertyBlock);
-  int getNumOwned() const;
-  bool monopoly() const;
+   Property(string name, int purchaseCost);
+   virtual int getTuition() const = 0;
+   virtual void visit(Player &player) = 0;
+   virtual void mortgage();
+   void unmortgage();
+   void setOwner(const Player *owner);
+   Player *getOwner() const;
+   void setPropertyBlock(const vector<Property *> &propertyBlock);
+   int getNumOwned() const;
+   bool monopoly() const;
 };
 
 #endif

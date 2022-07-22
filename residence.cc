@@ -5,11 +5,19 @@ class Residence : public Property {
   int tuition;
 
  public:
-  Residence(string name, int purchaseCost, int tuition) : Property{name, purchaseCost} tuition{tuition} {}
+  Residence(string name, int purchaseCost, int tuition) : Property{name, purchaseCost}, tuition{tuition} {}
 
   int Residence::getTuition() const override {
     return tuition * (2 ** getNumOwned());
   }
 
-  void Residence::visit(Player &player) {}
+  void Residence::visit(Player &player) {
+    if (getOwner()) {
+      int tuition = getTuition();
+      p.payPlayer(tuition, *getOwner());
+      return;
+    }
+
+    p.offerProperty(*this);
+  }
 };
