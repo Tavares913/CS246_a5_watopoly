@@ -1,6 +1,8 @@
 #ifndef __GAMEBOARD_H__
-#define __GAMEBOARD_H_
+#define __GAMEBOARD_H__
 #include "subject.h"
+#include <memory>
+#include <unordered_map>
 
 class Player;
 class Tile;
@@ -8,15 +10,14 @@ class Property;
 class Display;
 
 class GameBoard : public Subject {
-    // have a map that maps from property name to property tile pointer
     int curPlayer;
-    vector<Player *> players;
-    vector<Tile **> board;
-    vector<Property **> boughtProperties;
-    Display *display;
+    vector<unique_ptr<Player>> players;
+    vector<unique_ptr<Tile>> board;
+    unordered_map<string, Property *> nameToProperties;
+    unique_ptr<Display> display;
 
 public:
-    GameBoard(vector<Player *> players, vector<Tile **> board);
+    GameBoard(vector<unique_ptr<Player>> players, vector<unique_ptr<Tile>> board);
     static void roll();
     void moveCurPlayer();
     void next();

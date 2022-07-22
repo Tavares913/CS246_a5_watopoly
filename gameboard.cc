@@ -1,13 +1,15 @@
 #include "gameboard.h"
 #include "tile.h"
 #include "auction.h"
+#include "player.h"
 #include <vector>
 #include <cstdlib>
 #include <string>
+#include <utility>
 
 using namespace std;
 
-GameBoard::GameBoard(vector<Player *> players, vector<Tile **> board) : players{players}, board{board} {}
+GameBoard::GameBoard(vector<unique_ptr<Player> players, vector<unique_ptr<Tile> board) : curPlayer{0}, players{players}, board{board}, nameToProperties{}, display{} {}
 
 
 void GameBoard::next() {
@@ -18,10 +20,10 @@ void GameBoard::next() {
     }
 }
 
-static int GameBoard::roll() {
+static pair<int, int> GameBoard::roll() {
     int die1 = rand() % 6 + 1;
     int die2 = rand() % 6 + 1;
-    return die1 + die2;
+    return pair<int, int> rollResult(die1, die2);
 }
 
 void GameBoard::moveCurPlayer() {
@@ -29,20 +31,12 @@ void GameBoard::moveCurPlayer() {
     next();
 }
 
-void GameBoard::improve(Player &p, string propertyName) {
-    for (auto &t : board) {
-        if (*t->getName().compare(propertyName) == 0) {
-            p.improve(t);
-        }
-    }
+void GameBoard::buyImprovement(Player &p, string propertyName) {
+    p.buyImprovement(nameToProperties[propertyName]);
 }
 
-void GameBoard::deteriorate(Player &p, string propertyName) {
-    for (auto &t : board) {
-        if (*t->getName().compare(propertyName) == 0) {
-            p.deteriorate(t);
-        }
-    }
+void GameBoard::sellImprovement(Player &p, string propertyName) {
+    p.sellImprovement(nameToProperties[propertyName]);
 }
 
 void GameBoard::all() {
@@ -52,17 +46,10 @@ void GameBoard::all() {
 }
 
 void GameBoard::buyProperty(Player &p, string propertyName) {
-    for (auto &prop : boughtProperties) {
-        if (prop.getName().compare(propertyName) == 0) {
-            return;
-        }
+    if (nameToProperties[propertyName]->getOwner()) {
+        return;
     }
-
-    for (auto &t : board) {
-        if (*t->getName().compare(propertyName) == 0) {
-            p.buy(t);
-        }
-    }
+    p.buyProperty(nameToProperties[propertyName]);
 }
 
 void GameBoard::mortgage(Player &p, string propertyName) {
