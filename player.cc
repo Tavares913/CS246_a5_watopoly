@@ -39,7 +39,7 @@ void Player::receiveProperty(Property &property) {
     property.setOwner(this);
 }
 
-void Player::buyProperty(Property &property, int purchaseCost = 0) {
+void Player::buyProperty(Property &property, int purchaseCost) {
   spendMoney(purchaseCost ? purchaseCost : property.purchaseCost);
   receiveProperty(property);
 }
@@ -104,8 +104,8 @@ float Player::getWorth() {
 
 // misc thought - what if we used references everywhere instead of pointers?
 
-void Player::visit(NonProperty &nonProperty) {
-  nonProperty.visit(*this);
+void Player::visit(Tile &tile) {
+  tile.visit(*this);
 }
 
 // void Player::visit(GoToTims &goToTims) {

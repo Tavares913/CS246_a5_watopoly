@@ -1,5 +1,6 @@
 #ifndef __SLC_H__
 #define __SLC_H__
+
 #include "non_property.h"
 
 class DCTimsLine;

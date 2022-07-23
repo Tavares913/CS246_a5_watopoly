@@ -1,4 +1,5 @@
 #include "collect_osap.h"
+#include "non_property.h"
 
 int CollectOSAP::collectionAmount = 200;
 

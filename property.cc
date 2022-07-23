@@ -1,18 +1,21 @@
-#include "player.h"
 #include <string>
 #include <vector>
+#include "player.h"
 
-Property::Property(string name, int location, int purchaseCost) : Tile{name, location}, purchaseCost{purchaseCost}, owner{nullptr}, propertyBlock{}, mortgaged{false} {}
+Property::Property(string name, int location, int purchaseCost) :
+    Tile{name, location}, purchaseCost{purchaseCost} {}
 
 void Property::mortgage() { mortgaged = true; }
 
 void Property::unmortgage() { mortgaged = false; }
 
-void Property::setOwner(const Player *owner) { owner = owner; }
+void Property::setOwner(const Player *owner) { this->owner = owner; }
 
 Player *Property::getOwner() const { return owner; }
 
-void Property::setPropertyBlock(const vector<Property *> &propertyBlock) { propertyBlock = propertyBlock; }
+void Property::setPropertyBlock(const vector<Property *> &propertyBlock) {
+    this->propertyBlock = propertyBlock;
+}
 
 int Property::getNumOwned() const {
     if (!owner) return 0;
@@ -28,9 +31,9 @@ int Property::getNumOwned() const {
 bool Property::monopoly() const { return getNumOwned() == propertyBlock.size(); }
 
 void Property::visit(Player &player) {
-    if (getOwner()) {
+    if (owner) {
       int tuition = getTuition();
-      p.payPlayer(tuition, *getOwner());
+      p.payPlayer(tuition, *owner);
       return;
     }
 

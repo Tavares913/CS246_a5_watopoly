@@ -1,5 +1,6 @@
-#include "slc.h"
 #include <cstdlib>
+#include "slc.h"
+#include "player.h"
 
 using namespace std;
 

@@ -1,7 +1,10 @@
 #include <string>
 #include <vector>
+#include <utility>
 #include "dc_tims_line.h"
 #include "gameboard.h"
+#include "non_property.h"
+#include "player.h"
 
 DCTimsLine::DCTimsLine(int location) : NonProperty{"DC Tims Line", location} {}
 

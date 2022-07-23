@@ -1,5 +1,6 @@
-#include "needles_hall.h"
 #include <cstdlib>
+#include "needles_hall.h"
+#include "player.h"
 
 using namespace std;
 
@@ -30,5 +31,5 @@ void NeedlesHall::visit(Player &p) {
         moneyToAdd = 200;
     }
 
-    p.receiveMoneyy(moneyToAdd);
+    p.receiveMoney(moneyToAdd);
 }

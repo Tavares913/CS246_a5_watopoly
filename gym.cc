@@ -1,12 +1,12 @@
+#include <utility>
+#include <string>
 #include "gym.h"
 #include "property.h"
 #include "gameboard.h"
-#include <utility>
-#include <string>
 
 using namespace std;
 
-Gym::Gym(string name, int purchaseCost) : Property{name, location, purchaseCost} {}
+Gym::Gym(string name, int location, int purchaseCost) : Property{name, location, purchaseCost} {}
 
 int Gym::getTuition() const {
   pair<int, int> roll = GameBoard::roll();

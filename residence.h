@@ -6,12 +6,11 @@
 class Player;
 
 class Residence : public Property {
-  int tuition;
+    int tuition;
 
- public:
-  Residence(string name, int location, int purchaseCost, int tuition);
-  int getTuition() const override;
-  void visit(Player &player);
+  public:
+    Residence(string name, int location, int purchaseCost, int tuition);
+    int getTuition() const override;
 };
 
 

@@ -1,9 +1,8 @@
 #ifndef __WATOPOLY_H__
-#define __WATOPOLY_H_
+#define __WATOPOLY_H__
+
 #include <vector>
 #include "gameboard.h"
-
-using namespace std;
 
 class Player;
 class GameBoard;
@@ -14,7 +13,7 @@ class Watopoly {
     vector<Tile> tiles;
     GameBoard gameboard;
 
-public:
+  public:
     void init();
     void play();
 };

@@ -1,4 +1,5 @@
 #include "coop_fee.h";
+#include "non_property.h"
 
 int CoopFee::payment = 150;
 
