@@ -6,7 +6,7 @@
 class Observer;
 
 class Subject {
-    vector<Observer *> observers;
+    std::vector<Observer *> observers;
 
   public:
     void notifyObservers();

@@ -4,6 +4,7 @@
 #include "non_property.h"
 
 class DCTimsLine;
+class Player;
 
 class GoToTims : public NonProperty {
     DCTimsLine *dcTimsLine;

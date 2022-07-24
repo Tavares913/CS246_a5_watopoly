@@ -48,14 +48,14 @@ void Player::buyProperty(Property &property, int purchaseCost) {
     receiveProperty(property);
 }
 
-void Player::buyImprovement(AcademicBuilding &property) {
-    spendMoney(property.improvementCost);
+void Player::buyImprovement(Property &property) {
     property.buyImprovement();
+    spendMoney(property.improvementCost);
 }
 
-void Player::sellImprovement(AcademicBuilding &property) {
-    receiveMoney(property.improvementCost * 0.5);
+void Player::sellImprovement(Property &property) {
     property.sellImprovement();
+    receiveMoney(property.improvementCost * 0.5);
 }
 
 void Player::mortgage(Property &property) {

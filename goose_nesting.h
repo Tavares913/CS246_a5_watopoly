@@ -3,6 +3,8 @@
 
 #include "non_property.h"
 
+class Player;
+
 class GooseNesting : public NonProperty {
   public:
     GooseNesting(int location);

@@ -1,13 +1,9 @@
 #ifndef __WATOPOLY_H__
 #define __WATOPOLY_H__
 
-#include <vector>
-#include <memory>
-#include "gameboard.h"
+#include <string>
 
-class Player;
 class GameBoard;
-class Tile;
 
 class Watopoly {
     GameBoard gameboard;

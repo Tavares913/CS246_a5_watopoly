@@ -3,6 +3,8 @@
 
 #include "non_property.h"
 
+class Player;
+
 class CollectOSAP : public NonProperty {
     int collectionAmount;
 

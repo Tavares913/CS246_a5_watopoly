@@ -2,19 +2,19 @@
 #define __GAMEBOARD_H__
 
 #include <memory>
+#include <vector>
 #include <unordered_map>
 #include <string>
 #include <utility>
 #include "subject.h"
-#include "watopoly.h"
-#include "dc_tims_line.h"
 
 class Player;
 class Tile;
 class Property;
 class Display;
+class DCTimsLine;
+class Watopoly;
 
-// TODO prefix stuff with std
 class GameBoard : public Subject {
     int curPlayer = 0;
     std::vector<std::unique_ptr<Player>> players;

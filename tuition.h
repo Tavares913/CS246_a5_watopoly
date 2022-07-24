@@ -3,6 +3,8 @@
 
 #include "non_property.h"
 
+class Player;
+
 class Tuition : public NonProperty {
     int payment;
     float rate;

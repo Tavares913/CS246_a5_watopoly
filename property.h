@@ -4,9 +4,9 @@
 #include <string>
 #include <vector>
 #include "tile.h"
-#include "watopoly.h"
 
 class Player;
+class Watopoly;
 
 class Property : public Tile {
     std::string name;

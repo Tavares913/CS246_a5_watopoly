@@ -3,7 +3,6 @@
 
 #include <string>
 #include "property.h"
-#include "player.h"
 
 class Gym : public Property {
   public:

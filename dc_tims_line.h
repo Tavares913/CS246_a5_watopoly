@@ -3,6 +3,8 @@
 
 #include "non_property.h"
 
+class Player;
+
 class DCTimsLine : public NonProperty {
   public:
     DCTimsLine(int location);

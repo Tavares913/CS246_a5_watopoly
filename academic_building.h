@@ -2,9 +2,8 @@
 #define __ACADEMIC_BUILDING_H__
 
 #include <vector>
+#include <string>
 #include "property.h"
-
-class Player;
 
 class AcademicBuilding : public Property {
     std::vector<int> tuition;

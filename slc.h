@@ -5,6 +5,7 @@
 
 class DCTimsLine;
 class CollectOSAP;
+class Player;
 
 class SLC : public NonProperty {
     DCTimsLine *dc;

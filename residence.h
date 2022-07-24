@@ -1,9 +1,8 @@
 #ifndef __RESIDENCE_H__
 #define __RESIDENCE_H__
 
+#include <string>
 #include "property.h"
-
-class Player;
 
 class Residence : public Property {
     int tuition;
