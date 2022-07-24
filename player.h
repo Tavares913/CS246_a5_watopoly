@@ -17,18 +17,18 @@ class Tile;
 // class SLC;
 
 class Player {
-    string name;
+    std::string name;
     char symbol;
     int location;
     float money;
-    vector<Property *> ownedProperties;
+    std::vector<Property *> ownedProperties;
     int timsCups;
     bool inTimsLine;
     int numTurnsInTimsLine;
 
   public:
     Player(
-        string name, char symbol, float money = 1500, int location = 0,
+        std::string name, char symbol, float money = 1500, int location = 0,
         int timsCups = 0, bool inTimsLine = false, int numTurnsInTimsLine = 0
     );
     void move(int moveBy);

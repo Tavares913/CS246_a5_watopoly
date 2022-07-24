@@ -9,22 +9,22 @@
 class Player;
 
 class Property : public Tile {
-    string name;
+    std::string name;
     int purchaseCost;
     Player *owner = nullptr;
-    vector<Property *> propertyBlock;
+    std::vector<Property *> propertyBlock;
     bool mortgaged = false;
     int numImprovements = 0;
 
   public:
-    Property(int location, string name, int purchaseCost);
+    Property(int location, std::string name, int purchaseCost);
     virtual int getTuition() const = 0;
     virtual void mortgage();
     void visit(Player &player);
     void unmortgage();
     void setOwner(const Player *owner);
     Player *getOwner() const;
-    void setPropertyBlock(const vector<Property *> &propertyBlock);
+    void setPropertyBlock(const std::vector<Property *> &propertyBlock);
     int getNumOwned() const;
     int getNumImprovements() const;
     bool monopoly() const;

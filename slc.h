@@ -10,7 +10,7 @@ class SLC : public NonProperty {
     DCTimsLine *dc;
     CollectOSAP *osap;
 
-public:
+  public:
     SLC(int location, DCTimsLine *dc, CollectOSAP *osap);
     void visit(Player &p);
 };

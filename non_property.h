@@ -4,8 +4,8 @@
 #include "tile.h"
 
 class NonProperty : public Tile {
-    public:
-        NonProperty(int location, string name);
+  public:
+    NonProperty(int location, std::string name);
 };
 
 #endif

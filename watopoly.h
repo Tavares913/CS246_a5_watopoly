@@ -17,8 +17,8 @@ class Watopoly {
   public:
     void init();
     void play();
-    void load(string filename);
-    void save(string filename);
+    void load(std::string filename);
+    void save(std::string filename);
 };
 
 #endif
