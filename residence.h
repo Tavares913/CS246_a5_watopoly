@@ -9,7 +9,7 @@ class Residence : public Property {
     int tuition;
 
   public:
-    Residence(string name, int location, int purchaseCost, int tuition);
+    Residence(int location, string name, int purchaseCost, int tuition);
     int getTuition() const override;
 };
 
