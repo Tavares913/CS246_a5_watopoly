@@ -4,11 +4,11 @@
 #include "non_property.h"
 
 class Tuition : public NonProperty {
-    static int payment;
-    static float rate;
+    int payment;
+    float rate;
 
   public:
-    Tuition(int location);
+    Tuition(int location, int payment, float rate);
     void visit(Player &p, bool flatPayment = true);
 };
 

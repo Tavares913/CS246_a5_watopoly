@@ -2,8 +2,8 @@
 #include <vector>
 #include "player.h"
 
-Property::Property(string name, int location, int purchaseCost) :
-    Tile{name, location}, purchaseCost{purchaseCost} {}
+Property::Property(int location, string name, int purchaseCost) :
+    Tile{location, name}, purchaseCost{purchaseCost} {}
 
 void Property::mortgage() { mortgaged = true; }
 
@@ -28,7 +28,13 @@ int Property::getNumOwned() const {
     return numOwned;
 }
 
+int Property::getNumImprovements() const { return mortgaged ? -1 : numImprovements; }
+
 bool Property::monopoly() const { return getNumOwned() == propertyBlock.size(); }
+
+void Property::buyImprovement() { throw; /* cannot improve error */ }
+
+void Property::sellImprovement() { throw; /* cannot 'un'improve error */ }
 
 void Property::visit(Player &player) {
     if (owner) {

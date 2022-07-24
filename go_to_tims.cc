@@ -4,7 +4,7 @@
 #include "dc_tims_line.h"
 
 GoToTims::GoToTims(int location, DCTimsLine *dcTimsLine) :
-    NonProperty{"Go to Tims", location}, dcTimsLine{dcTimsLine} {}
+    NonProperty{location, "Go to Tims"}, dcTimsLine{dcTimsLine} {}
 
 void GoToTims::visit(Player &p) {
     p.visit(*dcTimsLine);

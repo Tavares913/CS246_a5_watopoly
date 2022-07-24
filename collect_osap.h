@@ -4,10 +4,10 @@
 #include "non_property.h"
 
 class CollectOSAP : public NonProperty {
-    static int collectionAmount;
+    int collectionAmount;
 
   public:
-    CollectOSAP(int location);
+    CollectOSAP(int location, int collectionAmount);
     void visit(Player &p);
 };
 

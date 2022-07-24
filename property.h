@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include "tile.h"
+#include "watopoly.h"
 
 class Player;
 
@@ -13,9 +14,10 @@ class Property : public Tile {
     Player *owner = nullptr;
     vector<Property *> propertyBlock;
     bool mortgaged = false;
+    int numImprovements = 0;
 
   public:
-    Property(string name, int location, int purchaseCost);
+    Property(int location, string name, int purchaseCost);
     virtual int getTuition() const = 0;
     virtual void mortgage();
     void visit(Player &player);
@@ -24,8 +26,13 @@ class Property : public Tile {
     Player *getOwner() const;
     void setPropertyBlock(const vector<Property *> &propertyBlock);
     int getNumOwned() const;
+    int getNumImprovements() const;
     bool monopoly() const;
+    virtual void buyImprovement();
+    virtual void sellImprovement();
     void visit(Player &player);
+
+    friend class Watopoly;
 };
 
 #endif

@@ -6,17 +6,17 @@
 #include "non_property.h"
 #include "player.h"
 
-DCTimsLine::DCTimsLine(int location) : NonProperty{"DC Tims Line", location} {}
+DCTimsLine::DCTimsLine(int location) : NonProperty{location, "DC Tims Line"} {}
 
 void DCTimsLine::visit(Player &p) {
     string c;
-    if (p.rollUpRimCards > 0) {
+    if (p.timsCups > 0) {
         c = GameBoard::getChoice(
             "Would you like to use a Roll Up The Rim card?",
             vector{"Y", "N"}
         );
         if (c == "Y") {
-            p.useRollUpRimCard();
+            p.useTimsCup();
             return;
         }
     }
@@ -48,7 +48,7 @@ void DCTimsLine::visit(Player &p) {
             p.spendMoney(50);
             p.leaveTimsLine();
         } else {
-            p.useRollUpRimCard();
+            p.useTimsCup();
         }
     }
 }

@@ -4,10 +4,10 @@
 #include "non_property.h"
 
 class CoopFee : public NonProperty {
-    static int payment;
+    int payment;
 
   public:
-    CoopFee(int location);
+    CoopFee(int location, int payment);
     void visit(Player &p);
 };
 

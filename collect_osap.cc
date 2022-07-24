@@ -1,9 +1,8 @@
 #include "collect_osap.h"
 #include "non_property.h"
 
-int CollectOSAP::collectionAmount = 200;
-
-CollectOSAP::CollectOSAP(int location) : NonProperty{"Collect OSAP", location} {}
+CollectOSAP::CollectOSAP(int location, int collectionAmount) :
+    NonProperty{location, "Collect OSAP"}, collectionAmount{collectionAmount} {}
 
 void CollectOSAP::visit(Player &p) {
     p.receiveMoney(collectionAmount);

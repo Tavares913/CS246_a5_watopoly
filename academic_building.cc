@@ -6,8 +6,8 @@
 using namespace std;
 
 AcademicBuilding::AcademicBuilding(
-  string name, int location, int purchaseCost, int improvementCost, vector<int> &tuition
-) : Property{name, location, purchaseCost}, improvementCost{improvementCost}, tuition{tuition} {}
+  int location, string name, int purchaseCost, int improvementCost, vector<int> &tuition
+) : Property{location, name, purchaseCost}, improvementCost{improvementCost}, tuition{tuition} {}
 
 int AcademicBuilding::getTuition() const {
   if (numImprovements == 0 && monopoly()) {

@@ -4,12 +4,12 @@
 
 using namespace std;
 
-NeedlesHall::NeedlesHall(int location) : NonProperty{"Needles Hall", location} {}
+NeedlesHall::NeedlesHall(int location) : NonProperty{location, "Needles Hall"} {}
 
 void NeedlesHall::visit(Player &p) {
     int timsCupChance = rand() % 100;
     if (timsCupChance == 0) {
-        p.receiveRollUpRimCard();
+        p.receiveTimsCup();
     }
 
     int randNum = rand() % 18;

@@ -9,14 +9,13 @@ class Player;
 class AcademicBuilding : public Property {
     vector<int> tuition;
     int improvementCost;
-    int numImprovements = 0;
 
   public:
-    AcademicBuilding(string name, int location, int purchaseCost, int improvementCost, vector<int> &tuition);
+    AcademicBuilding(int location, string name, int purchaseCost, int improvementCost, vector<int> &tuition);
     int getTuition() const override;
     void mortgage() override;
-    void buyImprovement();
-    void sellImprovement();
+    void buyImprovement() override;
+    void sellImprovement() override;
 };
 
 #endif
