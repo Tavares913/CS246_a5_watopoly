@@ -1,13 +1,17 @@
 #include <vector>
 #include "property.h"
 
-Player::Player(string name, char symbol) : name{name}, symbol{symbol} {}
+Player::Player(
+    string name, char symbol, float money, int location, int timsCups,
+    bool inTimsLine, int numTurnsInTimsLine
+) : name{name}, symbol{symbol}, money{money}, location{location}, timsCups{timsCups},
+    inTimsLine{inTimsLine}, numTurnsInTimsLine{numTurnsInTimsLine} {}
 
 void Player::move(int moveBy) { location += moveBy; }
 
 void Player::spendMoney(float amount) { 
-  if (amount > money) throw; // not enough money error
-  money -= amount;
+    if (amount > money) throw; // not enough money error
+    money -= amount;
 }
 
 void Player::receiveMoney(float amount) { spendMoney(-amount); }
@@ -40,72 +44,75 @@ void Player::receiveProperty(Property &property) {
 }
 
 void Player::buyProperty(Property &property, int purchaseCost) {
-  spendMoney(purchaseCost ? purchaseCost : property.purchaseCost);
-  receiveProperty(property);
+    spendMoney(purchaseCost ? purchaseCost : property.purchaseCost);
+    receiveProperty(property);
 }
 
 void Player::buyImprovement(AcademicBuilding &property) {
-  spendMoney(property.improvementCost);
-  property.buyImprovement();
+    spendMoney(property.improvementCost);
+    property.buyImprovement();
 }
 
 void Player::sellImprovement(AcademicBuilding &property) {
-  receiveMoney(property.improvementCost * 0.5);
-  property.sellImprovement();
+    receiveMoney(property.improvementCost * 0.5);
+    property.sellImprovement();
 }
 
 void Player::mortgage(Property &property) {
-  receiveMoney(property.purchaseCost * 0.5);
-  property.mortgage();
+    receiveMoney(property.purchaseCost * 0.5);
+    property.mortgage();
 }
 
 void Player::unmortgage(Property &property) {
-  spendMoney(property.purchaseCost * 0.6)
-  property.unmortgage();
+    spendMoney(property.purchaseCost * 0.6)
+    property.unmortgage();
 }
 
 void Player::assets() {
-  cout << name << "'s assets:" << endl;
-  cout << "Money: " << money << endl;
-  cout << "Properties Owned: " << endl;
-  for (auto &property : ownedProperties) {
-    cout << property.name << " ";
-    cout << property.purchaseAmount << " ";
-    for (int i = 0; i < property.numImprovements; ++i) cout << "I";
-    cout << endl;
-  }
+    cout << name << "'s assets:" << endl;
+    cout << "Money: " << money << endl;
+    cout << "Properties Owned: " << endl;
+    for (auto &property : ownedProperties) {
+        cout << property.name << " ";
+        cout << property.purchaseAmount << " ";
+        for (int i = 0; i < property.numImprovements; ++i) cout << "I";
+        cout << endl;
+    }
 }
 
 void Player::goToTimsLine() {
-  inTimsLine = true;
-  numTurnsInTimsLine = 0;
+    inTimsLine = true;
+    numTurnsInTimsLine = 0;
 }
 
-void Player::leaveTimsLine() { inTimsLine = false; }
+void Player::leaveTimsLine() {
+    inTimsLine = false;
+    numTurnsInTimsLine = 0;
+}
 
-void Player::receiveRollUpRimCard() { ++rollUpRimCards; }
+void Player::receiveTimsCup() { ++timsCups; }
 
 void Player::updateNumTurnsInTimsLine() { ++numTurnsInTimsLine; }
 
-void Player::useRollUpRimCard() {
-  if (rollUpRimCards == 0) throw; // not enough cards error
-  --rollUpRimCards; 
-  leaveTimsLine();
+void Player::useTimsCup() {
+    if (timsCups == 0) throw; // not enough cards error
+    --timsCups; 
+    leaveTimsLine();
 }
 
 float Player::getWorth() {
-  float worth = money;
-  for (auto &property : ownedProperties) {
-    worth += property.purchaseCost;
-    worth += (property.improvementCost * property.numImprovements);
-  }
-  return worth;
+    float worth = money;
+    for (auto &property : ownedProperties) {
+        worth += property.purchaseCost;
+        worth += (property.improvementCost * property.numImprovements);
+    }
+    return worth;
 }
 
 // misc thought - what if we used references everywhere instead of pointers?
 
 void Player::visit(Tile &tile) {
-  tile.visit(*this);
+    tile.visit(*this);
 }
 
 // void Player::visit(GoToTims &goToTims) {

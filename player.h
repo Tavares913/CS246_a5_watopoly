@@ -2,6 +2,7 @@
 #define __PLAYER_H__
 
 #include <vector>
+#include "watopoly.h"
 
 class Tile;
 // class Residence;
@@ -18,15 +19,18 @@ class Tile;
 class Player {
     string name;
     char symbol;
-    int location = 0;
-    float money = 1500;
+    int location;
+    float money;
     vector<Property *> ownedProperties;
-    int rollUpRimCards = 0;
-    bool inTimsLine = false;
-    int numTurnsInTimsLine = 0;
+    int timsCups;
+    bool inTimsLine;
+    int numTurnsInTimsLine;
 
   public:
-    Player(string name, char symbol);
+    Player(
+        string name, char symbol, float money = 1500, int location = 0,
+        int timsCups = 0, bool inTimsLine = false, int numTurnsInTimsLine = 0
+    );
     void move(int moveBy);
     void spendMoney(float amount);
     void receiveMoney(float amount);
@@ -43,9 +47,9 @@ class Player {
     void assets(); // TODO move to display class
     void goToTimsLine();
     void leaveTimsLine();
-    void receiveRollUpRimCard();
+    void receiveTimsCup();
     void updateNumTurnsInTimsLine();
-    void useRollUpRimCard();
+    void useTimsCup();
     float getWorth();
     // misc thought - what if we used references everywhere instead of pointers?
     void visit(Tile &tile);
@@ -58,6 +62,7 @@ class Player {
     // void visit(Tuition &tuition);
     // void visit(NeedlesHall &needlesHall);
     // void visit(SLC &slc);
+    friend class Watopoly;
 };
 
 #endif
