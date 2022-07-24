@@ -6,6 +6,8 @@
 #include <string>
 #include <utility>
 #include "subject.h"
+#include "watopoly.h"
+#include "dc_tims_line.h"
 
 class Player;
 class Tile;
@@ -14,25 +16,34 @@ class Display;
 
 // TODO prefix stuff with std
 class GameBoard : public Subject {
-    int curPlayer;
-    vector<unique_ptr<Player>> players;
-    vector<unique_ptr<Tile>> board;
-    unordered_map<string, Property *> nameToProperties;
-    unique_ptr<Display> display;
+    int curPlayer = 0;
+    std::vector<std::unique_ptr<Player>> players;
+    std::vector<std::unique_ptr<Tile>> board;
+    std::unordered_map<std::string, Property *> nameToProperties;
+    std::unique_ptr<Display> display;
+    DCTimsLine *dcTimsLine;
+
+    void initBoard();
 
   public:
-    GameBoard(vector<unique_ptr<Player>> &players, vector<unique_ptr<Tile>> &board);
-    static pair<int, int> roll();
-    static string &getChoice(const string &message, const vector<string> &validChoices) const;
+    GameBoard();
+    static std::pair<int, int> roll();
+    static std::string &getChoice(
+        const std::string &message, const std::vector<std::string> &validChoices
+    ) const;
     void moveCurPlayer();
     void next();
-    void buyImprovement(Player &p, string propertyName);
-    void sellImprovement(Player &p, string propertyName);
+    void buyImprovement(Player &p, std::string propertyName);
+    void sellImprovement(Player &p, std::string propertyName);
     void allAssets();
-    void buyProperty(Player &p, string propertyName);
-    void mortgage(Player &p, string propertyName);
-    void unmortgage(Player &p, string propertyName);
+    void buyProperty(Player &p, std::string propertyName);
+    void mortgage(Player &p, std::string propertyName);
+    void unmortgage(Player &p, std::string propertyName);
     void auction(Property *p);
+    void save(std::string filename);
+    void load(std::string filename);
+
+    friend class Watopoly;
 };
 
 #endif
