@@ -31,7 +31,7 @@ void DCTimsLine::visit(Player &p) {
         return;
     }
 
-    pair<int, int> roll = GameBoard::roll() // TODO make roll return a pair instead
+    pair<int, int> roll = GameBoard::roll();
     if (roll.first == roll.second) {
         // doubles!
         p.leaveTimsLine();

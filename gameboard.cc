@@ -132,7 +132,7 @@ void GameBoard::initBoard() {
 static pair<int, int> GameBoard::roll() {
     int die1 = rand() % 6 + 1;
     int die2 = rand() % 6 + 1;
-    return pair<int, int> rollResult(die1, die2);
+    return pair<int, int>{die1, die2};
 }
 
 static string &GameBoard::getChoice(const string &message, const vector<string> &validChoices) const {
