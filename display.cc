@@ -130,6 +130,7 @@ void Display::print() {
                 cout << display[i][j].getRow(row);
             }
         }
+        cout << endl;
     }
 
     for (int i = 10; i < 11; ++i) {
@@ -138,6 +139,7 @@ void Display::print() {
                 cout << display[i][j].getRow(row);
             }
         }
+        cout << endl;
     }
 }
 
