@@ -3,11 +3,13 @@
 
 #include <vector>
 #include <string>
+#include <unordered_map>
 #include "gameboard.h"
 
 class Watopoly {
     GameBoard gameboard;
     bool testing;
+    static std::unordered_map<char, std::string> playerPieces;
 
     void initPlayers();
     void load(std::string filename);

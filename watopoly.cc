@@ -1,7 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
+#include <unordered_map>
 #include <memory>
+#include <algorithm>
 #include <string>
 #include "watopoly.h"
 #include "collect_osap.h"
@@ -17,6 +19,11 @@ Watopoly::Watopoly(string loadfile, bool testing) : testing{testing} {
     if (loadfile != "") load(loadfile);
     else initPlayers();
 }
+
+unordered_map<char, string> Watopoly::playerPieces = {
+    {'G', "Goose"}, {'B', "GRT Bus"}, {'D', "Tim Hortons Doughnut"}, {'T', "Pink Tie"},
+    {'P', "Professor"}, {'S', "Student"}, {'$', "Money"}, {'L', "Laptop"}
+};
 
 string Watopoly::getChoice(const string &message, const vector<string> &validChoices) {
     while (true) {
@@ -43,14 +50,29 @@ void Watopoly::initPlayers() {
     string curPlayerName;
     char curPlayerSymbol;
 
+    cout << "How many players are playing? ";
     cin >> numPlayers;
-    for (int i = 0; i < numPlayers; ++i) {
-        cin >> curPlayerName;
-        cin >> curPlayerSymbol;
 
-        gameboard.players.emplace_back(
-            make_unique<Player>(curPlayerName, curPlayerSymbol)
-        );
+    for (int i = 0; i < numPlayers; ++i) {
+        while (true) {
+            cout << "The following pieces are available to choose from: ";
+            for (auto &piece : playerPieces) cout << piece.first << "  ";
+            cout << endl;
+
+            cout << "Player " << i + 1 << " - choose your piece: ";
+            cin >> curPlayerSymbol;
+
+            try {
+                curPlayerName = playerPieces.at(curPlayerSymbol);
+                playerPieces.erase(curPlayerSymbol);
+                gameboard.players.emplace_back(
+                    make_unique<Player>(curPlayerName, curPlayerSymbol)
+                );
+                break;
+            } catch (...) {
+                cout << "That piece is not available. Please try again." << endl;
+            }
+        }
     }
 }
 
@@ -70,6 +92,7 @@ void Watopoly::load(string filename) {
     cin >> numPlayers;
     for (int i = 0; i < numPlayers; ++i) {
         cin >> playerName;
+        replace(playerName.begin(), playerName.end(), '_', ' ');
         cin >> playerSymbol;
         cin >> timsCups;
         cin >> money;
@@ -88,6 +111,7 @@ void Watopoly::load(string filename) {
             )
         );
     }
+    cout << "Loaded " << numPlayers << " players." << endl; 
 
     // properties
     string propertyName;
@@ -112,6 +136,8 @@ void Watopoly::load(string filename) {
     }
 
     file.close();
+
+    cout << "Game load complete!" << endl;
 }
 
 void Watopoly::save(string filename) {
@@ -124,7 +150,9 @@ void Watopoly::save(string filename) {
     for (int i = 0; i < numPlayers; ++i) {
         int playerIndex = (i + gameboard.curPlayer) % numPlayers;
         Player &player = *gameboard.players[playerIndex];
-        file << player.name << " " << player.symbol << " " << player.timsCups
+        string playerName{player.name};
+        replace(playerName.begin(), playerName.end(), ' ', '_');
+        file << playerName << " " << player.symbol << " " << player.timsCups
             << " " << player.money << " " << player.location;
         if (player.location ==  gameboard.dcTimsLine->getLocation()) {
             file << " " << static_cast<int>(player.inTimsLine);
@@ -148,6 +176,8 @@ void Watopoly::save(string filename) {
 
 void Watopoly::play() {
     string cmd;
+
+    cout << "Welcome to Watopoly!" << endl;
 
     while (cin >> cmd) {
         if (cmd == "roll") {
