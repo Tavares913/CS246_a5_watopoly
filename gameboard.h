@@ -29,9 +29,6 @@ class GameBoard : public Subject {
   public:
     GameBoard();
     static std::pair<int, int> roll();
-    static std::string &getChoice(
-        const std::string &message, const std::vector<std::string> &validChoices
-    );
     void moveCurPlayer();
     void next();
     void buyImprovement(Player &p, std::string propertyName);

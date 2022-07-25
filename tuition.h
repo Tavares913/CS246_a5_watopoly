@@ -11,7 +11,7 @@ class Tuition : public NonProperty {
 
   public:
     Tuition(int location, int payment, float rate);
-    void visit(Player &p, bool flatPayment = true);
+    void visit(Player &p);
 };
 
 #endif

@@ -2,18 +2,40 @@
 #include <fstream>
 #include <vector>
 #include <memory>
+#include <string>
 #include "watopoly.h"
 #include "collect_osap.h"
 #include "academic_building.h"
 #include "slc.h"
 #include "player.h"
 #include "gameboard.h"
+#include "dc_tims_line.h"
 
 using namespace std;
 
 Watopoly::Watopoly(string loadfile, bool testing) : testing{testing} {
-    if (loadfile) load(loadfile);
+    if (loadfile != "") load(loadfile);
     else initPlayers();
+}
+
+string Watopoly::getChoice(const string &message, const vector<string> &validChoices) {
+    while (true) {
+        cout << message << " ";
+        cout << "(";
+        bool addDelimiter = false;
+        for (auto &choice : validChoices) {
+            if (addDelimiter) cout << "/";
+            cout << choice;
+            addDelimiter = true;
+        }
+        cout << ") ";
+        string c;
+        cin >> c;
+        if (find(validChoices.begin(), validChoices.end(), c) != validChoices.end()) {
+            return c;
+        }
+        cout << "Invalid choice, please try again." << endl;
+    }
 }
 
 void Watopoly::initPlayers() {
@@ -55,7 +77,7 @@ void Watopoly::load(string filename) {
 
         inTimsLine = false;
         numTurnsInTimsLine = 0;
-        if (location ===  dcTimsLine->location) {
+        if (location == gameboard.dcTimsLine->getLocation()) {
             cin >> inTimsLine;
             if (inTimsLine) cin >> numTurnsInTimsLine;
         }
@@ -77,7 +99,7 @@ void Watopoly::load(string filename) {
         cin >> ownerName;
         cin >> numImprovements;
 
-        Property *property = nameToProperties[propertyName];
+        Property *property = gameboard.nameToProperties[propertyName];
         for (auto &player : gameboard.players) {
             if (player->name == ownerName) {
                 property->owner = player.get();
@@ -92,19 +114,20 @@ void Watopoly::load(string filename) {
     file.close();
 }
 
-void Watopoly::save() {
+void Watopoly::save(string filename) {
     ofstream file{filename};
     
     // number of players
-    file << gameboard.players.length() << endl;
+    int numPlayers = gameboard.players.size();
+    file << numPlayers << endl;
     // players
-    for (int i = 0; i < gameboard.players.length(); ++i) {
-        int playerIndex = (i + gameboard.curPlayer) % gameboard.players.length();
-        unique_ptr<Player> &player = gameboard.players[playerIndex];
+    for (int i = 0; i < numPlayers; ++i) {
+        int playerIndex = (i + gameboard.curPlayer) % numPlayers;
+        Player &player = *gameboard.players[playerIndex];
         file << player.name << " " << player.symbol << " " << player.timsCups
             << " " << player.money << " " << player.location;
-        if (player.location ===  dcTimsLine->location) {
-            file << " " << static_cast<int> player.inTimsLine;
+        if (player.location ==  gameboard.dcTimsLine->getLocation()) {
+            file << " " << static_cast<int>(player.inTimsLine);
             if (player.inTimsLine) file << " " << player.numTurnsInTimsLine;
         }
         file << endl;
@@ -113,9 +136,9 @@ void Watopoly::save() {
     // properties
     for (auto &tile : gameboard.board) {
         try {
-            Property *property = gameboard.nameToPropety.at(tile.getName());
+            Property *property = gameboard.nameToProperties.at(tile->getName());
             file << property->getName() << " "
-                << property->getOwner()->name << " ";
+                << property->getOwner()->name << " "
                 << property->getNumImprovements() << endl;
         } catch (...) {}
     }
@@ -127,27 +150,28 @@ void Watopoly::play() {
     string cmd;
 
     while (cin >> cmd) {
-        switch (cmd) {
-            case "roll":
-                break;
-            case "next":
-                break;
-            case "trade":
-                break;
-            case "improve":
-                break;
-            case "mortgage":
-                break;
-            case "unmortgage":
-                break;
-            case "bankrupt":
-                break;
-            case "assets":
-                break;
-            case "all":
-                break;
-            case "save":
-                break;
+        if (cmd == "roll") {
+
+        } else if (cmd == "next") {
+
+        } else if (cmd == "trade") {
+
+        } else if (cmd == "improve") {
+
+        } else if (cmd == "mortgage") {
+
+        } else if (cmd == "unmortgage") {
+
+        } else if (cmd == "bankrupt") {
+
+        } else if (cmd == "assets") {
+
+        } else if (cmd == "all") {
+
+        } else if (cmd == "save") {
+
+        } else {
+            cout << "Invalid command - please try again." << endl;
         }
     }
 }

@@ -6,12 +6,13 @@
 class Player;
 
 class Tile {
-    std::string name;
     int location;
+    std::string name;
 
   public:
-    Tile(std::string name, int location);
+    Tile(int location, std::string name);
     std::string getName() const;
+    int getLocation() const;
     virtual void visit(Player &) = 0;
     virtual ~Tile() = 0;
 };

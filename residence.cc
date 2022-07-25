@@ -1,9 +1,14 @@
+#include <string>
+#include <cmath>
+#include "residence.h"
 #include "property.h"
 #include "player.h"
 
-Residence::Residence(string name, int location, int purchaseCost, int tuition) :
+using namespace std;
+
+Residence::Residence(int location, string name, int purchaseCost, int tuition) :
   Property{location, name, purchaseCost}, tuition{tuition} {}
 
 int Residence::getTuition() const {
-  return tuition * (2 ** getNumOwned());
+  return tuition * pow(2, getNumOwned());
 }

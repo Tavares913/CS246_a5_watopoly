@@ -2,6 +2,7 @@
 #include <vector>
 #include <utility>
 #include "dc_tims_line.h"
+#include "watopoly.h"
 #include "gameboard.h"
 #include "non_property.h"
 #include "player.h"
@@ -13,7 +14,7 @@ DCTimsLine::DCTimsLine(int location) : NonProperty{location, "DC Tims Line"} {}
 void DCTimsLine::visit(Player &p) {
     string c;
     if (p.getTimsCups() > 0) {
-        c = GameBoard::getChoice(
+        c = Watopoly::getChoice(
             "Would you like to use a Roll Up The Rim card?",
             vector<string>{"y", "n"}
         );
@@ -23,7 +24,7 @@ void DCTimsLine::visit(Player &p) {
         }
     }
 
-    c = GameBoard::getChoice(
+    c = Watopoly::getChoice(
         "Would you like to pay $50 to leave the Tim's line?",
         vector<string>{"y", "n"}
     );
@@ -42,7 +43,7 @@ void DCTimsLine::visit(Player &p) {
 
     p.incrementNumTurnsInLine();
     if (p.getNumTurnsInLine() == 3) {
-        c = GameBoard::getChoice(
+        c = Watopoly::getChoice(
             "Would you like to pay $50 or use a Roll Up The Rim card?",
             vector<string>{"pay", "card"}
         );

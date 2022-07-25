@@ -1,6 +1,7 @@
 #ifndef __WATOPOLY_H__
 #define __WATOPOLY_H__
 
+#include <vector>
 #include <string>
 #include "gameboard.h"
 
@@ -14,6 +15,9 @@ class Watopoly {
 
   public:
     Watopoly(std::string loadfile = "", bool testing = false);
+    static std::string getChoice(
+        const std::string &message, const std::vector<std::string> &validChoices
+    );
     void play();
 };
 

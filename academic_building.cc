@@ -6,7 +6,7 @@
 using namespace std;
 
 AcademicBuilding::AcademicBuilding(
-  int location, string name, int purchaseCost, int improvementCost, vector<int> &tuition
+  int location, string name, int purchaseCost, int improvementCost, const vector<int> &tuition
 ) : Property{location, name, purchaseCost}, improvementCost{improvementCost}, tuition{tuition} {}
 
 int AcademicBuilding::getTuition() const {
@@ -32,4 +32,4 @@ void AcademicBuilding::sellImprovement() {
   --numImprovements;
 }
 
-int AcademicBuilding::getImprovementCost() { return improvementCost; }
+int AcademicBuilding::getImprovementCost() const { return improvementCost; }

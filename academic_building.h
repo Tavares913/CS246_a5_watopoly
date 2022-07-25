@@ -11,13 +11,13 @@ class AcademicBuilding : public Property {
 
   public:
     AcademicBuilding(
-        int location, std::string name, int purchaseCost, int improvementCost, std::vector<int> &tuition
+        int location, std::string name, int purchaseCost, int improvementCost, const std::vector<int> &tuition
     );
     int getTuition() const override;
     void mortgage() override;
     void buyImprovement() override;
     void sellImprovement() override;
-    int getImprovementCost() override;
+    int getImprovementCost() const override;
 };
 
 #endif

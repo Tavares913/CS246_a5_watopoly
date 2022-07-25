@@ -1,6 +1,9 @@
 #include <string>
 #include <vector>
+#include "property.h"
 #include "player.h"
+
+using namespace std;
 
 Property::Property(int location, string name, int purchaseCost) :
     Tile{location, name}, purchaseCost{purchaseCost} {}
@@ -9,7 +12,7 @@ void Property::mortgage() { mortgaged = true; }
 
 void Property::unmortgage() { mortgaged = false; }
 
-void Property::setOwner(const Player *owner) { this->owner = owner; }
+void Property::setOwner(Player *owner) { this->owner = owner; }
 
 Player *Property::getOwner() const { return owner; }
 
@@ -32,13 +35,15 @@ int Property::getNumImprovements() const { return mortgaged ? -1 : numImprovemen
 
 bool Property::monopoly() const { return getNumOwned() == propertyBlock.size(); }
 
+int Property::getPurchaseCost() const { return purchaseCost; }
+
 void Property::buyImprovement() { throw; /* cannot improve error */ }
 
 void Property::sellImprovement() { throw; /* cannot 'un'improve error */ }
 
-int Property::getImprovementCost() { throw; /* cannot improve error */ }
+int Property::getImprovementCost() const { throw; /* cannot improve error */ }
 
-void Property::visit(Player &player) {
+void Property::visit(Player &p) {
     if (owner) {
       int tuition = getTuition();
       p.payPlayer(tuition, *owner);

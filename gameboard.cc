@@ -1,3 +1,4 @@
+#include <iostream>
 #include <vector>
 #include <memory>
 #include <cstdlib>
@@ -29,64 +30,85 @@ GameBoard::GameBoard() : display{make_unique<Display>()} {
 
 void GameBoard::initBoard() {
     board.resize(30);
-    unique_ptr<Tile> collectOSAP = make_unique<CollectOSAP>(0, 200);
-    unique_ptr<Tile> dcTimsLine = make_unique<DCTimsLine>(10);
+    unique_ptr<CollectOSAP> collectOSAP = make_unique<CollectOSAP>(0, 200);
+    unique_ptr<DCTimsLine> dcTimsLine = make_unique<DCTimsLine>(10);
     this->dcTimsLine = dcTimsLine.get();
 
     
     // non-properties
-    unique_ptr<Tile> slc1 = make_unique<SLC>(2, dcTimsLine.get(), collectOSAP.get());
-    unique_ptr<Tile> slc2 = make_unique<SLC>(17, dcTimsLine.get(), collectOSAP.get());
-    unique_ptr<Tile> slc3 = make_unique<SLC>(33, dcTimsLine.get(), collectOSAP.get());
-    unique_ptr<Tile> needlesHall1 = make_unique<NeedlesHall>(7);
-    unique_ptr<Tile> needlesHall2 = make_unique<NeedlesHall>(22);
-    unique_ptr<Tile> needlesHall3 = make_unique<NeedlesHall>(36);
-    unique_ptr<Tile> tuition = make_unique<Tuition>(4, 300, 0.1);
-    unique_ptr<Tile> gooseNesting = make_unique<GooseNesting>(20);
-    unique_ptr<Tile> goToTims = make_unique<GoToTims>(30, dcTimsLine.get());
-    unique_ptr<Tile> coopFee = make_unique<CoopFee>(38, 150);
+    unique_ptr<SLC> slc1 = make_unique<SLC>(2, dcTimsLine.get(), collectOSAP.get());
+    unique_ptr<SLC> slc2 = make_unique<SLC>(17, dcTimsLine.get(), collectOSAP.get());
+    unique_ptr<SLC> slc3 = make_unique<SLC>(33, dcTimsLine.get(), collectOSAP.get());
+    unique_ptr<NeedlesHall> needlesHall1 = make_unique<NeedlesHall>(7);
+    unique_ptr<NeedlesHall> needlesHall2 = make_unique<NeedlesHall>(22);
+    unique_ptr<NeedlesHall> needlesHall3 = make_unique<NeedlesHall>(36);
+    unique_ptr<Tuition> tuition = make_unique<Tuition>(4, 300, 0.1);
+    unique_ptr<GooseNesting> gooseNesting = make_unique<GooseNesting>(20);
+    unique_ptr<GoToTims> goToTims = make_unique<GoToTims>(30, dcTimsLine.get());
+    unique_ptr<CoopFee> coopFee = make_unique<CoopFee>(38, 150);
 
     // properties
     // academic buildings
-    unique_ptr<Tile> al = make_unique<AcademicBuilding>(1, "AL", 40, 50, {2, 10, 30, 90, 160, 250});
-    unique_ptr<Tile> ml = make_unique<AcademicBuilding>(3, "ML", 60, 50, {4, 20, 60, 180, 320, 450});
-    unique_ptr<Tile> ech = make_unique<AcademicBuilding>(6, "ECH", 100, 50, {6, 30, 90, 270, 400, 550});
-    unique_ptr<Tile> pas = make_unique<AcademicBuilding>(8, "PAS", 100, 50, {6, 30, 90, 270, 400, 550});
-    unique_ptr<Tile> hh = make_unique<AcademicBuilding>(9, "HH", 120, 50, {8, 40, 100, 300, 450, 600});
-    unique_ptr<Tile> rch = make_unique<AcademicBuilding>(11, "RCH", 140, 100, {10, 50, 150, 450, 625, 750});
-    unique_ptr<Tile> dwe = make_unique<AcademicBuilding>(13, "DWE", 140, 100, {10, 50, 150, 450, 625, 750});
-    unique_ptr<Tile> cph = make_unique<AcademicBuilding>(14, "CPH", 160, 100, {12, 60, 180, 500, 700, 900});
-    unique_ptr<Tile> lhi = make_unique<AcademicBuilding>(16, "LHI", 180, 100, {14, 70, 200, 550, 750, 950});
-    unique_ptr<Tile> bmh = make_unique<AcademicBuilding>(18, "BMH", 180, 100, {14, 70, 200, 550, 750, 950});
-    unique_ptr<Tile> opt = make_unique<AcademicBuilding>(19, "OPT", 200, 100, {16, 80, 220, 600, 800, 1000});
-    unique_ptr<Tile> ev1 = make_unique<AcademicBuilding>(21, "EV1", 220, 150, {18, 90, 250, 700, 875, 1050});
-    unique_ptr<Tile> ev2 = make_unique<AcademicBuilding>(23, "EV2", 220, 150, {18, 90, 250, 700, 875, 1050});
-    unique_ptr<Tile> ev3 = make_unique<AcademicBuilding>(24, "EV3", 240, 150, {20, 100, 300, 750, 925, 1100});
-    unique_ptr<Tile> phys = make_unique<AcademicBuilding>(26, "PHYS", 260, 150, {22, 110, 330, 800, 975, 1150});
-    unique_ptr<Tile> b1 = make_unique<AcademicBuilding>(27, "B1", 260, 150, {22, 110, 330, 800, 975, 1150});
-    unique_ptr<Tile> b2 = make_unique<AcademicBuilding>(29, "B2", 280, 150, {24, 120, 360, 850, 1025, 1200});
-    unique_ptr<Tile> eit = make_unique<AcademicBuilding>(31, "EIT", 300, 200, {26, 130, 390, 900, 1100, 1275});
-    unique_ptr<Tile> esc = make_unique<AcademicBuilding>(32, "ESC", 300, 200, {26, 130, 390, 900, 1100, 1275});
-    unique_ptr<Tile> c2 = make_unique<AcademicBuilding>(34, "C2", 320, 200, {28, 150, 450, 1000, 1200, 1400});
-    unique_ptr<Tile> mc = make_unique<AcademicBuilding>(37, "MC", 350, 200, {35, 175, 500, 1100, 1300, 1500});
-    unique_ptr<Tile> dc = make_unique<AcademicBuilding>(39, "DC", 400, 200, {50, 200, 600, 1400, 1700, 2000});
+    unique_ptr<AcademicBuilding> al = make_unique<AcademicBuilding>(1, "AL", 40, 50, vector<int>{2, 10, 30, 90, 160, 250});
+    nameToProperties.insert({"AL", al.get()});
+    unique_ptr<AcademicBuilding> ml = make_unique<AcademicBuilding>(3, "ML", 60, 50, vector<int>{4, 20, 60, 180, 320, 450});
+    nameToProperties.insert({"ML", ml.get()});
+    unique_ptr<AcademicBuilding> ech = make_unique<AcademicBuilding>(6, "ECH", 100, 50, vector<int>{6, 30, 90, 270, 400, 550});
+    nameToProperties.insert({"ECH", ech.get()});
+    unique_ptr<AcademicBuilding> pas = make_unique<AcademicBuilding>(8, "PAS", 100, 50, vector<int>{6, 30, 90, 270, 400, 550});
+    nameToProperties.insert({"PAS", pas.get()});
+    unique_ptr<AcademicBuilding> hh = make_unique<AcademicBuilding>(9, "HH", 120, 50, vector<int>{8, 40, 100, 300, 450, 600});
+    nameToProperties.insert({"HH", hh.get()});
+    unique_ptr<AcademicBuilding> rch = make_unique<AcademicBuilding>(11, "RCH", 140, 100, vector<int>{10, 50, 150, 450, 625, 750});
+    nameToProperties.insert({"RCH", rch.get()});
+    unique_ptr<AcademicBuilding> dwe = make_unique<AcademicBuilding>(13, "DWE", 140, 100, vector<int>{10, 50, 150, 450, 625, 750});
+    nameToProperties.insert({"DWE", dwe.get()});
+    unique_ptr<AcademicBuilding> cph = make_unique<AcademicBuilding>(14, "CPH", 160, 100, vector<int>{12, 60, 180, 500, 700, 900});
+    nameToProperties.insert({"CPH", cph.get()});
+    unique_ptr<AcademicBuilding> lhi = make_unique<AcademicBuilding>(16, "LHI", 180, 100, vector<int>{14, 70, 200, 550, 750, 950});
+    nameToProperties.insert({"LHI", lhi.get()});
+    unique_ptr<AcademicBuilding> bmh = make_unique<AcademicBuilding>(18, "BMH", 180, 100, vector<int>{14, 70, 200, 550, 750, 950});
+    nameToProperties.insert({"BMH", bmh.get()});
+    unique_ptr<AcademicBuilding> opt = make_unique<AcademicBuilding>(19, "OPT", 200, 100, vector<int>{16, 80, 220, 600, 800, 1000});
+    nameToProperties.insert({"OPT", opt.get()});
+    unique_ptr<AcademicBuilding> ev1 = make_unique<AcademicBuilding>(21, "EV1", 220, 150, vector<int>{18, 90, 250, 700, 875, 1050});
+    nameToProperties.insert({"EV1", ev1.get()});
+    unique_ptr<AcademicBuilding> ev2 = make_unique<AcademicBuilding>(23, "EV2", 220, 150, vector<int>{18, 90, 250, 700, 875, 1050});
+    nameToProperties.insert({"EV2", ev2.get()});
+    unique_ptr<AcademicBuilding> ev3 = make_unique<AcademicBuilding>(24, "EV3", 240, 150, vector<int>{20, 100, 300, 750, 925, 1100});
+    nameToProperties.insert({"EV3", ev3.get()});
+    unique_ptr<AcademicBuilding> phys = make_unique<AcademicBuilding>(26, "PHYS", 260, 150, vector<int>{22, 110, 330, 800, 975, 1150});
+    nameToProperties.insert({"PHYS", phys.get()});
+    unique_ptr<AcademicBuilding> b1 = make_unique<AcademicBuilding>(27, "B1", 260, 150, vector<int>{22, 110, 330, 800, 975, 1150});
+    nameToProperties.insert({"B1", b1.get()});
+    unique_ptr<AcademicBuilding> b2 = make_unique<AcademicBuilding>(29, "B2", 280, 150, vector<int>{24, 120, 360, 850, 1025, 1200});
+    nameToProperties.insert({"B2", b2.get()});
+    unique_ptr<AcademicBuilding> eit = make_unique<AcademicBuilding>(31, "EIT", 300, 200, vector<int>{26, 130, 390, 900, 1100, 1275});
+    nameToProperties.insert({"EIT", eit.get()});
+    unique_ptr<AcademicBuilding> esc = make_unique<AcademicBuilding>(32, "ESC", 300, 200, vector<int>{26, 130, 390, 900, 1100, 1275});
+    nameToProperties.insert({"ESC", esc.get()});
+    unique_ptr<AcademicBuilding> c2 = make_unique<AcademicBuilding>(34, "C2", 320, 200, vector<int>{28, 150, 450, 1000, 1200, 1400});
+    nameToProperties.insert({"C2", c2.get()});
+    unique_ptr<AcademicBuilding> mc = make_unique<AcademicBuilding>(37, "MC", 350, 200, vector<int>{35, 175, 500, 1100, 1300, 1500});
+    nameToProperties.insert({"MC", mc.get()});
+    unique_ptr<AcademicBuilding> dc = make_unique<AcademicBuilding>(39, "DC", 400, 200, vector<int>{50, 200, 600, 1400, 1700, 2000});
+    nameToProperties.insert({"DC", dc.get()});
 
     // residences
-    unique_ptr<Tile> mkv = make_unique<Residence>(5, "MKV", 200, 25);
-    unique_ptr<Tile> uwp = make_unique<Residence>(15, "UWP", 200, 25);
-    unique_ptr<Tile> v1 = make_unique<Residence>(25, "V1", 200, 25);
-    unique_ptr<Tile> rev = make_unique<Residence>(35, "REV", 200, 25);
+    unique_ptr<Residence> mkv = make_unique<Residence>(5, "MKV", 200, 25);
+    nameToProperties.insert({"MKV", mkv.get()});
+    unique_ptr<Residence> uwp = make_unique<Residence>(15, "UWP", 200, 25);
+    nameToProperties.insert({"UWP", uwp.get()});
+    unique_ptr<Residence> v1 = make_unique<Residence>(25, "V1", 200, 25);
+    nameToProperties.insert({"V1", v1.get()});
+    unique_ptr<Residence> rev = make_unique<Residence>(35, "REV", 200, 25);
+    nameToProperties.insert({"REV", rev.get()});
 
     // gyms
-    unique_ptr<Tile> pac = make_unique<Gym>(12, "PAC", 150);
-    unique_ptr<Tile> cif = make_unique<Gym>(28, "CIF", 150);
-
-    for (auto &property : vector<unique_ptr<Property>>{
-        al, ml, ech, pas, hh, rch, dwe, cph, lhi, bmh, opt, ev1, ev2, ev3, phys, 
-        b1, b2, eit, esc, c2, mc, dc, mkv, uwp, v1, rev, pac, cif
-    }) {
-        nameToProperties.insert({property->getName(), property.get()})
-    }
+    unique_ptr<Gym> pac = make_unique<Gym>(12, "PAC", 150);
+    nameToProperties.insert({"PAC", pac.get()});
+    unique_ptr<Gym> cif = make_unique<Gym>(28, "CIF", 150);
+    nameToProperties.insert({"CIF", cif.get()});
 
     board.emplace_back(move(collectOSAP));
     board.emplace_back(move(al));
@@ -129,34 +151,14 @@ void GameBoard::initBoard() {
     board.emplace_back(move(dc));
 }
 
-static pair<int, int> GameBoard::roll() {
+pair<int, int> GameBoard::roll() {
     int die1 = rand() % 6 + 1;
     int die2 = rand() % 6 + 1;
     return pair<int, int>{die1, die2};
 }
 
-static string &GameBoard::getChoice(const string &message, const vector<string> &validChoices) const {
-    while (true) {
-        cout << message << " ";
-        cout << "(";
-        bool addDelimiter = false;
-        for (auto &choice : validChoices) {
-            if (addDelimiter) cout << "/";
-            cout << choice;
-            addDelimiter = true;
-        }
-        cout << ") ";
-        string c;
-        cin >> c;
-        if (find(validChoices.begin(), validChoices.end(), c) != validChoices.end()) {
-            return c;
-        }
-        cout << "Invalid choice, please try again." << endl;
-    }
-}
-
 void GameBoard::moveCurPlayer() {
-    pair<int, int> roll = roll();
+    pair<int, int> roll = this->roll();
     // TODO check for doubles, etc
     players[curPlayer]->move(roll.first + roll.second);
     next();
@@ -199,6 +201,10 @@ void GameBoard::unmortgage(Player &p, string propertyName) {
 }
 
 void GameBoard::auction(Property *p) {
+    vector<Player *> players;
+    for (auto &player : this->players) {
+        players.emplace_back(player.get());
+    }
     Auction a{players, p};
     a.auction();
 }

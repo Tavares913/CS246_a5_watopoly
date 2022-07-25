@@ -1,11 +1,17 @@
+#include <string>
 #include "tuition.h"
+#include "watopoly.h"
 
-int Tuition::payment = 300;
-float Tuition::rate = 0.3;
+using namespace std;
 
-Tuition::Tuition(int location) : NonProperty{location, "Tuition"} {}
+Tuition::Tuition(int location, int payment, float rate) :
+    NonProperty{location, "Tuition"}, payment{payment}, rate{rate} {}
 
-void Tuition::visit(Player &p, bool flatPayment) {
-    if (flatPayment) p.spendMoney(payment);
+void Tuition::visit(Player &p) {
+    string c = Watopoly::getChoice(
+        "Would you like to pay $" + to_string(payment) + " or " + to_string(rate * 100) + "\% of your worth?",
+        vector<string>{"fee", "worth"}
+    );
+    if (c == "fee") p.spendMoney(payment);
     else p.spendMoney(p.getWorth() * rate);
 }

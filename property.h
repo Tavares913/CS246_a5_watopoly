@@ -23,16 +23,17 @@ class Property : public Tile {
     virtual int getTuition() const = 0;
     virtual void mortgage();
     void unmortgage();
-    void setOwner(const Player *owner);
+    void setOwner(Player *owner);
     Player *getOwner() const;
     void setPropertyBlock(const std::vector<Property *> &propertyBlock);
     int getNumOwned() const;
     int getNumImprovements() const;
     bool monopoly() const;
+    int getPurchaseCost() const;
     virtual void buyImprovement();
     virtual void sellImprovement();
-    virtual int getImprovementCost();
-    void visit(Player &player);
+    virtual int getImprovementCost() const;
+    void visit(Player &p);
 
     friend class Watopoly;
 };

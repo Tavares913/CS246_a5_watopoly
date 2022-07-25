@@ -3,7 +3,9 @@
 
 using namespace std;
 
-Tile::Tile(string name, int location) : name{name}, location{location} {}
+Tile::Tile(int location, string name) : location{location}, name{name} {}
+
+int Tile::getLocation() const { return location; }
 
 string Tile::getName() const { return name; }
 

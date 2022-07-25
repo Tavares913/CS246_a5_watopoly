@@ -1,10 +1,14 @@
+#include <iostream>
 #include <vector>
 #include "property.h"
+#include "watopoly.h"
+
+using namespace std;
 
 Player::Player(
     string name, char symbol, float money, int location, int timsCups,
     bool inTimsLine, int numTurnsInTimsLine
-) : name{name}, symbol{symbol}, money{money}, location{location}, timsCups{timsCups},
+) : name{name}, symbol{symbol}, location{location}, money{money}, timsCups{timsCups},
     inTimsLine{inTimsLine}, numTurnsInTimsLine{numTurnsInTimsLine} {}
 
 void Player::move(int moveBy) { location += moveBy; }
@@ -22,9 +26,9 @@ void Player::payPlayer(float amount, Player &payee) {
 }
 
 void Player::offerProperty(Property &property) {
-    string c = GameBoard::getChoice(
+    string c = Watopoly::getChoice(
         "Would you like to buy this property?",
-        vector{"y", "n"}
+        vector<string>{"y", "n"}
     );
     if (c == "y") {
         buyProperty(property);
@@ -34,7 +38,7 @@ void Player::offerProperty(Property &property) {
 }
 
 void Player::giveProperty(Property &property) {
-    ownedProperties.erase(find(ownedProperties.begin(), ownedProperties.end()));
+    ownedProperties.erase(find(ownedProperties.begin(), ownedProperties.end(), &property));
     property.setOwner(nullptr);
 }
 
@@ -44,7 +48,7 @@ void Player::receiveProperty(Property &property) {
 }
 
 void Player::buyProperty(Property &property, int purchaseCost) {
-    spendMoney(purchaseCost ? purchaseCost : property.purchaseCost);
+    spendMoney(purchaseCost ? purchaseCost : property.getPurchaseCost());
     receiveProperty(property);
 }
 
@@ -59,12 +63,12 @@ void Player::sellImprovement(Property &property) {
 }
 
 void Player::mortgage(Property &property) {
-    receiveMoney(property.purchaseCost * 0.5);
+    receiveMoney(property.getPurchaseCost() * 0.5);
     property.mortgage();
 }
 
 void Player::unmortgage(Property &property) {
-    spendMoney(property.purchaseCost * 0.6)
+    spendMoney(property.getPurchaseCost() * 0.6);
     property.unmortgage();
 }
 
@@ -73,9 +77,9 @@ void Player::assets() {
     cout << "Money: " << money << endl;
     cout << "Properties Owned: " << endl;
     for (auto &property : ownedProperties) {
-        cout << property.name << " ";
-        cout << property.purchaseAmount << " ";
-        for (int i = 0; i < property.numImprovements; ++i) cout << "I";
+        cout << property->getName() << " ";
+        cout << property->getPurchaseCost() << " ";
+        for (int i = 0; i < property->getNumImprovements(); ++i) cout << "I";
         cout << endl;
     }
 }
@@ -109,12 +113,12 @@ void Player::useTimsCup() {
 float Player::getWorth() {
     float worth = money;
     for (auto &property : ownedProperties) {
-        worth += property.purchaseCost;
-        worth += (property.improvementCost * property.numImprovements);
+        worth += property->getPurchaseCost();
+        worth += (property->getImprovementCost() * property->getNumImprovements());
     }
     return worth;
 }
 
-void Player::visit(Tile &tile) {
-    tile.visit(*this);
+void Player::visit(Tile *tile) {
+    tile->visit(*this);
 }

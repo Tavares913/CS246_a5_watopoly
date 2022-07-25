@@ -46,7 +46,7 @@ class Player {
     void updateNumTurnsInTimsLine();
     void useTimsCup();
     float getWorth();
-    void visit(Tile &tile);
+    void visit(Tile *tile);
 
     friend class Watopoly;
 };
