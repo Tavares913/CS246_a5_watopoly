@@ -129,8 +129,8 @@ void Display::print() {
             for (int j = 0; j < 11; ++j) {
                 cout << display[i][j].getRow(row);
             }
+            cout << endl;
         }
-        cout << endl;
     }
 
     for (int i = 10; i < 11; ++i) {
@@ -138,8 +138,8 @@ void Display::print() {
             for (int j = 0; j < 11; ++j) {
                 cout << display[i][j].getRow(row);
             }
+            cout << endl;
         }
-        cout << endl;
     }
 }
 
