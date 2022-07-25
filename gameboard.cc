@@ -32,7 +32,6 @@ void GameBoard::initBoard() {
     board.clear();
     unique_ptr<CollectOSAP> collectOSAP = make_unique<CollectOSAP>(0, 200);
     unique_ptr<DCTimsLine> dcTimsLine = make_unique<DCTimsLine>(10);
-    this->dcTimsLine = dcTimsLine.get();
     
     // non-properties
     unique_ptr<SLC> slc1 = make_unique<SLC>(2, dcTimsLine.get(), collectOSAP.get());
@@ -150,15 +149,19 @@ void GameBoard::initBoard() {
     board.emplace_back(move(dc));
 }
 
+Player &GameBoard::getCurPlayer() const {
+    return *players[curPlayer];
+}
+
 void GameBoard::moveCurPlayer(int moveBy) {
-    // TODO check for doubles, etc
-    (*curPlayer)->move(moveBy);
-    board[(*curPlayer)->getLocation()]->visit(**curPlayer);
+    getCurPlayer()->move(moveBy);
+    // display.notify(*this);
+    board[getCurPlayer()->getLocation()]->visit(getCurPlayer());
 }
 
 void GameBoard::next() {
     ++curPlayer;
-    if (curPlayer == players.end()) curPlayer = players.begin();
+    if (curPlayer == players.size()) curPlayer = 0;
 }
 
 void GameBoard::buyImprovement(Player &p, string propertyName) {

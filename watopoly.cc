@@ -81,7 +81,6 @@ void Watopoly::initPlayers() {
             }
         }
     }
-    gameboard.curPlayer = gameboard.players.begin();
 }
 
 void Watopoly::load(string filename) {
@@ -108,7 +107,7 @@ void Watopoly::load(string filename) {
 
         inTimsLine = false;
         numTurnsInTimsLine = 0;
-        if (location == gameboard.dcTimsLine->getLocation()) {
+        if (location == gameboard.DC_TIMS_LOCATION) {
             cin >> inTimsLine;
             if (inTimsLine) cin >> numTurnsInTimsLine;
         }
@@ -119,7 +118,6 @@ void Watopoly::load(string filename) {
             )
         );
     }
-    gameboard.curPlayer = gameboard.players.begin();
     cout << "Loaded " << numPlayers << " players." << endl; 
 
     // properties
@@ -159,13 +157,13 @@ void Watopoly::save(string filename) {
     file << numPlayers << endl;
     // players
     for (int i = 0; i < numPlayers; ++i) {
-        int playerIndex = (i + (gameboard.curPlayer - gameboard.players.begin())) % numPlayers;
+        int playerIndex = (i + gameboard.curPlayer) % numPlayers;
         Player &player = *gameboard.players[playerIndex];
         string playerName{player.name};
         replace(playerName.begin(), playerName.end(), ' ', '_');
         file << playerName << " " << player.symbol << " " << player.timsCups
             << " " << player.money << " " << player.location;
-        if (player.location ==  gameboard.dcTimsLine->getLocation()) {
+        if (player.location ==  gameboard.DC_TIMS_LOCATION) {
             file << " " << static_cast<int>(player.inTimsLine);
             if (player.inTimsLine) file << " " << player.numTurnsInTimsLine;
         }
@@ -186,41 +184,54 @@ void Watopoly::save(string filename) {
 }
 
 void Watopoly::play() {
-    string cmd;
-
     cout << "Welcome to Watopoly!" << endl;
-    cout << (*gameboard.curPlayer)->name << "'s turn." << endl; 
-    cout << "Enter command: ";
-    while (cin >> cmd) {
-        if (cmd == "roll") {
-            pair<int, int> roll = this->roll();
-            gameboard.moveCurPlayer(roll.first + roll.second);
-            cout << "You rolled " << roll.first << " and " << roll.second << endl;
-            cout << "You are now on " << gameboard.board[(*gameboard.curPlayer)->location]->getName() << "." << endl;
-        } else if (cmd == "next") {
-            gameboard.next();
-            cout << (*gameboard.curPlayer)->name << "'s turn." << endl;
-        } else if (cmd == "trade") {
+    while (true) {
+        string cmd;
+        Player &curPlayer = gameboard.getCurPlayer();
+        // gameboard.display.print();
+        cout << curPlayer.name << "'s turn." << endl; 
+        bool canNext = false;
+        int numDoubles = 0;
+        while (true) {
+            cout << "Enter command: ";
+            cin >> cmd;
+            if (cmd == "roll") {
+                pair<int, int> roll = this->roll();
+                if (roll.first != roll.second) canNext = true;
+                else {
+                    ++numDoubles;
+                    if (numDoubles)
+                }
+                cout << "You rolled " << roll.first << " and " << roll.second << "." << endl;
+                gameboard.moveCurPlayer(roll.first + roll.second);
+            } else if (cmd == "next") {
+                if (canNext) gameboard.next();
+                else cout << "You must roll before ending your turn." << endl;
+            } else if (cmd == "trade") {
 
-        } else if (cmd == "improve") {
+            } else if (cmd == "improve") {
 
-        } else if (cmd == "mortgage") {
+            } else if (cmd == "mortgage") {
 
-        } else if (cmd == "unmortgage") {
+            } else if (cmd == "unmortgage") {
 
-        } else if (cmd == "bankrupt") {
+            } else if (cmd == "bankrupt") {
 
-        } else if (cmd == "assets") {
+            } else if (cmd == "assets") {
 
-        } else if (cmd == "all") {
+            } else if (cmd == "all") {
 
-        } else if (cmd == "save") {
-            string filename;
-            cin >> filename;
-            save(filename);
-        } else {
-            cout << "Invalid command - please try again." << endl;
+            } else if (cmd == "save") {
+                string filename;
+                cin >> filename;
+                save(filename);
+            } else if (cmd == "quit") {
+                return;
+            } else {
+                cout << "Invalid command - please try again." << endl;
+                continue;
+            }
+            break;
         }
-        cout << "Enter command: ";
     }
 }
