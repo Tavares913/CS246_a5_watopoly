@@ -3,9 +3,8 @@
 #include "player.h"
 #include "dc_tims_line.h"
 
-GoToTims::GoToTims(int location, DCTimsLine *dcTimsLine) :
-    NonProperty{location, "Go to Tims"}, dcTimsLine{dcTimsLine} {}
+GoToTims::GoToTims(int location) : NonProperty{location, "Go to Tims"} {}
 
 void GoToTims::visit(Player &p) {
-    dcTimsLine->visit(p);
+    p.goToTimsLine();
 }

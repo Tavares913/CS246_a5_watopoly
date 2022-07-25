@@ -12,8 +12,11 @@ Player::Player(
 ) : name{name}, symbol{symbol}, location{location}, money{money}, timsCups{timsCups},
     inTimsLine{inTimsLine}, numTurnsInTimsLine{numTurnsInTimsLine} {}
 
-void Player::move(int moveBy) {
+void Player::moveTo(int moveTo) { location = moveTo; }
+
+void Player::moveBy(int moveBy) {
     location += moveBy;
+    location += GameBoard::NUM_TILES;
     location %= GameBoard::NUM_TILES;
 }
 
@@ -97,6 +100,7 @@ void Player::incrementNumTurnsInLine() { ++numTurnsInTimsLine; }
 int Player::getNumTurnsInLine() { return numTurnsInTimsLine; }
 
 void Player::goToTimsLine() {
+    location = GameBoard::DC_TIMS_LOCATION;
     inTimsLine = true;
     numTurnsInTimsLine = 0;
 }

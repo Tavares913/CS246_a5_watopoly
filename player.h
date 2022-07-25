@@ -23,7 +23,8 @@ class Player {
         std::string name, char symbol, float money = 1500, int location = 0,
         int timsCups = 0, bool inTimsLine = false, int numTurnsInTimsLine = 0
     );
-    void move(int moveBy);
+    void moveTo(int moveTo);
+    void moveBy(int moveBy);
     int getLocation() const;
     void spendMoney(float amount);
     void receiveMoney(float amount);

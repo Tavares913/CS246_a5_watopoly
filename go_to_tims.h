@@ -3,14 +3,11 @@
 
 #include "non_property.h"
 
-class DCTimsLine;
 class Player;
 
 class GoToTims : public NonProperty {
-    DCTimsLine *dcTimsLine;
-
   public:
-    GoToTims(int location, DCTimsLine *dcTimsLine);
+    GoToTims(int location);
     void visit(Player &p);
 };
 
