@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include <unordered_map>
+#include <utility>
 #include "gameboard.h"
 
 class Watopoly {
@@ -17,6 +18,7 @@ class Watopoly {
 
   public:
     Watopoly(std::string loadfile = "", bool testing = false);
+    static std::pair<int, int> roll();
     static std::string getChoice(
         const std::string &message, const std::vector<std::string> &validChoices
     );

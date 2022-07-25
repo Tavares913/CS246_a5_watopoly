@@ -5,6 +5,7 @@
 #include <memory>
 #include <algorithm>
 #include <string>
+#include <utility>
 #include "watopoly.h"
 #include "collect_osap.h"
 #include "academic_building.h"
@@ -24,6 +25,12 @@ unordered_map<char, string> Watopoly::playerPieces = {
     {'G', "Goose"}, {'B', "GRT Bus"}, {'D', "Tim Hortons Doughnut"}, {'T', "Pink Tie"},
     {'P', "Professor"}, {'S', "Student"}, {'$', "Money"}, {'L', "Laptop"}
 };
+
+pair<int, int> Watopoly::roll() {
+    int die1 = rand() % 6 + 1;
+    int die2 = rand() % 6 + 1;
+    return pair<int, int>{die1, die2};
+}
 
 string Watopoly::getChoice(const string &message, const vector<string> &validChoices) {
     while (true) {
@@ -186,7 +193,8 @@ void Watopoly::play() {
     cout << "Enter command: ";
     while (cin >> cmd) {
         if (cmd == "roll") {
-            pair<int, int> roll = gameboard.moveCurPlayer();
+            pair<int, int> roll = this->roll();
+            gameboard.moveCurPlayer(roll.first + roll.second);
             cout << "You rolled " << roll.first << " and " << roll.second << endl;
             cout << "You are now on " << gameboard.board[(*gameboard.curPlayer)->location]->getName() << "." << endl;
         } else if (cmd == "next") {

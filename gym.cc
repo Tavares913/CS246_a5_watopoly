@@ -2,14 +2,14 @@
 #include <string>
 #include "gym.h"
 #include "property.h"
-#include "gameboard.h"
+#include "watopoly.h"
 
 using namespace std;
 
 Gym::Gym(int location, string name, int purchaseCost) : Property{location, name, purchaseCost} {}
 
 int Gym::getTuition() const {
-  pair<int, int> roll = GameBoard::roll();
+  pair<int, int> roll = Watopoly::roll();
   int sumRoll = roll.first + roll.second;
 
   switch (getNumOwned()) {

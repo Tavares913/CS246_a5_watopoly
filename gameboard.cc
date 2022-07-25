@@ -150,18 +150,10 @@ void GameBoard::initBoard() {
     board.emplace_back(move(dc));
 }
 
-pair<int, int> GameBoard::roll() {
-    int die1 = rand() % 6 + 1;
-    int die2 = rand() % 6 + 1;
-    return pair<int, int>{die1, die2};
-}
-
-pair<int, int> GameBoard::moveCurPlayer() {
-    pair<int, int> roll = this->roll();
+void GameBoard::moveCurPlayer(int moveBy) {
     // TODO check for doubles, etc
-    (*curPlayer)->move(roll.first + roll.second);
+    (*curPlayer)->move(moveBy);
     board[(*curPlayer)->getLocation()]->visit(**curPlayer);
-    return roll;
 }
 
 void GameBoard::next() {

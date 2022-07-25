@@ -3,7 +3,6 @@
 #include <utility>
 #include "dc_tims_line.h"
 #include "watopoly.h"
-#include "gameboard.h"
 #include "non_property.h"
 #include "player.h"
 
@@ -34,7 +33,7 @@ void DCTimsLine::visit(Player &p) {
         return;
     }
 
-    pair<int, int> roll = GameBoard::roll();
+    pair<int, int> roll = Watopoly::roll();
     if (roll.first == roll.second) {
         // doubles!
         p.leaveTimsLine();

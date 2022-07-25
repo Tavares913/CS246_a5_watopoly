@@ -5,7 +5,6 @@
 #include <vector>
 #include <unordered_map>
 #include <string>
-#include <utility>
 #include "subject.h"
 #include "player.h"
 #include "tile.h"
@@ -29,8 +28,7 @@ class GameBoard : public Subject {
   public:
     GameBoard();
     static const int NUM_TILES = 40;
-    static std::pair<int, int> roll();
-    std::pair<int, int> moveCurPlayer();
+    void moveCurPlayer(int moveBy);
     void next();
     void buyImprovement(Player &p, std::string propertyName);
     void sellImprovement(Player &p, std::string propertyName);
