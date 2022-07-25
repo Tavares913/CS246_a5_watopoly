@@ -2,19 +2,22 @@
 #define __AUCTION_H__
 
 #include <vector>
+#include <memory>
 
 class Player;
 class Property;
 
 class Auction {
     std::vector<Player *> players;
-    Property *property;
+    Property *property = nullptr;
     int curPlayer;
     int propPrice;
 
-  public:
-    Auction(std::vector<Player *> &players, Property *property);
     void nextPlayer();
+
+  public:
+    void setPlayers(std::vector<std::unique_ptr<Player>> &players);
+    void setProperty(Property *property);
     void auction();
 };
 

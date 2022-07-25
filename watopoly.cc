@@ -60,6 +60,7 @@ void Watopoly::initPlayers() {
     cout << "How many players are playing? ";
     cin >> numPlayers;
 
+    vector<Player> players;
     for (int i = 0; i < numPlayers; ++i) {
         while (true) {
             cout << "The following pieces are available to choose from: ";
@@ -72,15 +73,14 @@ void Watopoly::initPlayers() {
             try {
                 curPlayerName = playerPieces.at(curPlayerSymbol);
                 playerPieces.erase(curPlayerSymbol);
-                gameboard.players.emplace_back(
-                    make_unique<Player>(curPlayerName, curPlayerSymbol)
-                );
+                players.emplace_back(Player{curPlayerName, curPlayerSymbol});
                 break;
             } catch (...) {
                 cout << "That piece is not available. Please try again." << endl;
             }
         }
     }
+    gameboard.initPlayers(players);
 }
 
 void Watopoly::load(string filename) {
@@ -97,6 +97,7 @@ void Watopoly::load(string filename) {
     int numTurnsInTimsLine;
 
     cin >> numPlayers;
+    vector<Player> players;
     for (int i = 0; i < numPlayers; ++i) {
         cin >> playerName;
         replace(playerName.begin(), playerName.end(), '_', ' ');
@@ -112,12 +113,11 @@ void Watopoly::load(string filename) {
             if (inTimsLine) cin >> numTurnsInTimsLine;
         }
 
-        gameboard.players.emplace_back(
-            make_unique<Player>(
-                playerName, playerSymbol, money, location, timsCups, inTimsLine, numTurnsInTimsLine
-            )
+        players.emplace_back(
+            Player{playerName, playerSymbol, money, location, timsCups, inTimsLine, numTurnsInTimsLine}
         );
     }
+    gameboard.initPlayers(players);
     cout << "Loaded " << numPlayers << " players." << endl; 
 
     // properties
@@ -189,24 +189,40 @@ void Watopoly::play() {
         string cmd;
         Player &curPlayer = gameboard.getCurPlayer();
         // gameboard.display.print();
-        cout << curPlayer.name << "'s turn." << endl; 
-        bool canNext = false;
+        cout << curPlayer.getName() << "'s turn." << endl; 
+        bool hasRolled = false;
         int numDoubles = 0;
         while (true) {
             cout << "Enter command: ";
             cin >> cmd;
             if (cmd == "roll") {
-                pair<int, int> roll = this->roll();
-                if (roll.first != roll.second) canNext = true;
+                if (hasRolled) cout << "You have already rolled for this turn." << endl;
                 else {
-                    ++numDoubles;
-                    if (numDoubles)
+                    pair<int, int> roll = this->roll();
+                    cout << "You rolled " << roll.first << " and " << roll.second << "." << endl;
+                    if (roll.first == roll.second) {
+                        if (curPlayer.leaveTimsLine()) {
+                            cout << "Congrats! You get to leave the Tims line!" << endl;
+                            hasRolled = true;
+                        }
+                        ++numDoubles;
+                        if (numDoubles == 3) {
+                            cout << "You rolled 3 doubles and have been sent to the back of the DC Tims Line!" << endl;
+                            curPlayer.goToTimsLine();
+                            hasRolled = true;
+                            continue;
+                        }
+                    } else {
+                        hasRolled = true;
+                    }
+                    gameboard.moveCurPlayer(roll.first + roll.second);
                 }
-                cout << "You rolled " << roll.first << " and " << roll.second << "." << endl;
-                gameboard.moveCurPlayer(roll.first + roll.second);
             } else if (cmd == "next") {
-                if (canNext) gameboard.next();
-                else cout << "You must roll before ending your turn." << endl;
+                if (!hasRolled) cout << "You must roll before ending your turn." << endl;
+                else {
+                    gameboard.next();
+                    break;
+                }
             } else if (cmd == "trade") {
 
             } else if (cmd == "improve") {
@@ -229,9 +245,7 @@ void Watopoly::play() {
                 return;
             } else {
                 cout << "Invalid command - please try again." << endl;
-                continue;
             }
-            break;
         }
     }
 }

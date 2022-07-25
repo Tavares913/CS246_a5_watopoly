@@ -2,9 +2,9 @@
 #include <vector>
 #include <utility>
 #include "dc_tims_line.h"
-#include "watopoly.h"
 #include "non_property.h"
 #include "player.h"
+#include "watopoly.h"
 
 using namespace std;
 
@@ -14,7 +14,7 @@ void DCTimsLine::visit(Player &p) {
     string c;
     if (p.getTimsCups() > 0) {
         c = Watopoly::getChoice(
-            "Would you like to use a Roll Up The Rim card?",
+            "Would you like to use a Roll Up The Rim cup?",
             vector<string>{"y", "n"}
         );
         if (c == "Y") {
@@ -22,20 +22,12 @@ void DCTimsLine::visit(Player &p) {
             return;
         }
     }
-
     c = Watopoly::getChoice(
-        "Would you like to pay $50 to leave the Tim's line?",
+        "Would you like to pay $" + to_string(priceOfCoffee) + "to leave the Tim's line?",
         vector<string>{"y", "n"}
     );
     if (c == "Y") {
-        p.spendMoney(50);
-        p.leaveTimsLine();
-        return;
-    }
-
-    pair<int, int> roll = Watopoly::roll();
-    if (roll.first == roll.second) {
-        // doubles!
+        p.spendMoney(priceOfCoffee);
         p.leaveTimsLine();
         return;
     }
@@ -43,11 +35,11 @@ void DCTimsLine::visit(Player &p) {
     p.incrementNumTurnsInLine();
     if (p.getNumTurnsInLine() == 3) {
         c = Watopoly::getChoice(
-            "Would you like to pay $50 or use a Roll Up The Rim card?",
+            "Would you like to pay $" + to_string(priceOfCoffee) + "or use a Roll Up The Rim cup?",
             vector<string>{"pay", "card"}
         );
         if (c == "pay") {
-            p.spendMoney(50);
+            p.spendMoney(priceOfCoffee);
             p.leaveTimsLine();
         } else {
             p.useTimsCup();

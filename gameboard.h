@@ -9,11 +9,13 @@
 #include "player.h"
 #include "tile.h"
 #include "display.h"
+#include "auction.h"
 
 class Property;
 class Watopoly;
 
 class GameBoard : public Subject {
+    static Auction auction;
     int curPlayer = 0;
     std::vector<std::unique_ptr<Player>> players;
     std::vector<std::unique_ptr<Tile>> board;
@@ -28,6 +30,7 @@ class GameBoard : public Subject {
     static const int DC_TIMS_LOCATION = 10;
 
     GameBoard();
+    void initPlayers(std::vector<Player> &players);
     Player &getCurPlayer() const;
     void moveCurPlayer(int moveBy);
     void next();
@@ -37,7 +40,7 @@ class GameBoard : public Subject {
     void buyProperty(Player &p, std::string propertyName);
     void mortgage(Player &p, std::string propertyName);
     void unmortgage(Player &p, std::string propertyName);
-    void auction(Property *p);
+    static void startAuction(Property *p);
 
     friend class Watopoly;
 };

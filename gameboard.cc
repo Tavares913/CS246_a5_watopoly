@@ -21,8 +21,11 @@
 #include "gym.h"
 #include "residence.h"
 #include "property.h"
+#include "auction.h"
 
 using namespace std;
+
+Auction GameBoard::auction = Auction{};
 
 GameBoard::GameBoard() : display{make_unique<Display>()} {
     initBoard();
@@ -149,14 +152,21 @@ void GameBoard::initBoard() {
     board.emplace_back(move(dc));
 }
 
+void GameBoard::initPlayers(vector<Player> &players) {
+    for (auto &player : players) {
+        this->players.emplace_back(make_unique<Player>(player));
+    }
+    auction.setPlayers(this->players);
+}
+
 Player &GameBoard::getCurPlayer() const {
     return *players[curPlayer];
 }
 
 void GameBoard::moveCurPlayer(int moveBy) {
-    getCurPlayer()->move(moveBy);
+    getCurPlayer().moveBy(moveBy);
     // display.notify(*this);
-    board[getCurPlayer()->getLocation()]->visit(getCurPlayer());
+    board[getCurPlayer().getLocation()]->visit(getCurPlayer());
 }
 
 void GameBoard::next() {
@@ -192,11 +202,7 @@ void GameBoard::unmortgage(Player &p, string propertyName) {
     p.unmortgage(*nameToProperties[propertyName]);
 }
 
-void GameBoard::auction(Property *p) {
-    vector<Player *> players;
-    for (auto &player : this->players) {
-        players.emplace_back(player.get());
-    }
-    Auction a{players, p};
-    a.auction();
+void GameBoard::startAuction(Property *p) {
+    auction.setProperty(p);
+    auction.auction();
 }

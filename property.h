@@ -34,6 +34,7 @@ class Property : public Tile {
     virtual void sellImprovement();
     virtual int getImprovementCost() const;
     void visit(Player &p);
+    void auction();
 
     friend class Watopoly;
 };

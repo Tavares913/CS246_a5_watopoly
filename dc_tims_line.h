@@ -6,6 +6,8 @@
 class Player;
 
 class DCTimsLine : public NonProperty {
+    int priceOfCoffee = 50;
+  
   public:
     DCTimsLine(int location);
     void visit(Player &p);

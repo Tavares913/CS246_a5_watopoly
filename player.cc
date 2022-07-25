@@ -1,5 +1,5 @@
-#include <iostream>
 #include <vector>
+#include <iostream>
 #include "property.h"
 #include "watopoly.h"
 #include "gameboard.h"
@@ -12,12 +12,14 @@ Player::Player(
 ) : name{name}, symbol{symbol}, location{location}, money{money}, timsCups{timsCups},
     inTimsLine{inTimsLine}, numTurnsInTimsLine{numTurnsInTimsLine} {}
 
-void Player::moveTo(int moveTo) { location = moveTo; }
+string Player::getName() const { return name; }
 
 void Player::moveBy(int moveBy) {
-    location += moveBy;
-    location += GameBoard::NUM_TILES;
-    location %= GameBoard::NUM_TILES;
+    if (!inTimsLine) {
+        location += moveBy;
+        location += GameBoard::NUM_TILES;
+        location %= GameBoard::NUM_TILES;
+    }
 }
 
 int Player::getLocation() const { return location; }
@@ -42,7 +44,7 @@ void Player::offerProperty(Property &property) {
     if (c == "y") {
         buyProperty(property);
     } else {
-        // TODO start auction
+        GameBoard::startAuction(&property);
     }
 }
 
@@ -105,9 +107,13 @@ void Player::goToTimsLine() {
     numTurnsInTimsLine = 0;
 }
 
-void Player::leaveTimsLine() {
-    inTimsLine = false;
-    numTurnsInTimsLine = 0;
+bool Player::leaveTimsLine() {
+    if (inTimsLine) {
+        inTimsLine = false;
+        numTurnsInTimsLine = 0;
+        return true;
+    }
+    return false;
 }
 
 void Player::receiveTimsCup() { ++timsCups; }

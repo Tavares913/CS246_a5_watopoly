@@ -23,7 +23,7 @@ class Player {
         std::string name, char symbol, float money = 1500, int location = 0,
         int timsCups = 0, bool inTimsLine = false, int numTurnsInTimsLine = 0
     );
-    void moveTo(int moveTo);
+    std::string getName() const;
     void moveBy(int moveBy);
     int getLocation() const;
     void spendMoney(float amount);
@@ -43,7 +43,7 @@ class Player {
     void incrementNumTurnsInLine();
     int getNumTurnsInLine();
     void goToTimsLine();
-    void leaveTimsLine();
+    bool leaveTimsLine();
     void receiveTimsCup();
     void updateNumTurnsInTimsLine();
     void useTimsCup();
