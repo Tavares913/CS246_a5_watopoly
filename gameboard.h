@@ -7,11 +7,11 @@
 #include <string>
 #include <utility>
 #include "subject.h"
+#include "player.h"
+#include "tile.h"
+#include "display.h"
 
-class Player;
-class Tile;
 class Property;
-class Display;
 class DCTimsLine;
 class Watopoly;
 
@@ -31,7 +31,7 @@ class GameBoard : public Subject {
     static std::pair<int, int> roll();
     static std::string &getChoice(
         const std::string &message, const std::vector<std::string> &validChoices
-    ) const;
+    );
     void moveCurPlayer();
     void next();
     void buyImprovement(Player &p, std::string propertyName);

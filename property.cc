@@ -36,6 +36,8 @@ void Property::buyImprovement() { throw; /* cannot improve error */ }
 
 void Property::sellImprovement() { throw; /* cannot 'un'improve error */ }
 
+int Property::getImprovementCost() { throw; /* cannot improve error */ }
+
 void Property::visit(Player &player) {
     if (owner) {
       int tuition = getTuition();

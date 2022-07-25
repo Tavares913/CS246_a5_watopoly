@@ -13,6 +13,7 @@ class Tile {
     Tile(std::string name, int location);
     std::string getName() const;
     virtual void visit(Player &) = 0;
+    virtual ~Tile() = 0;
 };
 
 #endif

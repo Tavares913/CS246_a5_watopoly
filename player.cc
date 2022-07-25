@@ -50,12 +50,12 @@ void Player::buyProperty(Property &property, int purchaseCost) {
 
 void Player::buyImprovement(Property &property) {
     property.buyImprovement();
-    spendMoney(property.improvementCost);
+    spendMoney(property.getImprovementCost());
 }
 
 void Player::sellImprovement(Property &property) {
     property.sellImprovement();
-    receiveMoney(property.improvementCost * 0.5);
+    receiveMoney(property.getImprovementCost() * 0.5);
 }
 
 void Player::mortgage(Property &property) {
@@ -79,6 +79,12 @@ void Player::assets() {
         cout << endl;
     }
 }
+
+int Player::getTimsCups() { return timsCups; }
+
+void Player::incrementNumTurnsInLine() { ++numTurnsInTimsLine; }
+
+int Player::getNumTurnsInLine() { return numTurnsInTimsLine; }
 
 void Player::goToTimsLine() {
     inTimsLine = true;

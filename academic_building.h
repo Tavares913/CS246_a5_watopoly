@@ -6,8 +6,8 @@
 #include "property.h"
 
 class AcademicBuilding : public Property {
-    std::vector<int> tuition;
     int improvementCost;
+    std::vector<int> tuition;
 
   public:
     AcademicBuilding(
@@ -17,6 +17,7 @@ class AcademicBuilding : public Property {
     void mortgage() override;
     void buyImprovement() override;
     void sellImprovement() override;
+    int getImprovementCost() override;
 };
 
 #endif

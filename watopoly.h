@@ -2,8 +2,7 @@
 #define __WATOPOLY_H__
 
 #include <string>
-
-class GameBoard;
+#include "gameboard.h"
 
 class Watopoly {
     GameBoard gameboard;

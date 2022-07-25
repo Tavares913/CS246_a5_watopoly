@@ -31,3 +31,5 @@ void AcademicBuilding::sellImprovement() {
   if (numImprovements == 0) throw; // cant deteriorate further error
   --numImprovements;
 }
+
+int AcademicBuilding::getImprovementCost() { return improvementCost; }

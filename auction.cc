@@ -1,9 +1,9 @@
-#include "auction.h"
-#include "player.h"
-#include "property.h"
 #include <vector>
 #include <iostream>
 #include <string>
+#include "auction.h"
+#include "player.h"
+#include "property.h"
 
 using namespace std;
 
@@ -11,11 +11,8 @@ Auction::Auction(vector<Player *> &players, Property *property) :
     players{players}, property{property}, curPlayer{0}, propPrice{0} {}
 
 void Auction::nextPlayer() {
-    if (curPlayer == players.size()) {
-        curPlayer = 0;
-    } else {
-        ++curPlayer;
-    }
+    ++curPlayer;
+    if (curPlayer == players.size()) curPlayer = 0;
 }
 
 void Auction::auction() {
@@ -33,7 +30,8 @@ void Auction::auction() {
             propPrice += amountToRaise;
             nextPlayer();
         } else if (cmd == "withdraw") {
-            players.erase(curPlayer);
+            players.erase(players.begin() + curPlayer);
+            --curPlayer;
             nextPlayer();
         }
     }

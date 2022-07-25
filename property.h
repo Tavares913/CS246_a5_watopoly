@@ -14,13 +14,14 @@ class Property : public Tile {
     Player *owner = nullptr;
     std::vector<Property *> propertyBlock;
     bool mortgaged = false;
+
+  protected:
     int numImprovements = 0;
 
   public:
     Property(int location, std::string name, int purchaseCost);
     virtual int getTuition() const = 0;
     virtual void mortgage();
-    void visit(Player &player);
     void unmortgage();
     void setOwner(const Player *owner);
     Player *getOwner() const;
@@ -30,6 +31,7 @@ class Property : public Tile {
     bool monopoly() const;
     virtual void buyImprovement();
     virtual void sellImprovement();
+    virtual int getImprovementCost();
     void visit(Player &player);
 
     friend class Watopoly;

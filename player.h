@@ -37,6 +37,9 @@ class Player {
     void mortgage(Property &property);
     void unmortgage(Property &property);
     void assets(); // TODO move to display class
+    int getTimsCups();
+    void incrementNumTurnsInLine();
+    int getNumTurnsInLine();
     void goToTimsLine();
     void leaveTimsLine();
     void receiveTimsCup();
