@@ -1,7 +1,7 @@
 #include <vector>
 #include "subject.h"
+#include "observer.h"
 
-// TODO add observer file
 void Subject::notifyObservers() {
     for (auto &ob : observers) {
         ob->notify(*this);
