@@ -124,5 +124,30 @@ void Watopoly::save() {
 }
 
 void Watopoly::play() {
+    string cmd;
 
+    while (cin >> cmd) {
+        switch (cmd) {
+            case "roll":
+                break;
+            case "next":
+                break;
+            case "trade":
+                break;
+            case "improve":
+                break;
+            case "mortgage":
+                break;
+            case "unmortgage":
+                break;
+            case "bankrupt":
+                break;
+            case "assets":
+                break;
+            case "all":
+                break;
+            case "save":
+                break;
+        }
+    }
 }
