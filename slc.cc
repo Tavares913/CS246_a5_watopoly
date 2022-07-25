@@ -28,8 +28,8 @@ void SLC::visit(Player &p) {
     } else if (randNum < 22) {
         p.move(3);
     } else if (randNum < 23) {
-        p.visit(dc);
+        dc->visit(p);
     } else if (randNum < 24) {
-        p.visit(osap);
+        osap->visit(p);
     }
 }

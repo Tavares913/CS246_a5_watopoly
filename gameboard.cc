@@ -156,19 +156,17 @@ pair<int, int> GameBoard::roll() {
     return pair<int, int>{die1, die2};
 }
 
-void GameBoard::moveCurPlayer() {
+pair<int, int> GameBoard::moveCurPlayer() {
     pair<int, int> roll = this->roll();
     // TODO check for doubles, etc
-    players[curPlayer]->move(roll.first + roll.second);
-    next();
+    (*curPlayer)->move(roll.first + roll.second);
+    board[(*curPlayer)->getLocation()]->visit(**curPlayer);
+    return roll;
 }
 
 void GameBoard::next() {
-    if (curPlayer == players.size() - 1) {
-        curPlayer = 0;
-    } else {
-        ++curPlayer;
-    }
+    ++curPlayer;
+    if (curPlayer == players.end()) curPlayer = players.begin();
 }
 
 void GameBoard::buyImprovement(Player &p, string propertyName) {

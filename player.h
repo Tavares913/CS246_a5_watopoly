@@ -24,6 +24,7 @@ class Player {
         int timsCups = 0, bool inTimsLine = false, int numTurnsInTimsLine = 0
     );
     void move(int moveBy);
+    int getLocation() const;
     void spendMoney(float amount);
     void receiveMoney(float amount);
     void payPlayer(float amount, Player &payee);

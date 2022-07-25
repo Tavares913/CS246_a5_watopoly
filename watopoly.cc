@@ -74,6 +74,7 @@ void Watopoly::initPlayers() {
             }
         }
     }
+    gameboard.curPlayer = gameboard.players.begin();
 }
 
 void Watopoly::load(string filename) {
@@ -89,20 +90,20 @@ void Watopoly::load(string filename) {
     bool inTimsLine;
     int numTurnsInTimsLine;
 
-    file >> numPlayers;
+    cin >> numPlayers;
     for (int i = 0; i < numPlayers; ++i) {
-        file >> playerName;
+        cin >> playerName;
         replace(playerName.begin(), playerName.end(), '_', ' ');
-        file >> playerSymbol;
-        file >> timsCups;
-        file >> money;
-        file >> location;
+        cin >> playerSymbol;
+        cin >> timsCups;
+        cin >> money;
+        cin >> location;
 
         inTimsLine = false;
         numTurnsInTimsLine = 0;
         if (location == gameboard.dcTimsLine->getLocation()) {
-            file >> inTimsLine;
-            if (inTimsLine) file >> numTurnsInTimsLine;
+            cin >> inTimsLine;
+            if (inTimsLine) cin >> numTurnsInTimsLine;
         }
 
         gameboard.players.emplace_back(
@@ -111,6 +112,7 @@ void Watopoly::load(string filename) {
             )
         );
     }
+    gameboard.curPlayer = gameboard.players.begin();
     cout << "Loaded " << numPlayers << " players." << endl; 
 
     // properties
@@ -119,9 +121,9 @@ void Watopoly::load(string filename) {
     int numImprovements;
 
     for (int i = 0; i < gameboard.nameToProperties.size(); ++i) {
-        file >> propertyName;
-        file >> ownerName;
-        file >> numImprovements;
+        cin >> propertyName;
+        cin >> ownerName;
+        cin >> numImprovements;
 
         Property *property = gameboard.nameToProperties[propertyName];
         if (ownerName != "BANK") {
@@ -150,7 +152,7 @@ void Watopoly::save(string filename) {
     file << numPlayers << endl;
     // players
     for (int i = 0; i < numPlayers; ++i) {
-        int playerIndex = (i + gameboard.curPlayer) % numPlayers;
+        int playerIndex = (i + (gameboard.curPlayer - gameboard.players.begin())) % numPlayers;
         Player &player = *gameboard.players[playerIndex];
         string playerName{player.name};
         replace(playerName.begin(), playerName.end(), ' ', '_');
@@ -180,13 +182,16 @@ void Watopoly::play() {
     string cmd;
 
     cout << "Welcome to Watopoly!" << endl;
-
+    cout << (*gameboard.curPlayer)->name << "'s turn." << endl; 
     cout << "Enter command: ";
     while (cin >> cmd) {
         if (cmd == "roll") {
-
+            pair<int, int> roll = gameboard.moveCurPlayer();
+            cout << "You rolled " << roll.first << " and " << roll.second << endl;
+            cout << "You are now on " << gameboard.board[(*gameboard.curPlayer)->location]->getName() << "." << endl;
         } else if (cmd == "next") {
-
+            gameboard.next();
+            cout << (*gameboard.curPlayer)->name << "'s turn." << endl;
         } else if (cmd == "trade") {
 
         } else if (cmd == "improve") {

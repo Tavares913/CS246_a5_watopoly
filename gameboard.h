@@ -16,7 +16,7 @@ class DCTimsLine;
 class Watopoly;
 
 class GameBoard : public Subject {
-    int curPlayer = 0;
+    std::vector<std::unique_ptr<Player>>::iterator curPlayer;
     std::vector<std::unique_ptr<Player>> players;
     std::vector<std::unique_ptr<Tile>> board;
     std::unordered_map<std::string, Property *> nameToProperties;
@@ -28,8 +28,9 @@ class GameBoard : public Subject {
 
   public:
     GameBoard();
+    static const int NUM_TILES = 40;
     static std::pair<int, int> roll();
-    void moveCurPlayer();
+    std::pair<int, int> moveCurPlayer();
     void next();
     void buyImprovement(Player &p, std::string propertyName);
     void sellImprovement(Player &p, std::string propertyName);

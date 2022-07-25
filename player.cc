@@ -2,6 +2,7 @@
 #include <vector>
 #include "property.h"
 #include "watopoly.h"
+#include "gameboard.h"
 
 using namespace std;
 
@@ -11,7 +12,12 @@ Player::Player(
 ) : name{name}, symbol{symbol}, location{location}, money{money}, timsCups{timsCups},
     inTimsLine{inTimsLine}, numTurnsInTimsLine{numTurnsInTimsLine} {}
 
-void Player::move(int moveBy) { location += moveBy; }
+void Player::move(int moveBy) {
+    location += moveBy;
+    location %= GameBoard::NUM_TILES;
+}
+
+int Player::getLocation() const { return location; }
 
 void Player::spendMoney(float amount) { 
     if (amount > money) throw; // not enough money error

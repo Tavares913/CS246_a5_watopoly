@@ -7,5 +7,5 @@ GoToTims::GoToTims(int location, DCTimsLine *dcTimsLine) :
     NonProperty{location, "Go to Tims"}, dcTimsLine{dcTimsLine} {}
 
 void GoToTims::visit(Player &p) {
-    p.visit(dcTimsLine);
+    dcTimsLine->visit(p);
 }
