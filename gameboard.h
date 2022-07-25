@@ -22,11 +22,12 @@ class GameBoard : public Subject {
     std::unordered_map<std::string, Property *> nameToProperties;
     std::unique_ptr<Display> display;
     DCTimsLine *dcTimsLine;
+    bool testing;
 
     void initBoard();
 
   public:
-    GameBoard();
+    GameBoard(bool testing = false);
     static std::pair<int, int> roll();
     static std::string &getChoice(
         const std::string &message, const std::vector<std::string> &validChoices
@@ -40,8 +41,6 @@ class GameBoard : public Subject {
     void mortgage(Player &p, std::string propertyName);
     void unmortgage(Player &p, std::string propertyName);
     void auction(Property *p);
-    void save(std::string filename);
-    void load(std::string filename);
 
     friend class Watopoly;
 };

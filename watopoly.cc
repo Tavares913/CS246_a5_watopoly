@@ -11,6 +11,11 @@
 
 using namespace std;
 
+Watopoly::Watopoly(string loadfile, bool testing) : gameboard{GameBoard{testing}} {
+    if (loadfile) load(loadfile);
+    else initPlayers();
+}
+
 void Watopoly::initPlayers() {
     int numPlayers;
     string curPlayerName;
@@ -25,13 +30,6 @@ void Watopoly::initPlayers() {
             make_unique<Player>(curPlayerName, curPlayerSymbol)
         );
     }
-}
-
-void Watopoly::init() {
-    initPlayers();
-}
-
-void Watopoly::play() {
 }
 
 void Watopoly::load(string filename) {
@@ -123,4 +121,7 @@ void Watopoly::save() {
     }
 
     file.close();
+}
+
+void Watopoly::play() {
 }

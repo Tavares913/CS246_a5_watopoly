@@ -1,25 +1,36 @@
+#include <sstream>
 #include <iostream>
 #include <string>
-#include <vector>
+#include "watopoly.h"
 
 using namespace std;
 
-int main() {
-    int numPlayers = 0;
-    string curPlayerName = "";
-    char curPlayerSymbol = '';
+void invalidUsage(string cmd) {
+    cout << "Usage: " << cmd << " [-load file] [-testing]" << endl;
+}
 
-    vector<string> playerNames;
-    vector<char> playerSymbols;
+int main(int argc, char *argv[]) {
+    bool testing = false;
+    string loadfile = "";
 
-    cin >> skipws;
-
-    cin >> numPlayers;
-    for (int i = 0; i < numPlayers; ++i) {
-        cin >> curPlayerName;
-        cin >> curPlayerSymbol;
-
-        playerNames.emplace_back(curPlayerName);
-        playerSymbols.emplace_back(curPlayerSymbol);
+    for (int i = 1; i < argc; ++i) {
+        switch (argv[i]) {
+            case "-tesing":
+                testing = true;
+                break;
+            case "-load": 
+                if (++i == argc) {
+                    invalidUsage(argv[0]);
+                    return 1;
+                }
+                loadfile = argv[i];
+                break;
+            default:
+                invalidUsage(argv[0]);
+                return 1;
+        }
     }
+
+    Watopoly game{loadfile, testing};
+    game.play();
 }

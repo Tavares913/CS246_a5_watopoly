@@ -23,7 +23,7 @@
 
 using namespace std;
 
-GameBoard::GameBoard() : display{make_unique<Display>()} {
+GameBoard::GameBoard(bool testing) : display{make_unique<Display>()}, testing{testing} {
     initBoard();
 }
 

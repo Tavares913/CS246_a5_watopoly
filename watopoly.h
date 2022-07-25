@@ -9,12 +9,12 @@ class Watopoly {
     GameBoard gameboard;
 
     void initPlayers();
-
-  public:
-    void init();
-    void play();
     void load(std::string filename);
     void save(std::string filename);
+
+  public:
+    Watopoly(std::string loadfile = "", bool testing = false);
+    void play();
 };
 
 #endif
