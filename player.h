@@ -46,7 +46,6 @@ class Player {
     void updateNumTurnsInTimsLine();
     void useTimsCup();
     float getWorth();
-    // misc thought - what if we used references everywhere instead of pointers?
     void visit(Tile &tile);
 
     friend class Watopoly;

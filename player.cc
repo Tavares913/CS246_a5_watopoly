@@ -115,27 +115,6 @@ float Player::getWorth() {
     return worth;
 }
 
-// misc thought - what if we used references everywhere instead of pointers?
-
 void Player::visit(Tile &tile) {
     tile.visit(*this);
 }
-
-// void Player::visit(GoToTims &goToTims) {
-//   goToTims.visit(*this);
-// }
-// void Player::visit(CollectOSAP &collectOSAP) {
-//   collectOSAP.visit(*this);
-// }
-// void Player::visit(Tuition &tuition) {
-//   tuition.visit(*this);
-// }
-// void Player::visit(CoopFee &coopFee) {
-//   coopFee.visit(*this);
-// }
-// void Player::visit(NeedlesHall &needlesHall) {
-//   needlesHall.visit(*this);
-// }
-// void Player::visit(SLC &slc) {
-//   slc.visit(*this);
-// }
