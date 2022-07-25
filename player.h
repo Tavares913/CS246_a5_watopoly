@@ -24,6 +24,7 @@ class Player {
         int timsCups = 0, bool inTimsLine = false, int numTurnsInTimsLine = 0
     );
     std::string getName() const;
+    char getSymbol() const;
     void moveBy(int moveBy);
     int getLocation() const;
     void spendMoney(float amount);

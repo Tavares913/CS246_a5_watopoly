@@ -185,6 +185,7 @@ void Watopoly::save(string filename) {
 
 void Watopoly::play() {
     cout << "Welcome to Watopoly!" << endl;
+    gameboard.display->print();
     while (true) {
         string cmd;
         Player &curPlayer = gameboard.getCurPlayer();

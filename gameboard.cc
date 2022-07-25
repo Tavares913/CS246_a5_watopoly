@@ -164,9 +164,13 @@ Player &GameBoard::getCurPlayer() const {
 }
 
 void GameBoard::moveCurPlayer(int moveBy) {
-    getCurPlayer().moveBy(moveBy);
-    // display.notify(*this);
-    board[getCurPlayer().getLocation()]->visit(getCurPlayer());
+    Player &curPlayer = getCurPlayer();
+    int oldTile = curPlayer.getLocation();
+    curPlayer.moveBy(moveBy);
+    int newTile = curPlayer.getLocation();
+    display->notify(PlayerMove{oldTile, newTile, curPlayer.getSymbol()});
+    display->print();
+    board[curPlayer.getLocation()]->visit(curPlayer);
 }
 
 void GameBoard::next() {

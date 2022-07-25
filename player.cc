@@ -14,6 +14,8 @@ Player::Player(
 
 string Player::getName() const { return name; }
 
+char Player::getSymbol() const { return symbol; }
+
 void Player::moveBy(int moveBy) {
     if (!inTimsLine) {
         location += moveBy;
@@ -38,7 +40,7 @@ void Player::payPlayer(float amount, Player &payee) {
 
 void Player::offerProperty(Property &property) {
     string c = Watopoly::getChoice(
-        "Would you like to buy this property?",
+        "Would you like to buy this property (" + property.getName() + ")?",
         vector<string>{"y", "n"}
     );
     if (c == "y") {
