@@ -30,19 +30,19 @@ GameBoard::GameBoard() : display{make_unique<Display>()} {
 
 void GameBoard::initBoard() {
     board.clear();
+
+    // non-properties
     unique_ptr<CollectOSAP> collectOSAP = make_unique<CollectOSAP>(0, 200);
     unique_ptr<DCTimsLine> dcTimsLine = make_unique<DCTimsLine>(10);
-    
-    // non-properties
-    unique_ptr<SLC> slc1 = make_unique<SLC>(2, dcTimsLine.get(), collectOSAP.get());
-    unique_ptr<SLC> slc2 = make_unique<SLC>(17, dcTimsLine.get(), collectOSAP.get());
-    unique_ptr<SLC> slc3 = make_unique<SLC>(33, dcTimsLine.get(), collectOSAP.get());
+    unique_ptr<SLC> slc1 = make_unique<SLC>(2, collectOSAP.get());
+    unique_ptr<SLC> slc2 = make_unique<SLC>(17, collectOSAP.get());
+    unique_ptr<SLC> slc3 = make_unique<SLC>(33, collectOSAP.get());
     unique_ptr<NeedlesHall> needlesHall1 = make_unique<NeedlesHall>(7);
     unique_ptr<NeedlesHall> needlesHall2 = make_unique<NeedlesHall>(22);
     unique_ptr<NeedlesHall> needlesHall3 = make_unique<NeedlesHall>(36);
     unique_ptr<Tuition> tuition = make_unique<Tuition>(4, 300, 0.1);
     unique_ptr<GooseNesting> gooseNesting = make_unique<GooseNesting>(20);
-    unique_ptr<GoToTims> goToTims = make_unique<GoToTims>(30, dcTimsLine.get());
+    unique_ptr<GoToTims> goToTims = make_unique<GoToTims>(30);
     unique_ptr<CoopFee> coopFee = make_unique<CoopFee>(38, 150);
 
     // properties

@@ -6,7 +6,7 @@
 
 using namespace std;
 
-SLC::SLC(int location, DCTimsLine *dc, CollectOSAP *osap) : NonProperty{location, "SLC"}, dc{dc}, osap{osap} {}
+SLC::SLC(int location, CollectOSAP *osap) : NonProperty{location, "SLC"}, osap{osap} {}
 
 void SLC::visit(Player &p) {
     int timsCupChance = rand() % 100;
@@ -16,19 +16,19 @@ void SLC::visit(Player &p) {
 
     int randNum = rand() % 24;
     if (randNum < 3) {
-        p.move(-3);
+        p.moveBy(-3);
     } else if (randNum < 7) {
-        p.move(-2);
+        p.moveBy(-2);
     } else if (randNum < 11) {
-        p.move(-1);
+        p.moveBy(-1);
     } else if (randNum < 14) {
-        p.move(1);
+        p.moveBy(1);
     } else if (randNum < 18) {
-        p.move(2);
+        p.moveBy(2);
     } else if (randNum < 22) {
-        p.move(3);
+        p.moveBy(3);
     } else if (randNum < 23) {
-        dc->visit(p);
+        p.goToTimsLine();
     } else if (randNum < 24) {
         osap->visit(p);
     }
