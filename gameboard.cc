@@ -1,5 +1,5 @@
-#include <iostream>
 #include <vector>
+#include <iostream>
 #include <memory>
 #include <cstdlib>
 #include <string>
@@ -29,11 +29,10 @@ GameBoard::GameBoard() : display{make_unique<Display>()} {
 }
 
 void GameBoard::initBoard() {
-    board.resize(30);
+    board.clear();
     unique_ptr<CollectOSAP> collectOSAP = make_unique<CollectOSAP>(0, 200);
     unique_ptr<DCTimsLine> dcTimsLine = make_unique<DCTimsLine>(10);
     this->dcTimsLine = dcTimsLine.get();
-
     
     // non-properties
     unique_ptr<SLC> slc1 = make_unique<SLC>(2, dcTimsLine.get(), collectOSAP.get());

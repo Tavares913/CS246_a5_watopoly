@@ -15,7 +15,7 @@ int main(int argc, char *argv[]) {
 
     for (int i = 1; i < argc; ++i) {
         string arg{argv[i]};
-        if (arg == "-tesing") testing = true;
+        if (arg == "-testing") testing = true;
         else if (arg == "-load") {
             if (++i == argc) {
                 invalidUsage(argv[0]);

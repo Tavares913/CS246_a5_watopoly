@@ -89,20 +89,20 @@ void Watopoly::load(string filename) {
     bool inTimsLine;
     int numTurnsInTimsLine;
 
-    cin >> numPlayers;
+    file >> numPlayers;
     for (int i = 0; i < numPlayers; ++i) {
-        cin >> playerName;
+        file >> playerName;
         replace(playerName.begin(), playerName.end(), '_', ' ');
-        cin >> playerSymbol;
-        cin >> timsCups;
-        cin >> money;
-        cin >> location;
+        file >> playerSymbol;
+        file >> timsCups;
+        file >> money;
+        file >> location;
 
         inTimsLine = false;
         numTurnsInTimsLine = 0;
         if (location == gameboard.dcTimsLine->getLocation()) {
-            cin >> inTimsLine;
-            if (inTimsLine) cin >> numTurnsInTimsLine;
+            file >> inTimsLine;
+            if (inTimsLine) file >> numTurnsInTimsLine;
         }
 
         gameboard.players.emplace_back(
@@ -119,20 +119,22 @@ void Watopoly::load(string filename) {
     int numImprovements;
 
     for (int i = 0; i < gameboard.nameToProperties.size(); ++i) {
-        cin >> propertyName;
-        cin >> ownerName;
-        cin >> numImprovements;
+        file >> propertyName;
+        file >> ownerName;
+        file >> numImprovements;
 
         Property *property = gameboard.nameToProperties[propertyName];
-        for (auto &player : gameboard.players) {
-            if (player->name == ownerName) {
-                property->owner = player.get();
-                player->ownedProperties.emplace_back(property);
-                break;
+        if (ownerName != "BANK") {
+            for (auto &player : gameboard.players) {
+                if (player->name == ownerName) {
+                    property->owner = player.get();
+                    player->ownedProperties.emplace_back(property);
+                    break;
+                }
             }
-            if (numImprovements == -1) property->mortgaged = true;
-            else property->numImprovements = numImprovements;
         }
+        if (numImprovements == -1) property->mortgaged = true;
+        else property->numImprovements = numImprovements;
     }
 
     file.close();
@@ -165,13 +167,13 @@ void Watopoly::save(string filename) {
     for (auto &tile : gameboard.board) {
         try {
             Property *property = gameboard.nameToProperties.at(tile->getName());
-            file << property->getName() << " "
-                << property->getOwner()->name << " "
-                << property->getNumImprovements() << endl;
+            string owner = property->getOwner() ? property->getOwner()->name : "BANK";
+            file << property->getName() << " " << owner << " " << property->getNumImprovements() << endl;
         } catch (...) {}
     }
 
     file.close();
+    cout << "Saved to " << filename << endl;
 }
 
 void Watopoly::play() {
@@ -179,6 +181,7 @@ void Watopoly::play() {
 
     cout << "Welcome to Watopoly!" << endl;
 
+    cout << "Enter command: ";
     while (cin >> cmd) {
         if (cmd == "roll") {
 
@@ -199,9 +202,12 @@ void Watopoly::play() {
         } else if (cmd == "all") {
 
         } else if (cmd == "save") {
-
+            string filename;
+            cin >> filename;
+            save(filename);
         } else {
             cout << "Invalid command - please try again." << endl;
         }
+        cout << "Enter command: ";
     }
 }
