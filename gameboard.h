@@ -27,7 +27,7 @@ class GameBoard : public Subject {
     void initBoard();
 
   public:
-    GameBoard(bool testing = false);
+    GameBoard();
     static std::pair<int, int> roll();
     static std::string &getChoice(
         const std::string &message, const std::vector<std::string> &validChoices

@@ -7,6 +7,7 @@ class GameBoard;
 
 class Watopoly {
     GameBoard gameboard;
+    bool testing;
 
     void initPlayers();
     void load(std::string filename);

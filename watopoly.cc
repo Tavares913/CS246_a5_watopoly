@@ -11,7 +11,7 @@
 
 using namespace std;
 
-Watopoly::Watopoly(string loadfile, bool testing) : gameboard{GameBoard{testing}} {
+Watopoly::Watopoly(string loadfile, bool testing) : testing{testing} {
     if (loadfile) load(loadfile);
     else initPlayers();
 }
@@ -124,4 +124,5 @@ void Watopoly::save() {
 }
 
 void Watopoly::play() {
+
 }
