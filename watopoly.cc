@@ -276,8 +276,12 @@ void Watopoly::play() {
                     gameboard.unmortgage(curPlayer, propertyName);
                 } else if (cmd == "bankrupt") {
                     if (!notEnoughMoney.owesMoney()) throw InvalidCommandError{};
-                    gameboard.bankrupt(&curPlayer, notEnoughMoney.getPayee());
                     gameboard.next();
+                    try {
+                        gameboard.bankrupt(&curPlayer, notEnoughMoney.getPayee());
+                    } catch (NotEnoughMoneyError &e) {
+                        notEnoughMoney = e;
+                    }
                     break;
                 } else if (cmd == "assets") {
                     curPlayer.assets();

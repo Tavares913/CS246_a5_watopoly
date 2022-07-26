@@ -69,6 +69,14 @@ void Player::receiveProperty(Property &property) {
     ownedProperties.push_back(&property);
     property.setOwner(this);
     Display::printMessage("Player " + name + " receives property " + property.getName());
+    if (property.getNumImprovements() == -1) {
+        string c = Watopoly::getChoice(
+            "Would you like to unmortgage this property (" + property.getName() + ")?",
+            vector<string>{"y", "n"}
+        );
+        if (c == "y") unmortgage(property);
+        else spendMoney(0.1 * property.getPurchaseCost());
+    }
 }
 
 void Player::buyProperty(Property &property, int purchaseCost) {
@@ -77,21 +85,25 @@ void Player::buyProperty(Property &property, int purchaseCost) {
 }
 
 void Player::buyImprovement(Property &property) {
+    if (this != property.getOwner()) throw NotOwnerError{};
     property.buyImprovement();
     spendMoney(property.getImprovementCost());
 }
 
 void Player::sellImprovement(Property &property) {
+    if (this != property.getOwner()) throw NotOwnerError{};
     property.sellImprovement();
     receiveMoney(property.getImprovementCost() * 0.5);
 }
 
 void Player::mortgage(Property &property) {
+    if (this != property.getOwner()) throw NotOwnerError{};
     receiveMoney(property.getPurchaseCost() * 0.5);
     property.mortgage();
 }
 
 void Player::unmortgage(Property &property) {
+    if (this != property.getOwner()) throw NotOwnerError{};
     spendMoney(property.getPurchaseCost() * 0.6);
     property.unmortgage();
 }
@@ -164,15 +176,23 @@ void Player::bankrupt(Player *payee) {
             --totalTimsCups;
             payee->receiveTimsCup();
         }
+        NotEnoughMoneyError notEnoughMoney;
         for (auto &property : ownedProperties) {
-            payee->receiveProperty(*property);
+            try {
+                payee->receiveProperty(*property);
+            } catch (NotEnoughMoneyError e) {
+                Display::printMessage(e.getMessage());
+                notEnoughMoney = NotEnoughMoneyError{notEnoughMoney.getAmount() + e.getAmount()};
+            }
         }
+        if (notEnoughMoney.owesMoney()) throw notEnoughMoney;
     } else {
+        totalTimsCups -= timsCups;
         for (auto &property : ownedProperties) {
             giveProperty(*property);
+            property->unmortgage();
             GameBoard::startAuction(property);
         }
-        totalTimsCups -= timsCups;
     }
 }
 

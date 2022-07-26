@@ -284,12 +284,12 @@ void GameBoard::trade(Trade trade) {
 }
 
 void GameBoard::bankrupt(Player *player, Player *payee) {
-    player->bankrupt(payee);
     auto it = players.begin();
     for (; it != players.end(); ++it) {
         if (it->get() == player) break;
     }
     players.erase(it);
+    player->bankrupt(payee);
 }
 
 bool GameBoard::checkWinner() const {

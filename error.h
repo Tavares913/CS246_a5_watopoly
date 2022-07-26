@@ -136,4 +136,34 @@ class CannotMortgageWithImprovementsError : public Error {
     }
 };
 
+class NotOwnerError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "You do not own this property.";
+    }
+};
+
+class AuctionError : public Error {};
+
+class NonNumericRaiseAmountError : public AuctionError {
+  public:
+    std::string getMessage() const override {
+        return "Please enter a number.";
+    }
+};
+
+class NegativeRaiseAmountError : public AuctionError {
+  public:
+    std::string getMessage() const override {
+        return "Please raise by a positive amount.";
+    }
+};
+
+class TooHighRaiseAmountError : public AuctionError {
+  public:
+    std::string getMessage() const override {
+        return "You cannot afford to raise by that much.";
+    }
+};
+
 #endif

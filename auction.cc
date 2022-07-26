@@ -5,6 +5,8 @@
 #include "auction.h"
 #include "player.h"
 #include "property.h"
+#include "display.h"
+#include "error.h"
 
 using namespace std;
 
@@ -41,19 +43,22 @@ void Auction::auction() {
 
         int amountToRaise = 0;
         cout << "Player " << players[curPlayer]->getName() << ": Would you like to raise or withdraw? ";
-        cin >> cmd;
+        if (!(cin >> cmd)) continue;
         if (cmd == "raise") {
-            cin >> amountToRaise;
-            if (cin.fail()) {
-                cout << "Please enter a number." << endl;
-                cin.clear();
+            try {
+                cin >> amountToRaise;
+                if (cin.fail()) {
+                    cin.clear();
+                    throw NonNumericRaiseAmountError{};
+                }
+                if (amountToRaise == 0) throw NegativeRaiseAmountError{};
+                try { players[curPlayer]->spendMoney(propPrice + amountToRaise, true); }
+                catch (NotEnoughMoneyError e) { throw TooHighRaiseAmountError{}; }
+                propPrice += amountToRaise;
+            } catch (Error &e) {
+                Display::printMessage(e.getMessage());
                 continue;
             }
-            if (amountToRaise == 0) {
-                cout << "Please raise by a positive amount." << endl;
-                continue;
-            }
-            propPrice += amountToRaise;
         } else if (cmd == "withdraw") {
             withdrawnPlayers.emplace_back(curPlayer);
         }
