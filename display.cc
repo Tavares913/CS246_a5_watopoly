@@ -170,10 +170,10 @@ pair<int, int> mapTileLocToDisplay(int tileLocation) {
     int coord2;
     if (tileLocation < 10) {
         coord1 = 10;
-        coord2 = tileLocation;
+        coord2 = 10 - tileLocation;
     } else if (tileLocation < 20) {
         coord1 = 0;
-        coord2 = tileLocation % 10;
+        coord2 = 10 - tileLocation % 10;
     } else if (tileLocation < 30) {
         coord2 = 0;
         coord1 = tileLocation % 10;
