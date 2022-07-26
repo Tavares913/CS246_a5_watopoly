@@ -26,82 +26,91 @@ Display::Display() : display{} {
     curRow.clear();
 
     // second row of the board
-    curRow.emplace_back("OPT", true);
-    for (int i = 0; i < 9; ++i) {
+    curRow.emplace_back("OPT", true, true);
+    for (int i = 0; i < 8; ++i) {
         curRow.emplace_back("BLANK", false, false, true);
     }
+    curRow.emplace_back("BLANK", false, false, true, false, true);
     curRow.emplace_back("EIT", true, true);
     display.emplace_back(curRow);
     curRow.clear();
 
     // third row of the board
-    curRow.emplace_back("BMH", true);
-    for (int i = 0; i < 9; ++i) {
+    curRow.emplace_back("BMH", true, true);
+    for (int i = 0; i < 8; ++i) {
         curRow.emplace_back("BLANK", false, false, true);
     }
+    curRow.emplace_back("BLANK", false, false, true, false, true);
     curRow.emplace_back("ESC", true, true);
     display.emplace_back(curRow);
     curRow.clear();
 
     // fourth row of the board
-    curRow.emplace_back("SLC");
-    for (int i = 0; i < 9; ++i) {
+    curRow.emplace_back("SLC", false, true);
+    for (int i = 0; i < 8; ++i) {
         curRow.emplace_back("BLANK", false, false, true);
     }
+    curRow.emplace_back("BLANK", false, false, true, false, true);
     curRow.emplace_back("SLC", false, true);
     display.emplace_back(curRow);
     curRow.clear();
 
     // fifth row of the board
-    curRow.emplace_back("LHI", true);
-    for (int i = 0; i < 9; ++i) {
+    curRow.emplace_back("LHI", true, true);
+    for (int i = 0; i < 8; ++i) {
         curRow.emplace_back("BLANK", false, false, true);
     }
+    curRow.emplace_back("BLANK", false, false, true, false, true);
     curRow.emplace_back("C2", true, true);
     display.emplace_back(curRow);
     curRow.clear();
 
     // sixth row of the board
-    curRow.emplace_back("UWP");
-    for (int i = 0; i < 9; ++i) {
+    curRow.emplace_back("UWP", false, true);
+    for (int i = 0; i < 8; ++i) {
         curRow.emplace_back("BLANK", false, false, true);
     }
+    curRow.emplace_back("BLANK", false, false, true, false, true);
     curRow.emplace_back("REV", false, true);
     display.emplace_back(curRow);
     curRow.clear();
 
     // seventh row of the board
-    curRow.emplace_back("CPH", true);
-    for (int i = 0; i < 9; ++i) {
+    curRow.emplace_back("CPH", true, true);
+    for (int i = 0; i < 8; ++i) {
         curRow.emplace_back("BLANK", false, false, true);
     }
+    curRow.emplace_back("BLANK", false, false, true, false, true);
     curRow.emplace_back("NEEDLES HALL", false, true);
     display.emplace_back(curRow);
     curRow.clear();
 
     // eigth row of the board
-    curRow.emplace_back("DWE", true);
-    for (int i = 0; i < 9; ++i) {
+    curRow.emplace_back("DWE", true, true);
+    for (int i = 0; i < 8; ++i) {
         curRow.emplace_back("BLANK", false, false, true);
     }
+    curRow.emplace_back("BLANK", false, false, true, false, true);
     curRow.emplace_back("MC", true, true);
     display.emplace_back(curRow);
     curRow.clear();
 
     // ninth row of the board
-    curRow.emplace_back("PAC");
-    for (int i = 0; i < 9; ++i) {
+    curRow.emplace_back("PAC", false, true);
+    for (int i = 0; i < 8; ++i) {
         curRow.emplace_back("BLANK", false, false, true);
     }
-    curRow.emplace_back("COOP FEE", true, true);
+    curRow.emplace_back("BLANK", false, false, true, false, true);
+    curRow.emplace_back("COOP FEE", false, true);
     display.emplace_back(curRow);
     curRow.clear();
 
     // tenth row of the board
-    curRow.emplace_back("RCH", true);
-    for (int i = 0; i < 9; ++i) {
-        curRow.emplace_back("BLANK", false, false, true);
+    curRow.emplace_back("RCH", true, true);
+    for (int i = 0; i < 8; ++i) {
+        curRow.emplace_back("BLANK", false, false, true, true);
     }
+    curRow.emplace_back("BLANK", false, false, true, true, true);
     curRow.emplace_back("DC", true, true);
     display.emplace_back(curRow);
     curRow.clear();
@@ -124,17 +133,30 @@ Display::Display() : display{} {
 }
 
 void Display::print() {
-    for (int i = 0; i < 10; ++i) {
+    for (int i = 0; i < 1; ++i) {
         for (int row = 1; row <= 7; ++row) {
+            if (row == 1) cout << "_";
             for (int j = 0; j < 11; ++j) {
                 cout << display[i][j].getRow(row);
             }
             cout << endl;
         }
     }
-
+    for (int i = 1; i < 10; ++i) {
+        for (int row = 2; row <= 7; ++row) {
+            for (int j = 0; j < 11; ++j) {
+                if (i == 9 && (j == 8 || j == 9 || j == 10) && row == 7) {
+                    cout << display[i][j].getRow(row, true);
+                } else {
+                    cout << display[i][j].getRow(row);
+                }
+            }
+            cout << endl;
+        }
+    }
     for (int i = 10; i < 11; ++i) {
-        for (int row = 1; row <= 8; ++row) {
+        for (int row = 2; row <= 7; ++row) {
+            if (row == 1) cout << "_";
             for (int j = 0; j < 11; ++j) {
                 cout << display[i][j].getRow(row);
             }
