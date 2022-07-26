@@ -206,7 +206,7 @@ void Watopoly::play() {
             try {
                 if (cin.fail()) return;
                 if (cmd == "roll") {
-                    if (hasRolled) cout << "You have already rolled for this turn." << endl;
+                    if (hasRolled) throw AlreadyRolledError{};
                     else {
                         int die1 = 0;
                         int die2 = 0;
@@ -297,7 +297,7 @@ void Watopoly::play() {
                 } else {
                     throw InvalidCommandError{};
                 }
-            } catch (Error e) {
+            } catch (Error &e) {
                 cout << e.getMessage() << endl; 
             }
             cout << endl;

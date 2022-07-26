@@ -13,9 +13,9 @@ void Auction::nextPlayer() {
     if (curPlayer == players.size()) curPlayer = 0;
 }
 
-Player &Auction::curWinner() {
-    if (curPlayer == 0) return players[players.size() - 1];
-    return players[curPlayer - 1];
+Player &Auction::curWinner() const {
+    if (curPlayer == 0) return *players[players.size() - 1];
+    return *players[curPlayer - 1];
 }
 
 void Auction::setPlayers(vector<unique_ptr<Player>> &players) {
@@ -36,20 +36,28 @@ void Auction::auction() {
             break;
         }
         
-        if (propPrice > 0) cout << "Current Winner: " << curWinner().
+        if (propPrice > 0) cout << "Current Winner: " << curWinner().getName() << ", Winning Bid: " << propPrice << endl;
 
         int amountToRaise = 0;
-        cout << "Player " << players[0]->getName() << ": Would you like to raise or withdraw? ";
+        cout << "Player " << players[curPlayer]->getName() << ": Would you like to raise or withdraw? ";
         cin >> cmd;
         if (cmd == "raise") {
             cin >> amountToRaise;
+            if (cin.fail()) {
+                cout << "Please enter a number." << endl;
+                cin.clear();
+                continue;
+            }
+            if (amountToRaise == 0) {
+                cout << "Please raise by a positive amount." << endl;
+                continue;
+            }
             propPrice += amountToRaise;
-            nextPlayer();
         } else if (cmd == "withdraw") {
             players.erase(players.begin() + curPlayer);
             --curPlayer;
-            nextPlayer();
         }
+        nextPlayer();
     }
     cout << property->getName() << " sold to player " << players[0]->getName() << " for $" << propPrice << "." << endl;
     players[0]->buyProperty(*property, propPrice);

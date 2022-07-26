@@ -5,7 +5,7 @@
 
 class Error {
   public:
-    virtual std::string getMessage() const { return ""; };
+    virtual std::string getMessage() const = 0;
 };
 
 class InvalidCommandError : public Error {
@@ -33,6 +33,13 @@ class NextWithoutRollError : public Error {
   public:
     std::string getMessage() const override {
         return "You must roll before ending your turn.";
+    }
+};
+
+class AlreadyRolledError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "You have already rolled for this turn.";
     }
 };
 

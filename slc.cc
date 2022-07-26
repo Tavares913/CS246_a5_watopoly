@@ -15,21 +15,23 @@ void SLC::visit(Player &p) {
     }
 
     int randNum = rand() % 24;
+    bool collectOsap = false;
     if (randNum < 3) {
-        p.moveBy(-3);
+        collectOsap = p.moveBy(-3);
     } else if (randNum < 7) {
-        p.moveBy(-2);
+        collectOsap = p.moveBy(-2);
     } else if (randNum < 11) {
-        p.moveBy(-1);
+        collectOsap = p.moveBy(-1);
     } else if (randNum < 14) {
-        p.moveBy(1);
+        collectOsap = p.moveBy(1);
     } else if (randNum < 18) {
-        p.moveBy(2);
+        collectOsap = p.moveBy(2);
     } else if (randNum < 22) {
-        p.moveBy(3);
+        collectOsap = p.moveBy(3);
     } else if (randNum < 23) {
         p.goToTimsLine();
     } else if (randNum < 24) {
-        osap->visit(p);
+        collectOsap = true;
     }
+    if (collectOsap) p.visit(*osap);
 }

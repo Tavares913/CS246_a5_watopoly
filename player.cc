@@ -19,12 +19,16 @@ char Player::getSymbol() const { return symbol; }
 
 bool Player::isInTimsLine() const { return inTimsLine; }
 
-void Player::moveBy(int moveBy) {
+bool Player::moveBy(int moveBy) {
     if (!inTimsLine) {
         location += moveBy;
-        location += GameBoard::NUM_TILES;
-        location %= GameBoard::NUM_TILES;
+        if (location >= GameBoard::NUM_TILES) {
+            location %= GameBoard::NUM_TILES;
+            return true;
+        }
+        if (location < 0) location += GameBoard::NUM_TILES;
     }
+    return false;
 }
 
 int Player::getLocation() const { return location; }
@@ -33,13 +37,12 @@ void Player::spendMoney(float amount, bool check) {
     if (amount > money) throw NotEnoughMoneyError{};
     if (check) return;
     money -= amount;
+    cout << "Player " << name << " spends $" << amount;
 }
 
-void Player::receiveMoney(float amount) { spendMoney(-amount); }
-
-void Player::payPlayer(float amount, Player &payee) {
-    spendMoney(amount);
-    payee.receiveMoney(amount);
+void Player::receiveMoney(float amount) {
+    money += amount;
+    cout << "Player " << name << " receives $" << amount;
 }
 
 void Player::offerProperty(Property &property) {
@@ -141,6 +144,6 @@ float Player::getWorth() {
     return worth;
 }
 
-void Player::visit(Tile *tile) {
-    tile->visit(*this);
+void Player::visit(Tile &tile) {
+    tile.visit(*this);
 }

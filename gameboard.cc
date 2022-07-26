@@ -170,11 +170,11 @@ Player &GameBoard::getCurPlayer() const {
 void GameBoard::moveCurPlayer(int moveBy) {
     Player &curPlayer = getCurPlayer();
     int oldTile = curPlayer.getLocation();
-    curPlayer.moveBy(moveBy);
+    if (curPlayer.moveBy(moveBy)) curPlayer.visit(*board[0]);
     int newTile = curPlayer.getLocation();
     display->notify(PlayerMove{oldTile, newTile, curPlayer.getSymbol()});
     display->print();
-    board[curPlayer.getLocation()]->visit(curPlayer);
+    curPlayer.visit(*board[newTile]);
 }
 
 void GameBoard::next() {

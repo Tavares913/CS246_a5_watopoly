@@ -14,6 +14,7 @@ class Auction {
     int propPrice;
 
     void nextPlayer();
+    Player &curWinner() const;
 
   public:
     void setPlayers(std::vector<std::unique_ptr<Player>> &players);

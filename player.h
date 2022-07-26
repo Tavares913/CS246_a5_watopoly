@@ -26,12 +26,10 @@ class Player {
     std::string getName() const;
     char getSymbol() const;
     bool isInTimsLine() const;
-    void moveBy(int moveBy);
+    bool moveBy(int moveBy);
     int getLocation() const;
     void spendMoney(float amount, bool check = false);
     void receiveMoney(float amount);
-    void payPlayer(float amount, Player &payee);
-    // TODO move trade to gameboard; call give/receive Property/Money as appropriate
     void offerProperty(Property &property);
     void giveProperty(Property &property);
     void receiveProperty(Property &property);
@@ -40,7 +38,7 @@ class Player {
     void sellImprovement(Property &property);
     void mortgage(Property &property);
     void unmortgage(Property &property);
-    void assets(); // TODO move to display class
+    void assets();
     void incrementNumTurnsInLine();
     int getNumTurnsInLine();
     void goToTimsLine();
@@ -49,7 +47,7 @@ class Player {
     void updateNumTurnsInTimsLine();
     void useTimsCup(bool check = false);
     float getWorth();
-    void visit(Tile *tile);
+    void visit(Tile &tile);
 
     friend class Watopoly;
 };

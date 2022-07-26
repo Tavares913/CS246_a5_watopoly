@@ -47,7 +47,8 @@ int Property::getImprovementCost() const { throw CannotImproveError{}; }
 void Property::visit(Player &p) {
     if (owner) {
       int tuition = getTuition();
-      p.payPlayer(tuition, *owner);
+      p.spendMoney(tuition);
+      owner->receiveMoney(tuition);
       return;
     }
 
