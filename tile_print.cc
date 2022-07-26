@@ -1,77 +1,112 @@
 #include "tile_print.h"
 #include <sstream>
+#include <iostream>
 
 using namespace std;
 
-TilePrint::TilePrint(string name, bool buildable, bool endTile, bool blank) : name{name}, buildable{buildable}, endTile{endTile}, blank{blank}, improvements{0}, players{} {}
+TilePrint::TilePrint(string name, bool buildable, bool endTile, bool blank, bool blankAndBottom, bool blankAndSide) : name{name}, buildable{buildable}, endTile{endTile}, blank{blank}, blankAndBottom{blankAndBottom}, blankAndSide{blankAndSide}, improvements{0}, players{} {}
 
-string empty() { return "       "; }
+string empty(int num) {
+    string retval = "";
+    for (int i = 0; i < num; ++i) {
+        retval += " ";
+    }
+    return retval;
+}
 
 string alignLeft(string s, int rowNum, int rowSize) {
     string output = "";
-    string line1 = "";
-    string line2 = "";
+    string word1 = "";
+    string word2 = "";
+    string word3 = "";
+    vector<string> line1;
+    vector<string> line2;
 
     istringstream iss{s};
-    iss >> line1;
-    iss >> line2;
+    iss >> word1;
+    iss >> word2;
+    iss >> word3;
 
-    if (line1.size() + line2.size() <= rowSize) {
-        line1 += " " + line2;
-        line2 = "";
-        iss >> line2;
-    }
-
-    int l1size = rowSize - line1.size();
-    int l2size = rowSize - line2.size();
-    for (int i = 0; i < l1size; ++i) {
-        line1 += " ";
-    }
-    for (int i = 0; i < l2size; ++i) {
-        line2 += " ";
+    line1.emplace_back(word1);
+    if (word1.size() + word2.size() <= rowSize - 1) {
+        line1.emplace_back(word2);
+        if (word3.size() > 0) line2.emplace_back(word3);
+    } else {
+        line2.emplace_back(word2);
+        if (word3.size() > 0) line2.emplace_back(word3);
     }
 
     if (rowNum == 1) {
-        return line1;
+        for (auto &s : line1) {
+            output += s;
+            output += " ";
+        }
+        output = output.substr(0, output.size() - 1);
+        int padding = rowSize - output.size();
+        for (int i = 0; i < padding; ++i) {
+            output += " ";
+        }
     } else {
-        return line2;
+        for (auto &s : line2) {
+            output += s;
+            output += " ";
+        }
+        output = output.substr(0, output.size() - 1);
+        int padding = rowSize - output.size();
+        for (int i = 0; i < padding; ++i) {
+            output += " ";
+        }
     }
+
+    return output;
 }
 
-string TilePrint::getRow(int row) {
-    if (blank) {
-        return empty();
+string TilePrint::getRow(int row, bool flag) {
+    // if (flag) {
+    //     cout << "name: " << name << endl;
+    //     cout << "blank: " << blank << endl;
+    //     cout << "blankAndBottom: " << blankAndBottom << endl;
+    //     cout << "blankAndSide: " << blankAndSide << endl;
+    //     cout << "row: " << row << endl;
+    // }
+    if (blank && blankAndBottom && !blankAndSide && row == 7) {
+        return "_______";
+    } else if (blank && blankAndBottom && blankAndSide && row == 7) {
+        return "_______________";
+    } else if (blank && blankAndSide) {
+        return empty(7);
+    } else if (blank){
+        return empty(8);
     }
 
     string retval = "|";
     if (row == 1) {
-        retval += "________";
+        return "________";
     } else if (row == 2) {
         if (buildable) {
             for (int i = 0; i < improvements; ++i) {
                 retval += "I";
             }
-        } else {
-            if (name.size() > 7) {
-                retval += alignLeft(name, 1, 7);
+            for (int i = 0; i < 7 - improvements; ++i) {
+                retval += " ";
             }
+        } else {
+            retval += alignLeft(name, 1, 7);
         }
     } else if (row == 3) {
         if (buildable) {
             retval += "-------";
         } else {
-            if (name.size() > 7) {
-                retval += alignLeft(name, 2, 7);
-            }
+            retval += alignLeft(name, 2, 7);
         }
     } else if (row == 4) {
         if (buildable) {
-            retval += name;
+            retval += alignLeft(name, 1, 7);
         } else {
-            retval += empty();
+            retval += empty(7);
         }
     } else if (row == 5) {
-        retval += empty();
+        retval += empty(7);
     } else if (row == 6) {
         for (auto &p : players) {
             retval += p;

@@ -11,12 +11,14 @@ class TilePrint {
     bool buildable;
     bool endTile;
     bool blank;
+    bool blankAndBottom;
+    bool blankAndSide;
     int improvements;
     vector<char> players;
 
     public:
-        TilePrint(string name, bool buildable = false, bool endTile = false, bool blank = false);
-        string getRow(int row);
+        TilePrint(string name, bool buildable = false, bool endTile = false, bool blank = false, bool blankAndBottom = false, bool blankAndSide = false);
+        string getRow(int row, bool flag = false);
         void improve();
         void unimprove();
         void addPlayer(char p);
