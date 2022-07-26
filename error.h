@@ -55,7 +55,7 @@ class NotEnoughMoneyError : public Error {
     float getAmount() { return amount;}
     Player *getPayee() { return payee; }
     std::string getMessage() const override {
-        return "You do not have enough money. You owe " + payee ? payee->getName() : "The Bank" + " $" + to_string(amount);
+        return "You do not have enough money. You owe " + (payee ? payee->getName() : "The Bank") + " $" + to_string(amount);
     }
 };
 

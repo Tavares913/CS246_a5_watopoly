@@ -283,10 +283,19 @@ void GameBoard::trade(Trade trade) {
     else trade.giver->receiveMoney(trade.receiveAmt); 
 }
 
-void GameBoard::bankrupt(Player &player, Player &payee) {
-    player.bankrupt(payee);
-    for (auto it = players.begin(); it != players.end(); ++it) {
-        if (it->get() == &player) break;
+void GameBoard::bankrupt(Player *player, Player *payee) {
+    player->bankrupt(payee);
+    auto it = players.begin();
+    for (; it != players.end(); ++it) {
+        if (it->get() == player) break;
     }
     players.erase(it);
+}
+
+bool GameBoard::checkWinner() const {
+    if (players.size() == 1) {
+        Display::printMessage("Woohoo! Player " + players[0]->getName() + " wins!");
+        return true;
+    }
+    return false;
 }

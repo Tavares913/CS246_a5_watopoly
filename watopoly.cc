@@ -194,6 +194,7 @@ void Watopoly::play() {
     Display::printMessage("Welcome to Watopoly!");
     while (true) {
         string cmd;
+        if (gameboard.checkWinner()) return;
         Player &curPlayer = gameboard.getCurPlayer();
         Display::printMessage(curPlayer.getName() + "'s turn.");
         bool hasRolled = false;
@@ -275,7 +276,9 @@ void Watopoly::play() {
                     gameboard.unmortgage(curPlayer, propertyName);
                 } else if (cmd == "bankrupt") {
                     if (!notEnoughMoney.owesMoney()) throw InvalidCommandError{};
-                    gameboard.bankrupt(curPlayer, *payee);
+                    gameboard.bankrupt(&curPlayer, notEnoughMoney.getPayee());
+                    gameboard.next();
+                    break;
                 } else if (cmd == "assets") {
                     curPlayer.assets();
                 } else if (cmd == "all") {

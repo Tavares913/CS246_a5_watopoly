@@ -49,7 +49,7 @@ class Player {
     void useTimsCup(bool check = false);
     float getWorth();
     void visit(Tile &tile);
-    void bankrupt(Player &payee = nullptr);
+    void bankrupt(Player *payee = nullptr);
 
     friend class Watopoly;
 };

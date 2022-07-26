@@ -157,15 +157,15 @@ float Player::getWorth() {
     return worth;
 }
 
-void Player::declareBankrupcy(Player &payee) {
+void Player::bankrupt(Player *payee) {
     if (payee) {
-        payee.receiveMoney(money);
-        for (auto &property : ownedProperties) {
-            payee.receiveProperty(*property);
-        }
+        payee->receiveMoney(money);
         for (int i = 0; i < timsCups; ++i) {
             --totalTimsCups;
-            payee.receiveTimsCup();
+            payee->receiveTimsCup();
+        }
+        for (auto &property : ownedProperties) {
+            payee->receiveProperty(*property);
         }
     } else {
         for (auto &property : ownedProperties) {

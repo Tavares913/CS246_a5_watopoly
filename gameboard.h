@@ -59,7 +59,8 @@ class GameBoard : public Subject {
     static void startAuction(Property *p);
     Trade createTrade(std::string otherPlayerName, std::string give, std::string receive);
     void trade(Trade trade);
-    void bankrupt(Player &player, Player &payee = nullptr);
+    void bankrupt(Player *player, Player *payee = nullptr);
+    bool checkWinner() const;
 
     friend class Watopoly;
 };
