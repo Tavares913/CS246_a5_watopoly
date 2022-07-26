@@ -2,6 +2,7 @@
 #include <vector>
 #include "property.h"
 #include "player.h"
+#include "error.h"
 
 using namespace std;
 
@@ -37,11 +38,11 @@ bool Property::monopoly() const { return getNumOwned() == propertyBlock.size(); 
 
 int Property::getPurchaseCost() const { return purchaseCost; }
 
-void Property::buyImprovement() { throw; /* cannot improve error */ }
+void Property::buyImprovement() { throw CannotImproveError{}; }
 
-void Property::sellImprovement() { throw; /* cannot 'un'improve error */ }
+void Property::sellImprovement() { throw CannotImproveError{}; }
 
-int Property::getImprovementCost() const { throw; /* cannot improve error */ }
+int Property::getImprovementCost() const { throw CannotImproveError{}; }
 
 void Property::visit(Player &p) {
     if (owner) {

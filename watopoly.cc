@@ -191,6 +191,7 @@ void Watopoly::play() {
         string cmd;
         Player &curPlayer = gameboard.getCurPlayer();
         // gameboard.display.print();
+        cout << "\033[2J\033[1;1H";
         cout << endl;
         cout << curPlayer.getName() << "'s turn." << endl; 
         bool hasRolled = false;
@@ -293,6 +294,16 @@ void Watopoly::play() {
                 cout << "Cannot trade money." << endl;
             } catch (NotTradeablePropertyError e) {
                 cout << "Property cannot be traded - other properties in block have improvements." << endl;
+            } catch (CannotImproveError e) {
+                cout << "Only Academic Buildings can be improved." << endl;
+            } catch (NoMonopolyError e) {
+                cout << "Cannot improve buildings without a monopoly" << endl;
+            } catch (MaxImprovementsError e) {
+                cout << "Maximum number of improvements reached!" << endl;
+            } catch (MinImprovementsError e) {
+                cout << "No improvements on building so cannot sell!" << endl;
+            } catch (CannotMortgageWithImprovementsError e) {
+                cout << "Cannot mortgage a building that has improvements on it." << endl;
             }
             cout << endl;
         }

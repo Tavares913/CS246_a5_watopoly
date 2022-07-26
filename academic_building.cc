@@ -2,6 +2,7 @@
 #include "property.h"
 #include "player.h"
 #include "academic_building.h"
+#include "error.h"
 
 using namespace std;
 
@@ -17,18 +18,18 @@ int AcademicBuilding::getTuition() const {
 }
 
 void AcademicBuilding::mortgage() {
-  if (numImprovements > 0) throw; // remove improvements before mortgage error
+  if (numImprovements > 0) throw CannotMortgageWithImprovementsError{};
   Property::mortgage();
 }
 
 void AcademicBuilding::buyImprovement() { 
-  if (!monopoly()) throw; // no monopoly error
-  if (numImprovements == tuition.size() - 1) throw; // cant improve more error
+  if (!monopoly()) throw NoMonopolyError{};
+  if (numImprovements == tuition.size() - 1) throw MaxImprovementsError{};
   ++numImprovements;
 }
 
 void AcademicBuilding::sellImprovement() {
-  if (numImprovements == 0) throw; // cant deteriorate further error
+  if (numImprovements == 0) throw MinImprovementsError{};
   --numImprovements;
 }
 

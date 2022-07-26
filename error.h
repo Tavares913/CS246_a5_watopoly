@@ -19,4 +19,14 @@ class TradeMoneyError : public Error {};
 
 class NotTradeablePropertyError : public Error {};
 
+class CannotImproveError : public Error {};
+
+class MaxImprovementsError : public Error {};
+
+class MinImprovementsError : public Error {};
+
+class NoMonopolyError : public Error {};
+
+class CannotMortgageWithImprovementsError : public Error {};
+
 #endif

@@ -18,6 +18,6 @@ int Gym::getTuition() const {
     case 2:
       return sumRoll * 10;
     default:
-      throw; // idk, this should not be possible
+      break;
   }
 }

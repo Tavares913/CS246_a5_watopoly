@@ -1,6 +1,7 @@
 #include <sstream>
 #include <iostream>
 #include <string>
+#include <ctime>
 #include "watopoly.h"
 
 using namespace std;
@@ -10,6 +11,7 @@ void invalidUsage(string cmd) {
 }
 
 int main(int argc, char *argv[]) {
+    srand(time[0]);
     bool testing = false;
     string loadfile = "";
 
