@@ -52,3 +52,12 @@ void Property::visit(Player &p) {
 
     p.offerProperty(*this);
 }
+
+bool Property::tradeable() const {
+    if (monopoly()) {
+        for (auto otherProperty : propertyBlock) {
+            if (otherProperty->getNumImprovements() > 0) return false;
+        }
+    }
+    return !mortgaged;
+}

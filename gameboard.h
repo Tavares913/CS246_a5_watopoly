@@ -13,6 +13,14 @@
 
 class Property;
 class Watopoly;
+struct Trade {
+    Player *giver = nullptr;
+    float giveAmt;
+    Property *giveProperty = nullptr;
+    Player *receiver = nullptr;
+    float receiveAmt;
+    Property *receiveProperty = nullptr;
+};
 
 class GameBoard : public Subject {
     static Auction auction;
@@ -20,10 +28,13 @@ class GameBoard : public Subject {
     std::vector<std::unique_ptr<Player>> players;
     std::vector<std::unique_ptr<Tile>> board;
     std::unordered_map<std::string, Property *> nameToProperties;
+    std::unordered_map<std::string, Player *> nameToPlayers;
     std::unique_ptr<Display> display;
     bool testing;
 
     void initBoard();
+    Property &getPropertyByName(std::string propertyName) const;
+    Player &getPlayerByName(std::string playerName) const;
 
   public:
     static const int NUM_TILES = 40;
@@ -41,6 +52,8 @@ class GameBoard : public Subject {
     void mortgage(Player &p, std::string propertyName);
     void unmortgage(Player &p, std::string propertyName);
     static void startAuction(Property *p);
+    Trade createTrade(std::string otherPlayerName, std::string give, std::string receive);
+    void trade(Trade trade);
 
     friend class Watopoly;
 };

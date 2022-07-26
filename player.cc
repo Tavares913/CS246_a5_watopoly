@@ -3,6 +3,7 @@
 #include "property.h"
 #include "watopoly.h"
 #include "gameboard.h"
+#include "error.h"
 
 using namespace std;
 
@@ -16,6 +17,8 @@ string Player::getName() const { return name; }
 
 char Player::getSymbol() const { return symbol; }
 
+float Player::getMoney() const { return money; }
+
 void Player::moveBy(int moveBy) {
     if (!inTimsLine) {
         location += moveBy;
@@ -27,7 +30,7 @@ void Player::moveBy(int moveBy) {
 int Player::getLocation() const { return location; }
 
 void Player::spendMoney(float amount) { 
-    if (amount > money) throw; // not enough money error
+    if (amount > money) throw NotEnoughMoneyError{};
     money -= amount;
 }
 
@@ -86,20 +89,21 @@ void Player::unmortgage(Property &property) {
 }
 
 void Player::assets() {
-    cout << name << "'s assets:" << endl;
+    cout << endl;
+    cout << "Player " << name << "'s assets:" << endl;
     cout << "Money: " << money << endl;
     cout << "Properties Owned: " << endl;
     for (auto &property : ownedProperties) {
-        cout << property->getName() << " ";
-        cout << property->getPurchaseCost() << " ";
-        for (int i = 0; i < property->getNumImprovements(); ++i) cout << "I";
-        cout << endl;
+        cout << "  " << property->getName() << endl;
+        cout << "    " << "Price: " << property->getPurchaseCost() << endl;
+        cout << "    " << "Number of Improvements: " << property->getNumImprovements() << endl; 
     }
+    cout << endl;
 }
 
 int Player::getTimsCups() { return timsCups; }
 
-void Player::incrementNumTurnsInLine() { ++numTurnsInTimsLine; }
+void Player::incrementNumTurnsInLine() { if (numTurnsInTimsLine < 3) ++numTurnsInTimsLine; }
 
 int Player::getNumTurnsInLine() { return numTurnsInTimsLine; }
 
@@ -123,7 +127,7 @@ void Player::receiveTimsCup() { ++timsCups; }
 void Player::updateNumTurnsInTimsLine() { ++numTurnsInTimsLine; }
 
 void Player::useTimsCup() {
-    if (timsCups == 0) throw; // not enough cards error
+    if (timsCups == 0) throw NotEnoughCupsError{};
     --timsCups; 
     leaveTimsLine();
 }

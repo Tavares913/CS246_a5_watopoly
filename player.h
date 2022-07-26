@@ -25,6 +25,7 @@ class Player {
     );
     std::string getName() const;
     char getSymbol() const;
+    float getMoney() const;
     void moveBy(int moveBy);
     int getLocation() const;
     void spendMoney(float amount);

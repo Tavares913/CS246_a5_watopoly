@@ -1,10 +1,12 @@
 #include <string>
+#include <iostream>
 #include <vector>
 #include <utility>
 #include "dc_tims_line.h"
 #include "non_property.h"
 #include "player.h"
 #include "watopoly.h"
+#include "error.h"
 
 using namespace std;
 
@@ -22,14 +24,16 @@ void DCTimsLine::visit(Player &p) {
             return;
         }
     }
-    c = Watopoly::getChoice(
-        "Would you like to pay $" + to_string(priceOfCoffee) + "to leave the Tim's line?",
-        vector<string>{"y", "n"}
-    );
-    if (c == "Y") {
-        p.spendMoney(priceOfCoffee);
-        p.leaveTimsLine();
-        return;
+    if (p.getMoney() >= priceOfCoffee) {
+        c = Watopoly::getChoice(
+            "Would you like to pay $" + to_string(priceOfCoffee) + "to leave the Tim's line?",
+            vector<string>{"y", "n"}
+        );
+        if (c == "Y") {
+            p.spendMoney(priceOfCoffee);
+            p.leaveTimsLine();
+            return;
+        }
     }
 
     p.incrementNumTurnsInLine();

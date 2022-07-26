@@ -13,6 +13,7 @@
 #include "player.h"
 #include "gameboard.h"
 #include "dc_tims_line.h"
+#include "error.h"
 
 using namespace std;
 
@@ -190,63 +191,110 @@ void Watopoly::play() {
         string cmd;
         Player &curPlayer = gameboard.getCurPlayer();
         // gameboard.display.print();
+        cout << endl;
         cout << curPlayer.getName() << "'s turn." << endl; 
         bool hasRolled = false;
         int numDoubles = 0;
         while (true) {
             cout << "Enter command: ";
             cin >> cmd;
-            if (cmd == "roll") {
-                if (hasRolled) cout << "You have already rolled for this turn." << endl;
-                else {
-                    pair<int, int> roll = this->roll();
-                    cout << "You rolled " << roll.first << " and " << roll.second << "." << endl;
-                    if (roll.first == roll.second) {
-                        if (curPlayer.leaveTimsLine()) {
-                            cout << "Congrats! You get to leave the Tims line!" << endl;
+            try {
+                if (cmd == "roll") {
+                    if (hasRolled) cout << "You have already rolled for this turn." << endl;
+                    else {
+                        pair<int, int> roll = this->roll();
+                        cout << "You rolled " << roll.first << " and " << roll.second << "." << endl;
+                        if (roll.first == roll.second) {
+                            if (curPlayer.leaveTimsLine()) {
+                                cout << "Congrats! You get to leave the Tims line!" << endl;
+                                hasRolled = true;
+                            }
+                            ++numDoubles;
+                            if (numDoubles == 3) {
+                                cout << "You rolled 3 doubles and have been sent to the back of the DC Tims Line!" << endl;
+                                curPlayer.goToTimsLine();
+                                hasRolled = true;
+                                continue;
+                            }
+                        } else {
                             hasRolled = true;
                         }
-                        ++numDoubles;
-                        if (numDoubles == 3) {
-                            cout << "You rolled 3 doubles and have been sent to the back of the DC Tims Line!" << endl;
-                            curPlayer.goToTimsLine();
-                            hasRolled = true;
-                            continue;
-                        }
-                    } else {
-                        hasRolled = true;
+                        gameboard.moveCurPlayer(roll.first + roll.second);
                     }
-                    gameboard.moveCurPlayer(roll.first + roll.second);
+                } else if (cmd == "next") {
+                    if (!hasRolled) throw NextWithoutRollError{};
+                    else {
+                        gameboard.next();
+                        break;
+                    }
+                } else if (cmd == "trade") {
+                    string tradeWith;
+                    string give;
+                    string receive;
+
+                    cin >> tradeWith;
+                    cin >> give;
+                    cin >> receive;
+
+                    Trade trade;
+                    try {
+                        trade = gameboard.createTrade(tradeWith, give, receive);
+                    } catch (...) {
+                        cout << "Invalid trade. ";
+                        throw;
+                    }
+
+                    string response;
+                    cout << "Player " << tradeWith << ": Accept trade? (accept/reject) ";
+                    cin >> response;
+
+                    if (response == "accept") gameboard.trade(trade);
+                    else if (response != "reject") throw InvalidCommandError{};
+                } else if (cmd == "improve") {
+                    string propertyName;
+                    string cmd;
+                    cin >> propertyName;
+                    cin >> cmd;
+                    if (cmd =="buy") gameboard.buyImprovement(curPlayer, propertyName);
+                    else if (cmd == "sell") gameboard.sellImprovement(curPlayer, propertyName);
+                    else throw InvalidCommandError{};
+                } else if (cmd == "mortgage") {
+                    string propertyName;
+                    cin >> propertyName;
+                    gameboard.mortgage(curPlayer, propertyName);
+                } else if (cmd == "unmortgage") {
+                    string propertyName;
+                    cin >> propertyName;
+                    gameboard.unmortgage(curPlayer, propertyName);
+                } else if (cmd == "bankrupt") {
+
+                } else if (cmd == "assets") {
+                    curPlayer.assets();
+                } else if (cmd == "all") {
+                    gameboard.allAssets();
+                } else if (cmd == "save") {
+                    string filename;
+                    cin >> filename;
+                    save(filename);
+                } else if (cmd == "quit") {
+                    return;
+                } else {
+                    throw InvalidCommandError{};
                 }
-            } else if (cmd == "next") {
-                if (!hasRolled) cout << "You must roll before ending your turn." << endl;
-                else {
-                    gameboard.next();
-                    break;
-                }
-            } else if (cmd == "trade") {
-
-            } else if (cmd == "improve") {
-
-            } else if (cmd == "mortgage") {
-
-            } else if (cmd == "unmortgage") {
-
-            } else if (cmd == "bankrupt") {
-
-            } else if (cmd == "assets") {
-
-            } else if (cmd == "all") {
-
-            } else if (cmd == "save") {
-                string filename;
-                cin >> filename;
-                save(filename);
-            } else if (cmd == "quit") {
-                return;
-            } else {
+            } catch (InvalidCommandError e) {
                 cout << "Invalid command - please try again." << endl;
+            } catch (NextWithoutRollError e) {
+                cout << "You must roll before ending your turn." << endl;
+            } catch (InvalidPropertyNameError e) {
+                cout << "Invalid property name: please try again." << endl;
+            } catch (InvalidPlayerNameError e) {
+                cout << "Invalid player name: please try again." << endl;
+            } catch (TradeMoneyError e) {
+                cout << "Cannot trade money." << endl;
+            } catch (NotTradeablePropertyError e) {
+                cout << "Property cannot be traded - other properties in block have improvements." << endl;
             }
+            cout << endl;
         }
     }
 }

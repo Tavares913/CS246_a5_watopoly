@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <string>
 #include <utility>
+#include <sstream>
 #include "gameboard.h"
 #include "tile.h"
 #include "auction.h"
@@ -22,6 +23,7 @@
 #include "residence.h"
 #include "property.h"
 #include "auction.h"
+#include "error.h"
 
 using namespace std;
 
@@ -154,7 +156,9 @@ void GameBoard::initBoard() {
 
 void GameBoard::initPlayers(vector<Player> &players) {
     for (auto &player : players) {
-        this->players.emplace_back(make_unique<Player>(player));
+        unique_ptr<Player> playerPtr = make_unique<Player>(player);
+        this->players.emplace_back(move(playerPtr));
+        nameToPlayers.insert({player.getName(), playerPtr.get()});
     }
     auction.setPlayers(this->players);
 }
@@ -178,12 +182,42 @@ void GameBoard::next() {
     if (curPlayer == players.size()) curPlayer = 0;
 }
 
+Property &GameBoard::getPropertyByName(string propertyName) const {
+    try {
+        return *nameToProperties.at(propertyName);
+    } catch (...) {
+        throw InvalidPropertyNameError{};
+    }
+}
+
+Player &GameBoard::getPlayerByName(string playerName) const {
+    try {
+        return *nameToPlayers.at(playerName);
+    } catch (...) {
+        throw InvalidPlayerNameError{};
+    }
+}
+
 void GameBoard::buyImprovement(Player &p, string propertyName) {
-    p.buyImprovement(*nameToProperties[propertyName]);
+    p.buyImprovement(getPropertyByName(propertyName));
 }
 
 void GameBoard::sellImprovement(Player &p, string propertyName) {
-    p.sellImprovement(*nameToProperties[propertyName]);
+    p.sellImprovement(getPropertyByName(propertyName));
+}
+
+void GameBoard::buyProperty(Player &p, string propertyName) {
+    if (!getPropertyByName(propertyName).getOwner()) {
+        p.buyProperty(getPropertyByName(propertyName));
+    }
+}
+
+void GameBoard::mortgage(Player &p, string propertyName) {
+    p.mortgage(getPropertyByName(propertyName));
+}
+
+void GameBoard::unmortgage(Player &p, string propertyName) {
+    p.unmortgage(getPropertyByName(propertyName));
 }
 
 void GameBoard::allAssets() {
@@ -192,21 +226,40 @@ void GameBoard::allAssets() {
     }
 }
 
-void GameBoard::buyProperty(Player &p, string propertyName) {
-    if (!nameToProperties[propertyName]->getOwner()) {
-        p.buyProperty(*nameToProperties[propertyName]);
-    }
-}
-
-void GameBoard::mortgage(Player &p, string propertyName) {
-    p.mortgage(*nameToProperties[propertyName]);
-}
-
-void GameBoard::unmortgage(Player &p, string propertyName) {
-    p.unmortgage(*nameToProperties[propertyName]);
-}
-
 void GameBoard::startAuction(Property *p) {
     auction.setProperty(p);
     auction.auction();
+}
+
+Trade GameBoard::createTrade(string otherPlayerName, string give, string receive) {
+    Player *curPlayer = &getCurPlayer();
+    Player *otherPlayer = &getPlayerByName(otherPlayerName);
+
+    istringstream giveStream{give};
+    float giveAmt = 0;
+    Property *giveProperty = nullptr;
+    bool giveMoney = false;
+    if (!(giveStream >> giveAmt)) {
+        giveProperty = &getPropertyByName(give);
+        if (!giveProperty->tradeable()) throw NotTradeablePropertyError{};
+    } else giveMoney = true;
+
+    istringstream receiveStream{receive};
+    float receiveAmt = 0;
+    Property *receiveProperty = nullptr;
+    if (!(receiveStream >> receiveAmt)) {
+        receiveProperty = &getPropertyByName(receive);
+        if (!receiveProperty->tradeable()) throw NotTradeablePropertyError{};
+    } else {
+        if (giveMoney) throw TradeMoneyError{};
+    }
+
+    return Trade{curPlayer, giveAmt, giveProperty, otherPlayer, receiveAmt, receiveProperty};
+}
+
+void GameBoard::trade(Trade trade) {
+    if (trade.giveProperty) trade.receiver->receiveProperty(*trade.giveProperty);
+    else trade.receiver->receiveMoney(trade.giveAmt);
+    if (trade.receiveProperty) trade.giver->receiveProperty(*trade.receiveProperty);
+    else trade.giver->receiveMoney(trade.receiveAmt); 
 }
