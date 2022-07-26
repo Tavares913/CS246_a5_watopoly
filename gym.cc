@@ -3,10 +3,11 @@
 #include "gym.h"
 #include "property.h"
 #include "watopoly.h"
+#include "gameboard.h"
 
 using namespace std;
 
-Gym::Gym(int location, string name, int purchaseCost) : Property{location, name, purchaseCost} {}
+Gym::Gym(int location, string name, int purchaseCost, PropertyBlock block) : Property{location, name, purchaseCost, block} {}
 
 int Gym::getTuition() const {
     pair<int, int> roll = Watopoly::roll();

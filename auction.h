@@ -9,6 +9,7 @@ class Property;
 
 class Auction {
     std::vector<Player *> players;
+    std::vector<int> withdrawnPlayers;
     Property *property = nullptr;
     int curPlayer;
     int propPrice;

@@ -165,6 +165,11 @@ void Display::print() {
     }
 }
 
+void Display::printMessage(string message, bool endLine) {
+    cout << message;
+    if (endLine) cout << endl;
+}
+
 pair<int, int> mapTileLocToDisplay(int tileLocation) {
     int coord1 = 0;
     int coord2 = 0;

@@ -2,12 +2,13 @@
 #include <vector>
 #include "property.h"
 #include "player.h"
+#include "gameboard.h"
 #include "error.h"
 
 using namespace std;
 
-Property::Property(int location, string name, int purchaseCost) :
-    Tile{location, name}, purchaseCost{purchaseCost} {}
+Property::Property(int location, string name, int purchaseCost, PropertyBlock block) :
+    Tile{location, name}, purchaseCost{purchaseCost}, block{block} {}
 
 void Property::mortgage() { mortgaged = true; }
 
@@ -17,15 +18,11 @@ void Property::setOwner(Player *owner) { this->owner = owner; }
 
 Player *Property::getOwner() const { return owner; }
 
-void Property::setPropertyBlock(const vector<Property *> &propertyBlock) {
-    this->propertyBlock = propertyBlock;
-}
-
 int Property::getNumOwned() const {
     if (!owner) return 0;
 
     int numOwned = 0;
-    for (auto property : propertyBlock) {
+    for (auto property : GameBoard::propertyBlocks[block]) {
         if (property->owner == owner) ++numOwned;
     }
 
@@ -34,7 +31,7 @@ int Property::getNumOwned() const {
 
 int Property::getNumImprovements() const { return mortgaged ? -1 : numImprovements; }
 
-bool Property::monopoly() const { return getNumOwned() == propertyBlock.size(); }
+bool Property::monopoly() const { return getNumOwned() == GameBoard::propertyBlocks[block].size(); }
 
 int Property::getPurchaseCost() const { return purchaseCost; }
 
@@ -46,10 +43,14 @@ int Property::getImprovementCost() const { throw CannotImproveError{}; }
 
 void Property::visit(Player &p) {
     if (owner) {
-      int tuition = getTuition();
-      p.spendMoney(tuition);
-      owner->receiveMoney(tuition);
-      return;
+        try {
+            int tuition = getTuition();
+            p.spendMoney(tuition);
+            owner->receiveMoney(tuition);
+            return;
+        } catch (NotEnoughMoneyError &e) {
+            throw NotEnoughMoneyError{e.getAmount(), owner};
+        }
     }
 
     p.offerProperty(*this);
@@ -58,7 +59,7 @@ void Property::visit(Player &p) {
 bool Property::tradeable() const {
     if (mortgaged) throw MortgagedPropertyError{};
     if (monopoly()) {
-        for (auto otherProperty : propertyBlock) {
+        for (auto otherProperty : GameBoard::propertyBlocks[block]) {
             if (otherProperty->getNumImprovements() > 0) {
                 throw PropertyWithImprovementsError{};
             }

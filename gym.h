@@ -3,10 +3,11 @@
 
 #include <string>
 #include "property.h"
+#include "gameboard.h"
 
 class Gym : public Property {
   public:
-    Gym(int location, std::string name, int purchaseCost);
+    Gym(int location, std::string name, int purchaseCost, PropertyBlock block);
     int getTuition() const override;
 };
 

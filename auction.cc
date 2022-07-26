@@ -11,11 +11,13 @@ using namespace std;
 void Auction::nextPlayer() {
     ++curPlayer;
     if (curPlayer == players.size()) curPlayer = 0;
+    if (find(withdrawnPlayers.begin(), withdrawnPlayers.end(), curPlayer) != withdrawnPlayers.end()) {
+        nextPlayer();
+    }
 }
 
 Player &Auction::curWinner() const {
-    if (curPlayer == 0) return *players[players.size() - 1];
-    return *players[curPlayer - 1];
+    return *players[curPlayer];
 }
 
 void Auction::setPlayers(vector<unique_ptr<Player>> &players) {
@@ -29,12 +31,11 @@ void Auction::setProperty(Property *property) { this->property = property; }
 void Auction::auction() {
     curPlayer = 0;
     propPrice = 0;
+    withdrawnPlayers.clear();
     string cmd;
 
     while (true) {
-        if (players.size() == 1) {
-            break;
-        }
+        if (withdrawnPlayers.size() == players.size() - 1) break;
         
         if (propPrice > 0) cout << "Current Winner: " << curWinner().getName() << ", Winning Bid: " << propPrice << endl;
 
@@ -54,8 +55,7 @@ void Auction::auction() {
             }
             propPrice += amountToRaise;
         } else if (cmd == "withdraw") {
-            players.erase(players.begin() + curPlayer);
-            --curPlayer;
+            withdrawnPlayers.emplace_back(curPlayer);
         }
         nextPlayer();
     }

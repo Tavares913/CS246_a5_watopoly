@@ -29,6 +29,8 @@ using namespace std;
 
 Auction GameBoard::auction = Auction{};
 
+unordered_map<PropertyBlock, vector<Property *>> GameBoard::propertyBlocks = unordered_map<PropertyBlock, vector<Property *>>();
+
 GameBoard::GameBoard() : display{make_unique<Display>()} {
     initBoard();
 }
@@ -52,66 +54,83 @@ void GameBoard::initBoard() {
 
     // properties
     // academic buildings
-    unique_ptr<AcademicBuilding> al = make_unique<AcademicBuilding>(1, "AL", 40, 50, vector<int>{2, 10, 30, 90, 160, 250});
+    unique_ptr<AcademicBuilding> al = make_unique<AcademicBuilding>(1, "AL", 40, PropertyBlock::Arts1, 50, vector<int>{2, 10, 30, 90, 160, 250});
     nameToProperties.insert({"AL", al.get()});
-    unique_ptr<AcademicBuilding> ml = make_unique<AcademicBuilding>(3, "ML", 60, 50, vector<int>{4, 20, 60, 180, 320, 450});
+    unique_ptr<AcademicBuilding> ml = make_unique<AcademicBuilding>(3, "ML", 60, PropertyBlock::Arts1, 50, vector<int>{4, 20, 60, 180, 320, 450});
     nameToProperties.insert({"ML", ml.get()});
-    unique_ptr<AcademicBuilding> ech = make_unique<AcademicBuilding>(6, "ECH", 100, 50, vector<int>{6, 30, 90, 270, 400, 550});
+    propertyBlocks.insert({PropertyBlock::Arts1, {al.get(), ml.get()}});
+    
+    unique_ptr<AcademicBuilding> ech = make_unique<AcademicBuilding>(6, "ECH", 100, PropertyBlock::Arts2, 50, vector<int>{6, 30, 90, 270, 400, 550});
     nameToProperties.insert({"ECH", ech.get()});
-    unique_ptr<AcademicBuilding> pas = make_unique<AcademicBuilding>(8, "PAS", 100, 50, vector<int>{6, 30, 90, 270, 400, 550});
+    unique_ptr<AcademicBuilding> pas = make_unique<AcademicBuilding>(8, "PAS", 100, PropertyBlock::Arts2, 50, vector<int>{6, 30, 90, 270, 400, 550});
     nameToProperties.insert({"PAS", pas.get()});
-    unique_ptr<AcademicBuilding> hh = make_unique<AcademicBuilding>(9, "HH", 120, 50, vector<int>{8, 40, 100, 300, 450, 600});
+    unique_ptr<AcademicBuilding> hh = make_unique<AcademicBuilding>(9, "HH", 120, PropertyBlock::Arts2, 50, vector<int>{8, 40, 100, 300, 450, 600});
     nameToProperties.insert({"HH", hh.get()});
-    unique_ptr<AcademicBuilding> rch = make_unique<AcademicBuilding>(11, "RCH", 140, 100, vector<int>{10, 50, 150, 450, 625, 750});
+    propertyBlocks.insert({PropertyBlock::Arts2, {ech.get(), pas.get(), hh.get()}});
+    
+    unique_ptr<AcademicBuilding> rch = make_unique<AcademicBuilding>(11, "RCH", 140, PropertyBlock::Eng, 100, vector<int>{10, 50, 150, 450, 625, 750});
     nameToProperties.insert({"RCH", rch.get()});
-    unique_ptr<AcademicBuilding> dwe = make_unique<AcademicBuilding>(13, "DWE", 140, 100, vector<int>{10, 50, 150, 450, 625, 750});
+    unique_ptr<AcademicBuilding> dwe = make_unique<AcademicBuilding>(13, "DWE", 140, PropertyBlock::Eng, 100, vector<int>{10, 50, 150, 450, 625, 750});
     nameToProperties.insert({"DWE", dwe.get()});
-    unique_ptr<AcademicBuilding> cph = make_unique<AcademicBuilding>(14, "CPH", 160, 100, vector<int>{12, 60, 180, 500, 700, 900});
+    unique_ptr<AcademicBuilding> cph = make_unique<AcademicBuilding>(14, "CPH", 160, PropertyBlock::Eng, 100, vector<int>{12, 60, 180, 500, 700, 900});
     nameToProperties.insert({"CPH", cph.get()});
-    unique_ptr<AcademicBuilding> lhi = make_unique<AcademicBuilding>(16, "LHI", 180, 100, vector<int>{14, 70, 200, 550, 750, 950});
+    propertyBlocks.insert({PropertyBlock::Eng, {rch.get(), dwe.get(), cph.get()}});
+    
+    unique_ptr<AcademicBuilding> lhi = make_unique<AcademicBuilding>(16, "LHI", 180, PropertyBlock::Health, 100, vector<int>{14, 70, 200, 550, 750, 950});
     nameToProperties.insert({"LHI", lhi.get()});
-    unique_ptr<AcademicBuilding> bmh = make_unique<AcademicBuilding>(18, "BMH", 180, 100, vector<int>{14, 70, 200, 550, 750, 950});
+    unique_ptr<AcademicBuilding> bmh = make_unique<AcademicBuilding>(18, "BMH", 180, PropertyBlock::Health, 100, vector<int>{14, 70, 200, 550, 750, 950});
     nameToProperties.insert({"BMH", bmh.get()});
-    unique_ptr<AcademicBuilding> opt = make_unique<AcademicBuilding>(19, "OPT", 200, 100, vector<int>{16, 80, 220, 600, 800, 1000});
+    unique_ptr<AcademicBuilding> opt = make_unique<AcademicBuilding>(19, "OPT", 200, PropertyBlock::Health, 100, vector<int>{16, 80, 220, 600, 800, 1000});
     nameToProperties.insert({"OPT", opt.get()});
-    unique_ptr<AcademicBuilding> ev1 = make_unique<AcademicBuilding>(21, "EV1", 220, 150, vector<int>{18, 90, 250, 700, 875, 1050});
+    propertyBlocks.insert({PropertyBlock::Health, {lhi.get(), bmh.get(), opt.get()}});
+    
+    unique_ptr<AcademicBuilding> ev1 = make_unique<AcademicBuilding>(21, "EV1", 220, PropertyBlock::Env, 150, vector<int>{18, 90, 250, 700, 875, 1050});
     nameToProperties.insert({"EV1", ev1.get()});
-    unique_ptr<AcademicBuilding> ev2 = make_unique<AcademicBuilding>(23, "EV2", 220, 150, vector<int>{18, 90, 250, 700, 875, 1050});
+    unique_ptr<AcademicBuilding> ev2 = make_unique<AcademicBuilding>(23, "EV2", 220, PropertyBlock::Env, 150, vector<int>{18, 90, 250, 700, 875, 1050});
     nameToProperties.insert({"EV2", ev2.get()});
-    unique_ptr<AcademicBuilding> ev3 = make_unique<AcademicBuilding>(24, "EV3", 240, 150, vector<int>{20, 100, 300, 750, 925, 1100});
+    unique_ptr<AcademicBuilding> ev3 = make_unique<AcademicBuilding>(24, "EV3", 240, PropertyBlock::Env, 150, vector<int>{20, 100, 300, 750, 925, 1100});
     nameToProperties.insert({"EV3", ev3.get()});
-    unique_ptr<AcademicBuilding> phys = make_unique<AcademicBuilding>(26, "PHYS", 260, 150, vector<int>{22, 110, 330, 800, 975, 1150});
+    propertyBlocks.insert({PropertyBlock::Env, {ev1.get(), ev2.get(), ev3.get()}});
+    
+    unique_ptr<AcademicBuilding> phys = make_unique<AcademicBuilding>(26, "PHYS", 260, PropertyBlock::Sci1, 150, vector<int>{22, 110, 330, 800, 975, 1150});
     nameToProperties.insert({"PHYS", phys.get()});
-    unique_ptr<AcademicBuilding> b1 = make_unique<AcademicBuilding>(27, "B1", 260, 150, vector<int>{22, 110, 330, 800, 975, 1150});
+    unique_ptr<AcademicBuilding> b1 = make_unique<AcademicBuilding>(27, "B1", 260, PropertyBlock::Sci1, 150, vector<int>{22, 110, 330, 800, 975, 1150});
     nameToProperties.insert({"B1", b1.get()});
-    unique_ptr<AcademicBuilding> b2 = make_unique<AcademicBuilding>(29, "B2", 280, 150, vector<int>{24, 120, 360, 850, 1025, 1200});
+    unique_ptr<AcademicBuilding> b2 = make_unique<AcademicBuilding>(29, "B2", 280, PropertyBlock::Sci1, 150, vector<int>{24, 120, 360, 850, 1025, 1200});
     nameToProperties.insert({"B2", b2.get()});
-    unique_ptr<AcademicBuilding> eit = make_unique<AcademicBuilding>(31, "EIT", 300, 200, vector<int>{26, 130, 390, 900, 1100, 1275});
+    propertyBlocks.insert({PropertyBlock::Sci1, {phys.get(), b1.get(), b2.get()}});
+    
+    unique_ptr<AcademicBuilding> eit = make_unique<AcademicBuilding>(31, "EIT", 300, PropertyBlock::Sci2, 200, vector<int>{26, 130, 390, 900, 1100, 1275});
     nameToProperties.insert({"EIT", eit.get()});
-    unique_ptr<AcademicBuilding> esc = make_unique<AcademicBuilding>(32, "ESC", 300, 200, vector<int>{26, 130, 390, 900, 1100, 1275});
+    unique_ptr<AcademicBuilding> esc = make_unique<AcademicBuilding>(32, "ESC", 300, PropertyBlock::Sci2, 200, vector<int>{26, 130, 390, 900, 1100, 1275});
     nameToProperties.insert({"ESC", esc.get()});
-    unique_ptr<AcademicBuilding> c2 = make_unique<AcademicBuilding>(34, "C2", 320, 200, vector<int>{28, 150, 450, 1000, 1200, 1400});
+    unique_ptr<AcademicBuilding> c2 = make_unique<AcademicBuilding>(34, "C2", 320, PropertyBlock::Sci2, 200, vector<int>{28, 150, 450, 1000, 1200, 1400});
     nameToProperties.insert({"C2", c2.get()});
-    unique_ptr<AcademicBuilding> mc = make_unique<AcademicBuilding>(37, "MC", 350, 200, vector<int>{35, 175, 500, 1100, 1300, 1500});
+    propertyBlocks.insert({PropertyBlock::Sci2, {eit.get(), esc.get(), c2.get()}});
+    
+    unique_ptr<AcademicBuilding> mc = make_unique<AcademicBuilding>(37, "MC", 350, PropertyBlock::Math, 200, vector<int>{35, 175, 500, 1100, 1300, 1500});
     nameToProperties.insert({"MC", mc.get()});
-    unique_ptr<AcademicBuilding> dc = make_unique<AcademicBuilding>(39, "DC", 400, 200, vector<int>{50, 200, 600, 1400, 1700, 2000});
+    unique_ptr<AcademicBuilding> dc = make_unique<AcademicBuilding>(39, "DC", 400, PropertyBlock::Math, 200, vector<int>{50, 200, 600, 1400, 1700, 2000});
     nameToProperties.insert({"DC", dc.get()});
+    propertyBlocks.insert({PropertyBlock::Math, {mc.get(), dc.get()}});
 
     // residences
-    unique_ptr<Residence> mkv = make_unique<Residence>(5, "MKV", 200, 25);
+    unique_ptr<Residence> mkv = make_unique<Residence>(5, "MKV", 200, PropertyBlock::ResidenceBlock, 25);
     nameToProperties.insert({"MKV", mkv.get()});
-    unique_ptr<Residence> uwp = make_unique<Residence>(15, "UWP", 200, 25);
+    unique_ptr<Residence> uwp = make_unique<Residence>(15, "UWP", 200, PropertyBlock::ResidenceBlock, 25);
     nameToProperties.insert({"UWP", uwp.get()});
-    unique_ptr<Residence> v1 = make_unique<Residence>(25, "V1", 200, 25);
+    unique_ptr<Residence> v1 = make_unique<Residence>(25, "V1", 200, PropertyBlock::ResidenceBlock, 25);
     nameToProperties.insert({"V1", v1.get()});
-    unique_ptr<Residence> rev = make_unique<Residence>(35, "REV", 200, 25);
+    unique_ptr<Residence> rev = make_unique<Residence>(35, "REV", 200, PropertyBlock::ResidenceBlock, 25);
     nameToProperties.insert({"REV", rev.get()});
+    propertyBlocks.insert({PropertyBlock::ResidenceBlock, {mkv.get(), uwp.get(), v1.get(), rev.get()}});
 
     // gyms
-    unique_ptr<Gym> pac = make_unique<Gym>(12, "PAC", 150);
+    unique_ptr<Gym> pac = make_unique<Gym>(12, "PAC", 150, PropertyBlock::GymBlock);
     nameToProperties.insert({"PAC", pac.get()});
-    unique_ptr<Gym> cif = make_unique<Gym>(28, "CIF", 150);
+    unique_ptr<Gym> cif = make_unique<Gym>(28, "CIF", 150, PropertyBlock::GymBlock);
     nameToProperties.insert({"CIF", cif.get()});
+    propertyBlocks.insert({PropertyBlock::GymBlock, {pac.get(), cif.get()}});
 
     board.emplace_back(move(collectOSAP));
     board.emplace_back(move(al));
@@ -262,4 +281,12 @@ void GameBoard::trade(Trade trade) {
     else trade.receiver->receiveMoney(trade.giveAmt);
     if (trade.receiveProperty) trade.giver->receiveProperty(*trade.receiveProperty);
     else trade.giver->receiveMoney(trade.receiveAmt); 
+}
+
+void GameBoard::bankrupt(Player &player, Player &payee) {
+    player.bankrupt(payee);
+    for (auto it = players.begin(); it != players.end(); ++it) {
+        if (it->get() == &player) break;
+    }
+    players.erase(it);
 }

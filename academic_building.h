@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "property.h"
+#include "gameboard.h"
 
 class AcademicBuilding : public Property {
     int improvementCost;
@@ -11,7 +12,7 @@ class AcademicBuilding : public Property {
 
   public:
     AcademicBuilding(
-        int location, std::string name, int purchaseCost, int improvementCost, const std::vector<int> &tuition
+        int location, std::string name, int purchaseCost, PropertyBlock block, int improvementCost, const std::vector<int> &tuition
     );
     int getTuition() const override;
     void mortgage() override;

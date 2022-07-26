@@ -3,12 +3,13 @@
 #include "player.h"
 #include "academic_building.h"
 #include "error.h"
+#include "gameboard.h"
 
 using namespace std;
 
 AcademicBuilding::AcademicBuilding(
-  int location, string name, int purchaseCost, int improvementCost, const vector<int> &tuition
-) : Property{location, name, purchaseCost}, improvementCost{improvementCost}, tuition{tuition} {}
+  int location, string name, int purchaseCost, PropertyBlock block, int improvementCost, const vector<int> &tuition
+) : Property{location, name, purchaseCost, block}, improvementCost{improvementCost}, tuition{tuition} {}
 
 int AcademicBuilding::getTuition() const {
   if (numImprovements == 0 && monopoly()) {

@@ -22,6 +22,10 @@ struct Trade {
     Property *receiveProperty = nullptr;
 };
 
+enum PropertyBlock {
+    Arts1, Arts2, Eng, Health, Env, Sci1, Sci2, Math, ResidenceBlock, GymBlock
+};
+
 class GameBoard : public Subject {
     static Auction auction;
     int curPlayer = 0;
@@ -39,6 +43,7 @@ class GameBoard : public Subject {
   public:
     static const int NUM_TILES = 40;
     static const int DC_TIMS_LOCATION = 10;
+    static std::unordered_map<PropertyBlock, std::vector<Property *>> propertyBlocks;
 
     GameBoard();
     void initPlayers(std::vector<Player> &players);
@@ -54,6 +59,7 @@ class GameBoard : public Subject {
     static void startAuction(Property *p);
     Trade createTrade(std::string otherPlayerName, std::string give, std::string receive);
     void trade(Trade trade);
+    void bankrupt(Player &player, Player &payee = nullptr);
 
     friend class Watopoly;
 };

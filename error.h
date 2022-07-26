@@ -3,6 +3,8 @@
 
 #include <string>
 
+class Player;
+
 class Error {
   public:
     virtual std::string getMessage() const = 0;
@@ -44,9 +46,16 @@ class AlreadyRolledError : public Error {
 };
 
 class NotEnoughMoneyError : public Error {
+    float amount;
+    Player *payee;
+
   public:
+    NotEnoughMoneyError(float amount = 0, Player *payee = nullptr) : amount{amount}, payee{payee} {}
+    bool owesMoney() { return amount != 0; }
+    float getAmount() { return amount;}
+    Player *getPayee() { return payee; }
     std::string getMessage() const override {
-        return "Cannot trade money.";
+        return "You do not have enough money. You owe " + payee ? payee->getName() : "The Bank" + " $" + to_string(amount);
     }
 };
 

@@ -3,9 +3,12 @@
 #include "property.h"
 #include "watopoly.h"
 #include "gameboard.h"
+#include "display.h"
 #include "error.h"
 
 using namespace std;
+
+int Player::totalTimsCups = 0;
 
 Player::Player(
     string name, char symbol, float money, int location, int timsCups,
@@ -34,15 +37,15 @@ bool Player::moveBy(int moveBy) {
 int Player::getLocation() const { return location; }
 
 void Player::spendMoney(float amount, bool check) { 
-    if (amount > money) throw NotEnoughMoneyError{};
+    if (amount > money) throw NotEnoughMoneyError{amount};
     if (check) return;
     money -= amount;
-    cout << "Player " << name << " spends $" << amount;
+    Display::printMessage("Player " + name + " spends $" + to_string(amount));
 }
 
 void Player::receiveMoney(float amount) {
     money += amount;
-    cout << "Player " << name << " receives $" << amount;
+    Display::printMessage("Player " + name + " receives $" + to_string(amount));
 }
 
 void Player::offerProperty(Property &property) {
@@ -65,6 +68,7 @@ void Player::giveProperty(Property &property) {
 void Player::receiveProperty(Property &property) {
     ownedProperties.push_back(&property);
     property.setOwner(this);
+    Display::printMessage("Player " + name + " receives property " + property.getName());
 }
 
 void Player::buyProperty(Property &property, int purchaseCost) {
@@ -93,6 +97,7 @@ void Player::unmortgage(Property &property) {
 }
 
 void Player::assets() {
+    // add a display assets method
     cout << endl;
     cout << "Player " << name << "'s assets:" << endl;
     cout << "Money: " << money << endl;
@@ -110,6 +115,7 @@ void Player::incrementNumTurnsInLine() { if (numTurnsInTimsLine < 3) ++numTurnsI
 int Player::getNumTurnsInLine() { return numTurnsInTimsLine; }
 
 void Player::goToTimsLine() {
+    Display::printMessage("You rolled 3 doubles and have been sent to the back of the DC Tims Line!");
     location = GameBoard::DC_TIMS_LOCATION;
     inTimsLine = true;
     numTurnsInTimsLine = 0;
@@ -119,12 +125,18 @@ bool Player::leaveTimsLine() {
     if (inTimsLine) {
         inTimsLine = false;
         numTurnsInTimsLine = 0;
+        Display::printMessage("Congrats! You get to leave the Tims line!");
         return true;
     }
     return false;
 }
 
-void Player::receiveTimsCup() { ++timsCups; }
+void Player::receiveTimsCup() {
+    if (totalTimsCups == 4) return;
+    ++totalTimsCups;
+    ++timsCups;
+    Display::printMessage("Player " + name + " receives a Tims Cup");
+}
 
 void Player::updateNumTurnsInTimsLine() { ++numTurnsInTimsLine; }
 
@@ -132,6 +144,7 @@ void Player::useTimsCup(bool check) {
     if (timsCups == 0) throw NotEnoughCupsError{};
     if (check) return;
     --timsCups; 
+    --totalTimsCups;
     leaveTimsLine();
 }
 
@@ -142,6 +155,25 @@ float Player::getWorth() {
         worth += (property->getImprovementCost() * property->getNumImprovements());
     }
     return worth;
+}
+
+void Player::declareBankrupcy(Player &payee) {
+    if (payee) {
+        payee.receiveMoney(money);
+        for (auto &property : ownedProperties) {
+            payee.receiveProperty(*property);
+        }
+        for (int i = 0; i < timsCups; ++i) {
+            --totalTimsCups;
+            payee.receiveTimsCup();
+        }
+    } else {
+        for (auto &property : ownedProperties) {
+            giveProperty(*property);
+            GameBoard::startAuction(property);
+        }
+        totalTimsCups -= timsCups;
+    }
 }
 
 void Player::visit(Tile &tile) {

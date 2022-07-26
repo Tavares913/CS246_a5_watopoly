@@ -9,6 +9,7 @@ class Property;
 class Watopoly;
 
 class Player {
+    static int totalTimsCups;
     std::string name;
     char symbol;
     int location;
@@ -48,6 +49,7 @@ class Player {
     void useTimsCup(bool check = false);
     float getWorth();
     void visit(Tile &tile);
+    void bankrupt(Player &payee = nullptr);
 
     friend class Watopoly;
 };

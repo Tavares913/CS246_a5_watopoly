@@ -14,6 +14,7 @@
 #include "player.h"
 #include "gameboard.h"
 #include "dc_tims_line.h"
+#include "display.h"
 #include "error.h"
 
 using namespace std;
@@ -38,21 +39,23 @@ pair<int, int> Watopoly::roll(int die1, int die2) {
 
 string Watopoly::getChoice(const string &message, const vector<string> &validChoices) {
     while (true) {
-        cout << message << " ";
-        cout << "(";
+        ostringstream messageBuilder{};
+        messageBuilder << message << " ";
+        messageBuilder << "(";
         bool addDelimiter = false;
         for (auto &choice : validChoices) {
-            if (addDelimiter) cout << "/";
-            cout << choice;
+            if (addDelimiter) messageBuilder << "/";
+            messageBuilder << choice;
             addDelimiter = true;
         }
-        cout << ") ";
+        messageBuilder << ") ";
+        Display::printMessage(messageBuilder.str(), false);
         string c;
         cin >> c;
         if (find(validChoices.begin(), validChoices.end(), c) != validChoices.end()) {
             return c;
         }
-        cout << "Invalid choice, please try again." << endl;
+        Display::printMessage("Invalid choice, please try again.");
     }
 }
 
@@ -61,17 +64,18 @@ void Watopoly::initPlayers() {
     string curPlayerName;
     char curPlayerSymbol;
 
-    cout << "How many players are playing? ";
+    Display::printMessage("How many players are playing? ", false);
     cin >> numPlayers;
 
     vector<Player> players;
     for (int i = 0; i < numPlayers; ++i) {
         while (true) {
-            cout << "The following pieces are available to choose from: ";
-            for (auto &piece : playerPieces) cout << piece.first << "  ";
-            cout << endl;
+            ostringstream piecesMessageBuilder{};
+            piecesMessageBuilder << "The following pieces are available to choose from: ";
+            for (auto &piece : playerPieces) piecesMessageBuilder << piece.first << "  ";
+            Display::printMessage(piecesMessageBuilder.str());
 
-            cout << "Player " << i + 1 << " - choose your piece: ";
+            Display::printMessage("Player " + to_string(i + 1) + " - choose your piece: ", false);
             cin >> curPlayerSymbol;
 
             try {
@@ -80,7 +84,7 @@ void Watopoly::initPlayers() {
                 players.emplace_back(Player{curPlayerName, curPlayerSymbol});
                 break;
             } catch (...) {
-                cout << "That piece is not available. Please try again." << endl;
+                Display::printMessage("That piece is not available. Please try again.");
             }
         }
     }
@@ -122,7 +126,7 @@ void Watopoly::load(string filename) {
         );
     }
     gameboard.initPlayers(players);
-    cout << "Loaded " << numPlayers << " players." << endl; 
+    Display::printMessage("Loaded " + to_string(numPlayers) + " players.");
 
     // properties
     string propertyName;
@@ -149,8 +153,7 @@ void Watopoly::load(string filename) {
     }
 
     file.close();
-
-    cout << "Game load complete!" << endl;
+    Display::printMessage("Game load complete!");
 }
 
 void Watopoly::save(string filename) {
@@ -184,23 +187,20 @@ void Watopoly::save(string filename) {
     }
 
     file.close();
-    cout << "Saved to " << filename << endl;
+    Display::printMessage("Saved to " + filename);
 }
 
 void Watopoly::play() {
-    cout << "Welcome to Watopoly!" << endl;
-    gameboard.display->print();
+    Display::printMessage("Welcome to Watopoly!");
     while (true) {
         string cmd;
         Player &curPlayer = gameboard.getCurPlayer();
-        // gameboard.display.print();
-        // cout << "\033[2J\033[1;1H";
-        cout << endl;
-        cout << curPlayer.getName() << "'s turn." << endl; 
+        Display::printMessage(curPlayer.getName() + "'s turn.");
         bool hasRolled = false;
         int numDoubles = 0;
+        NotEnoughMoneyError notEnoughMoney;
         while (true) {
-            cout << "Enter command: ";
+            Display::printMessage("Enter command: ", false);
             string cmd;
             cin >> cmd;
             try {
@@ -219,15 +219,11 @@ void Watopoly::play() {
                             }
                         }
                         pair<int, int> roll = this->roll(die1, die2);
-                        cout << "You rolled " << roll.first << " and " << roll.second << "." << endl;
+                        Display::printMessage("You rolled " + to_string(roll.first) + " and " + to_string(roll.second) + "." );
                         if (roll.first == roll.second) {
-                            if (curPlayer.leaveTimsLine()) {
-                                cout << "Congrats! You get to leave the Tims line!" << endl;
-                                hasRolled = true;
-                            }
+                            if (curPlayer.leaveTimsLine()) hasRolled = true;
                             ++numDoubles;
                             if (numDoubles == 3) {
-                                cout << "You rolled 3 doubles and have been sent to the back of the DC Tims Line!" << endl;
                                 curPlayer.goToTimsLine();
                                 hasRolled = true;
                                 continue;
@@ -253,15 +249,10 @@ void Watopoly::play() {
                     cin >> receive;
 
                     Trade trade;
-                    try {
-                        trade = gameboard.createTrade(tradeWith, give, receive);
-                    } catch (...) {
-                        cout << "Invalid trade. ";
-                        throw;
-                    }
+                    trade = gameboard.createTrade(tradeWith, give, receive);
 
                     string response;
-                    cout << "Player " << tradeWith << ": Accept trade? (accept/reject) ";
+                    Display::printMessage("Player " + tradeWith + ": Accept trade? (accept/reject) ");
                     cin >> response;
 
                     if (response == "accept") gameboard.trade(trade);
@@ -283,7 +274,8 @@ void Watopoly::play() {
                     cin >> propertyName;
                     gameboard.unmortgage(curPlayer, propertyName);
                 } else if (cmd == "bankrupt") {
-
+                    if (!notEnoughMoney.owesMoney()) throw InvalidCommandError{};
+                    gameboard.bankrupt(curPlayer, *payee);
                 } else if (cmd == "assets") {
                     curPlayer.assets();
                 } else if (cmd == "all") {
@@ -297,10 +289,22 @@ void Watopoly::play() {
                 } else {
                     throw InvalidCommandError{};
                 }
+                if (notEnoughMoney.owesMoney()) {
+                    try {
+                        curPlayer.spendMoney(notEnoughMoney.getAmount());
+                        if (notEnoughMoney.getPayee()) {
+                            notEnoughMoney.getPayee()->receiveMoney(notEnoughMoney.getAmount());
+                        }
+                    } catch (NotEnoughMoneyError &e) {
+                        throw notEnoughMoney;
+                    }
+                }
+            } catch (NotEnoughMoneyError &e) {
+                Display::printMessage(e.getMessage());
+                notEnoughMoney = e;
             } catch (Error &e) {
-                cout << e.getMessage() << endl; 
+                Display::printMessage(e.getMessage());
             }
-            cout << endl;
         }
     }
 }
