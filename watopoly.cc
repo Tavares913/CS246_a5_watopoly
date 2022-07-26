@@ -298,6 +298,7 @@ void Watopoly::play() {
                         if (notEnoughMoney.getPayee()) {
                             notEnoughMoney.getPayee()->receiveMoney(notEnoughMoney.getAmount());
                         }
+                        notEnoughMoney = NotEnoughMoneyError{};
                     } catch (NotEnoughMoneyError &e) {
                         throw notEnoughMoney;
                     }
