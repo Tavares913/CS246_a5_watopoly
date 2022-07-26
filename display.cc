@@ -166,22 +166,24 @@ void Display::print() {
 }
 
 pair<int, int> mapTileLocToDisplay(int tileLocation) {
-    int coord1;
-    int coord2;
+    int coord1 = 0;
+    int coord2 = 0;
     if (tileLocation < 10) {
         coord1 = 10;
         coord2 = 10 - tileLocation;
     } else if (tileLocation < 20) {
-        coord1 = 0;
-        coord2 = 10 - tileLocation % 10;
-    } else if (tileLocation < 30) {
+        coord1 = 10 - tileLocation % 10;
         coord2 = 0;
-        coord1 = tileLocation % 10;
+    } else if (tileLocation < 30) {
+        coord1 = 0;
+        coord2 = tileLocation % 10;
     } else if (tileLocation < 40) {
-        coord2 = 10;
-        coord1 = tileLocation % 10;
+        coord1 = 10;
+        coord2 = tileLocation % 10;
     }
 
+    // cout << tileLocation << endl;
+    // cout << coord1 << " " << coord2 << endl;
     return pair<int, int>(coord1, coord2);
 }
 
