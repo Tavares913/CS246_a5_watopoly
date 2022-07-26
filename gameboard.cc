@@ -241,7 +241,7 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
     bool giveMoney = false;
     if (!(giveStream >> giveAmt)) {
         giveProperty = &getPropertyByName(give);
-        if (!giveProperty->tradeable()) throw NotTradeablePropertyError{};
+        giveProperty->tradeable();
     } else giveMoney = true;
 
     istringstream receiveStream{receive};
@@ -249,7 +249,7 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
     Property *receiveProperty = nullptr;
     if (!(receiveStream >> receiveAmt)) {
         receiveProperty = &getPropertyByName(receive);
-        if (!receiveProperty->tradeable()) throw NotTradeablePropertyError{};
+        receiveProperty->tradeable();
     } else {
         if (giveMoney) throw TradeMoneyError{};
     }

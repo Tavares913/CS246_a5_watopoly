@@ -13,8 +13,11 @@ using namespace std;
 DCTimsLine::DCTimsLine(int location) : NonProperty{location, "DC Tims Line"} {}
 
 void DCTimsLine::visit(Player &p) {
+    if (!p.isInTimsLine()) return;
+
     string c;
-    if (p.getTimsCups() > 0) {
+    try {
+        p.useTimsCup(true);
         c = Watopoly::getChoice(
             "Would you like to use a Roll Up The Rim cup?",
             vector<string>{"y", "n"}
@@ -23,8 +26,10 @@ void DCTimsLine::visit(Player &p) {
             p.useTimsCup();
             return;
         }
-    }
-    if (p.getMoney() >= priceOfCoffee) {
+    } catch (NotEnoughCupsError) {}
+
+    try {
+        p.spendMoney(priceOfCoffee, true);
         c = Watopoly::getChoice(
             "Would you like to pay $" + to_string(priceOfCoffee) + "to leave the Tim's line?",
             vector<string>{"y", "n"}
@@ -34,7 +39,7 @@ void DCTimsLine::visit(Player &p) {
             p.leaveTimsLine();
             return;
         }
-    }
+    } catch (NotEnoughMoneyError) {}
 
     p.incrementNumTurnsInLine();
     if (p.getNumTurnsInLine() == 3) {

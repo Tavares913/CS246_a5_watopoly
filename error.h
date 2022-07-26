@@ -1,32 +1,123 @@
 #ifndef __ERROR_H__
 #define __ERROR_H__
 
-class Error {};
+#include <string>
 
-class InvalidCommandError : public Error {};
+class Error {
+  public:
+    virtual std::string getMessage() const { return ""; };
+};
 
-class InvalidPropertyNameError : public Error {};
+class InvalidCommandError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "Invalid command - please try again.";
+    }
+};
 
-class InvalidPlayerNameError : public Error {};
+class InvalidPropertyNameError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "Invalid property name: please try again.";
+    }
+};
 
-class NextWithoutRollError : public Error {};
+class InvalidPlayerNameError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "Invalid player name: please try again.";
+    }
+};
 
-class NotEnoughMoneyError : public Error {};
+class NextWithoutRollError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "You must roll before ending your turn.";
+    }
+};
 
-class NotEnoughCupsError : public Error {};
+class NotEnoughMoneyError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "Cannot trade money.";
+    }
+};
 
-class TradeMoneyError : public Error {};
+class NotEnoughCupsError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "Not enough Tims cups!";
+    }
+};
 
-class NotTradeablePropertyError : public Error {};
+class InvalidTradeError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "Invalid trade: ";
+    }
+};
 
-class CannotImproveError : public Error {};
+class TradeMoneyError : public InvalidTradeError {
+  public:
+    std::string getMessage() const override {
+        return InvalidTradeError::getMessage() + "cannot trade money.";
+    }
+};
 
-class MaxImprovementsError : public Error {};
+class NotTradeablePropertyError : public InvalidTradeError {
+  public:
+    std::string getMessage() const override {
+        return InvalidTradeError::getMessage() + "this property cannot be traded - ";
+    }
+};
 
-class MinImprovementsError : public Error {};
+class PropertyWithImprovementsError : public NotTradeablePropertyError {
+  public:
+    std::string getMessage() const override {
+        return NotTradeablePropertyError::getMessage() + "other properties in block have improvements.";
+    }
+};
 
-class NoMonopolyError : public Error {};
+class MortgagedPropertyError : public NotTradeablePropertyError {
+  public:
+    std::string getMessage() const override {
+        return InvalidTradeError::getMessage() + "it has been mortgaged.";
+    }
+};
 
-class CannotMortgageWithImprovementsError : public Error {};
+class CannotImproveError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "Only Academic Buildings can be improved.";
+    }
+};
+
+class MaxImprovementsError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "Maximum number of improvements reached!";
+    }
+};
+
+class MinImprovementsError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "No improvements on building so cannot sell!";
+    }
+};
+
+class NoMonopolyError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "Cannot improve buildings without a monopoly";
+    }
+};
+
+class CannotMortgageWithImprovementsError : public Error {
+  public:
+    std::string getMessage() const override {
+        return "Cannot mortgage a building that has improvements on it.";
+    }
+};
 
 #endif

@@ -18,7 +18,7 @@ class Watopoly {
 
   public:
     Watopoly(std::string loadfile = "", bool testing = false);
-    static std::pair<int, int> roll();
+    static std::pair<int, int> roll(int die1 = 0, int die2 = 0);
     static std::string getChoice(
         const std::string &message, const std::vector<std::string> &validChoices
     );

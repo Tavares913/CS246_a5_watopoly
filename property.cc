@@ -55,10 +55,13 @@ void Property::visit(Player &p) {
 }
 
 bool Property::tradeable() const {
+    if (mortgaged) throw MortgagedPropertyError{};
     if (monopoly()) {
         for (auto otherProperty : propertyBlock) {
-            if (otherProperty->getNumImprovements() > 0) return false;
+            if (otherProperty->getNumImprovements() > 0) {
+                throw PropertyWithImprovementsError{};
+            }
         }
     }
-    return !mortgaged;
+    return true;
 }

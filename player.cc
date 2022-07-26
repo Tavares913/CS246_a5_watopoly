@@ -17,7 +17,7 @@ string Player::getName() const { return name; }
 
 char Player::getSymbol() const { return symbol; }
 
-float Player::getMoney() const { return money; }
+bool Player::isInTimsLine() const { return inTimsLine; }
 
 void Player::moveBy(int moveBy) {
     if (!inTimsLine) {
@@ -29,8 +29,9 @@ void Player::moveBy(int moveBy) {
 
 int Player::getLocation() const { return location; }
 
-void Player::spendMoney(float amount) { 
+void Player::spendMoney(float amount, bool check) { 
     if (amount > money) throw NotEnoughMoneyError{};
+    if (check) return;
     money -= amount;
 }
 
@@ -101,8 +102,6 @@ void Player::assets() {
     cout << endl;
 }
 
-int Player::getTimsCups() { return timsCups; }
-
 void Player::incrementNumTurnsInLine() { if (numTurnsInTimsLine < 3) ++numTurnsInTimsLine; }
 
 int Player::getNumTurnsInLine() { return numTurnsInTimsLine; }
@@ -126,8 +125,9 @@ void Player::receiveTimsCup() { ++timsCups; }
 
 void Player::updateNumTurnsInTimsLine() { ++numTurnsInTimsLine; }
 
-void Player::useTimsCup() {
+void Player::useTimsCup(bool check) {
     if (timsCups == 0) throw NotEnoughCupsError{};
+    if (check) return;
     --timsCups; 
     leaveTimsLine();
 }

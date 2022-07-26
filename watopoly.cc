@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <vector>
 #include <unordered_map>
 #include <memory>
@@ -27,9 +28,11 @@ unordered_map<char, string> Watopoly::playerPieces = {
     {'P', "Professor"}, {'S', "Student"}, {'$', "Money"}, {'L', "Laptop"}
 };
 
-pair<int, int> Watopoly::roll() {
-    int die1 = rand() % 6 + 1;
-    int die2 = rand() % 6 + 1;
+pair<int, int> Watopoly::roll(int die1, int die2) {
+    if (!die1 || !die2) {
+        die1 = rand() % 6 + 1;
+        die2 = rand() % 6 + 1;
+    }
     return pair<int, int>{die1, die2};
 }
 
@@ -191,19 +194,31 @@ void Watopoly::play() {
         string cmd;
         Player &curPlayer = gameboard.getCurPlayer();
         // gameboard.display.print();
-        cout << "\033[2J\033[1;1H";
+        // cout << "\033[2J\033[1;1H";
         cout << endl;
         cout << curPlayer.getName() << "'s turn." << endl; 
         bool hasRolled = false;
         int numDoubles = 0;
         while (true) {
             cout << "Enter command: ";
+            string cmd;
             cin >> cmd;
             try {
+                if (cin.fail()) return;
                 if (cmd == "roll") {
                     if (hasRolled) cout << "You have already rolled for this turn." << endl;
                     else {
-                        pair<int, int> roll = this->roll();
+                        int die1 = 0;
+                        int die2 = 0;
+                        if (testing) {
+                            string actualRoll;
+                            getline(cin, actualRoll);
+                            istringstream rollStream{actualRoll};
+                            if (rollStream >> die1) {
+                                rollStream >> die2;
+                            }
+                        }
+                        pair<int, int> roll = this->roll(die1, die2);
                         cout << "You rolled " << roll.first << " and " << roll.second << "." << endl;
                         if (roll.first == roll.second) {
                             if (curPlayer.leaveTimsLine()) {
@@ -282,28 +297,8 @@ void Watopoly::play() {
                 } else {
                     throw InvalidCommandError{};
                 }
-            } catch (InvalidCommandError e) {
-                cout << "Invalid command - please try again." << endl;
-            } catch (NextWithoutRollError e) {
-                cout << "You must roll before ending your turn." << endl;
-            } catch (InvalidPropertyNameError e) {
-                cout << "Invalid property name: please try again." << endl;
-            } catch (InvalidPlayerNameError e) {
-                cout << "Invalid player name: please try again." << endl;
-            } catch (TradeMoneyError e) {
-                cout << "Cannot trade money." << endl;
-            } catch (NotTradeablePropertyError e) {
-                cout << "Property cannot be traded - other properties in block have improvements." << endl;
-            } catch (CannotImproveError e) {
-                cout << "Only Academic Buildings can be improved." << endl;
-            } catch (NoMonopolyError e) {
-                cout << "Cannot improve buildings without a monopoly" << endl;
-            } catch (MaxImprovementsError e) {
-                cout << "Maximum number of improvements reached!" << endl;
-            } catch (MinImprovementsError e) {
-                cout << "No improvements on building so cannot sell!" << endl;
-            } catch (CannotMortgageWithImprovementsError e) {
-                cout << "Cannot mortgage a building that has improvements on it." << endl;
+            } catch (Error e) {
+                cout << e.getMessage() << endl; 
             }
             cout << endl;
         }

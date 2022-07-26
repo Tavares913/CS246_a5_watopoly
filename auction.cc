@@ -13,6 +13,11 @@ void Auction::nextPlayer() {
     if (curPlayer == players.size()) curPlayer = 0;
 }
 
+Player &Auction::curWinner() {
+    if (curPlayer == 0) return players[players.size() - 1];
+    return players[curPlayer - 1];
+}
+
 void Auction::setPlayers(vector<unique_ptr<Player>> &players) {
     for (auto &player : players) {
         this->players.emplace_back(player.get());
@@ -30,6 +35,8 @@ void Auction::auction() {
         if (players.size() == 1) {
             break;
         }
+        
+        if (propPrice > 0) cout << "Current Winner: " << curWinner().
 
         int amountToRaise = 0;
         cout << "Player " << players[0]->getName() << ": Would you like to raise or withdraw? ";
