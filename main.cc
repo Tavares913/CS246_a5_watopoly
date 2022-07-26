@@ -11,7 +11,7 @@ void invalidUsage(string cmd) {
 }
 
 int main(int argc, char *argv[]) {
-    srand(time[0]);
+    srand(time(0));
     bool testing = false;
     string loadfile = "";
 
