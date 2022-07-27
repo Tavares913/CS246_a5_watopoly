@@ -277,7 +277,11 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
         giveProperty = &getPropertyByName(give);
         giveProperty->tradeable();
         if (giveProperty->getOwner() != curPlayer) throw NotOwnerTradeError{};
-    } else giveMoney = true;
+    } else {
+        try { curPlayer->spendMoney(giveAmt, true); }
+        catch (NotEnoughMoneyError e) { throw NotEnoughMoneyForTradeError{}; }
+        giveMoney = true;
+    }
 
     istringstream receiveStream{receive};
     float receiveAmt = 0;
@@ -288,18 +292,24 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
         if (receiveProperty->getOwner() != otherPlayer) throw NotOwnerTradeError{};
     } else {
         if (giveMoney) throw TradeMoneyError{};
+        try { otherPlayer->spendMoney(receiveAmt, true); }
+        catch (NotEnoughMoneyError e) { throw NotEnoughMoneyForTradeError{}; }
     }
 
     return Trade{curPlayer, giveAmt, giveProperty, otherPlayer, receiveAmt, receiveProperty};
 }
 
 void GameBoard::trade(Trade &trade) {
-    if (trade.giveAmt) trade.receiver->receiveMoney(trade.giveAmt);
-    else {
+    if (trade.giveAmt) {
+        trade.receiver->receiveMoney(trade.giveAmt);
+        trade.giver->spendMoney(trade.giveAmt);
+    } else {
         trade.giver->giveProperty(*trade.giveProperty);
         trade.receiver->receiveProperty(*trade.giveProperty);
-    } if (trade.receiveAmt) trade.giver->receiveMoney(trade.receiveAmt);
-    else {
+    } if (trade.receiveAmt) {
+        trade.giver->receiveMoney(trade.receiveAmt);
+        trade.receiver->spendMoney(trade.receiveAmt);
+    } else {
         trade.receiver->giveProperty(*trade.receiveProperty);
         trade.giver->receiveProperty(*trade.receiveProperty);
     }

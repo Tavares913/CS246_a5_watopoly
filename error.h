@@ -86,7 +86,14 @@ class TradeMoneyError : public InvalidTradeError {
 class NotTradeablePropertyError : public InvalidTradeError {
   public:
     std::string getMessage() const override {
-        return InvalidTradeError::getMessage() + "this property cannot be traded - ";
+        return InvalidTradeError::getMessage() + "this property cannot be traded.";
+    }
+};
+
+class NotEnoughMoneyForTradeError : public InvalidTradeError {
+  public:
+    std::string getMessage() const override {
+        return InvalidTradeError::getMessage() + "not enough money for trade.";
     }
 };
 
