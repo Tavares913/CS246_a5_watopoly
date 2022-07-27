@@ -201,8 +201,6 @@ void GameBoard::moveCurPlayer(int moveBy) {
     int oldTile = curPlayer.getLocation();
     if (curPlayer.moveBy(moveBy)) curPlayer.visit(*board[0]);
     int newTile = curPlayer.getLocation();
-    cout << oldTile << endl;
-    cout << newTile << endl;
     display->notify(PlayerMove{oldTile, newTile, curPlayer.getSymbol()});
     display->print();
     curPlayer.visit(*board[newTile]);

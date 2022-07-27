@@ -25,7 +25,6 @@ bool Player::isInTimsLine() const { return inTimsLine; }
 
 bool Player::moveBy(int moveBy) {
     if (!inTimsLine) {
-        cout << "not in tims line" << endl;
         location += moveBy;
         if (location >= GameBoard::NUM_TILES) {
             location %= GameBoard::NUM_TILES;
@@ -33,7 +32,6 @@ bool Player::moveBy(int moveBy) {
         }
         if (location < 0) location += GameBoard::NUM_TILES;
     }
-    cout << "in tims line" << endl;
     return false;
 }
 
