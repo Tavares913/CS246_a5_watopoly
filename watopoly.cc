@@ -92,7 +92,7 @@ void Watopoly::initPlayers() {
 }
 
 void Watopoly::load(string filename) {
-    ifstream file{filename};
+    ifstream readFile{filename};
 
     // players
     int numPlayers;
@@ -104,21 +104,21 @@ void Watopoly::load(string filename) {
     bool inTimsLine;
     int numTurnsInTimsLine;
 
-    cin >> numPlayers;
+    readFile >> numPlayers;
     vector<Player> players;
     for (int i = 0; i < numPlayers; ++i) {
-        cin >> playerName;
+        readFile >> playerName;
         replace(playerName.begin(), playerName.end(), '_', ' ');
-        cin >> playerSymbol;
-        cin >> timsCups;
-        cin >> money;
-        cin >> location;
+        readFile >> playerSymbol;
+        readFile >> timsCups;
+        readFile >> money;
+        readFile >> location;
 
         inTimsLine = false;
         numTurnsInTimsLine = 0;
         if (location == gameboard.DC_TIMS_LOCATION) {
-            cin >> inTimsLine;
-            if (inTimsLine) cin >> numTurnsInTimsLine;
+            readFile >> inTimsLine;
+            if (inTimsLine) readFile >> numTurnsInTimsLine;
         }
 
         players.emplace_back(
@@ -134,9 +134,9 @@ void Watopoly::load(string filename) {
     int numImprovements;
 
     for (int i = 0; i < gameboard.nameToProperties.size(); ++i) {
-        cin >> propertyName;
-        cin >> ownerName;
-        cin >> numImprovements;
+        readFile >> propertyName;
+        readFile >> ownerName;
+        readFile >> numImprovements;
 
         Property *property = gameboard.nameToProperties[propertyName];
         if (ownerName != "BANK") {
@@ -152,7 +152,7 @@ void Watopoly::load(string filename) {
         else property->numImprovements = numImprovements;
     }
 
-    file.close();
+    readFile.close();
     Display::printMessage("Game load complete!");
 }
 

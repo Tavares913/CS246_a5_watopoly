@@ -1,12 +1,12 @@
 2
-Laptop L 0 1380 9
-Student S 0 1500 0
+Professor P 0 4 3
+Student S 0 6 39
 AL BANK 0
-ML BANK 0
+ML Professor 0
 MKV BANK 0
 ECH BANK 0
 PAS BANK 0
-HH Laptop 0
+HH BANK 0
 RCH BANK 0
 PAC BANK 0
 DWE BANK 0
@@ -27,5 +27,5 @@ EIT BANK 0
 ESC BANK 0
 C2 BANK 0
 REV BANK 0
-MC BANK 0
-DC BANK 0
+MC Laptop 0
+DC Student 0
