@@ -48,6 +48,7 @@ class GameBoard : public Subject {
     GameBoard();
     void initPlayers(std::vector<Player> &players);
     Player &getCurPlayer() const;
+    void setCurPlayer(Player *player);
     void moveCurPlayer(int moveBy);
     void next();
     void buyImprovement(Player &p, std::string propertyName);

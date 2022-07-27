@@ -26,7 +26,7 @@ void DCTimsLine::visit(Player &p) {
             p.useTimsCup();
             return;
         }
-    } catch (NotEnoughCupsError) {}
+    } catch (NotEnoughCupsError e) {}
 
     try {
         p.spendMoney(priceOfCoffee, true);
@@ -39,7 +39,7 @@ void DCTimsLine::visit(Player &p) {
             p.leaveTimsLine();
             return;
         }
-    } catch (NotEnoughMoneyError) {}
+    } catch (NotEnoughMoneyError e) {}
 
     p.incrementNumTurnsInLine();
     if (p.getNumTurnsInLine() == 3) {

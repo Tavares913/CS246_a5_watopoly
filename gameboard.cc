@@ -186,6 +186,15 @@ Player &GameBoard::getCurPlayer() const {
     return *players[curPlayer];
 }
 
+void GameBoard::setCurPlayer(Player *player) {
+    for (int i = 0; i < players.size(); ++i) {
+        if (players[i].get() == player) {
+            curPlayer = i;
+            return;
+        }
+    }
+}
+
 void GameBoard::moveCurPlayer(int moveBy) {
     Player &curPlayer = getCurPlayer();
     int oldTile = curPlayer.getLocation();
@@ -261,6 +270,7 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
     if (!(giveStream >> giveAmt)) {
         giveProperty = &getPropertyByName(give);
         giveProperty->tradeable();
+        if (giveProperty->getOwner() != curPlayer) throw NotOwnerTradeError{};
     } else giveMoney = true;
 
     istringstream receiveStream{receive};
@@ -269,6 +279,7 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
     if (!(receiveStream >> receiveAmt)) {
         receiveProperty = &getPropertyByName(receive);
         receiveProperty->tradeable();
+        if (receiveProperty->getOwner() != otherPlayer) throw NotOwnerTradeError{};
     } else {
         if (giveMoney) throw TradeMoneyError{};
     }

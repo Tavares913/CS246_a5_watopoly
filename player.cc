@@ -37,7 +37,7 @@ bool Player::moveBy(int moveBy) {
 int Player::getLocation() const { return location; }
 
 void Player::spendMoney(float amount, bool check) { 
-    if (amount > money) throw NotEnoughMoneyError{amount};
+    if (amount > money) throw NotEnoughMoneyError{this, amount};
     if (check) return;
     money -= amount;
     Display::printMessage("Player " + name + " spends $" + to_string(amount));
@@ -182,7 +182,7 @@ void Player::bankrupt(Player *payee) {
                 payee->receiveProperty(*property);
             } catch (NotEnoughMoneyError e) {
                 Display::printMessage(e.getMessage());
-                notEnoughMoney = NotEnoughMoneyError{notEnoughMoney.getAmount() + e.getAmount()};
+                notEnoughMoney = NotEnoughMoneyError{this, notEnoughMoney.getAmount() + e.getAmount()};
             }
         }
         if (notEnoughMoney.owesMoney()) throw notEnoughMoney;

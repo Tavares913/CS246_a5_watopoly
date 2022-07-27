@@ -46,14 +46,17 @@ class AlreadyRolledError : public Error {
 };
 
 class NotEnoughMoneyError : public Error {
+    Player *player;
     float amount;
     Player *payee;
 
   public:
-    NotEnoughMoneyError(float amount = 0, Player *payee = nullptr) : amount{amount}, payee{payee} {}
-    bool owesMoney() { return amount != 0; }
-    float getAmount() { return amount;}
-    Player *getPayee() { return payee; }
+    NotEnoughMoneyError(Player *player = nullptr, float amount = 0, Player *payee = nullptr) 
+      : player{player}, amount{amount}, payee{payee} {}
+    Player *getPlayer() const { return player; }
+    bool owesMoney() const { return amount != 0; }
+    float getAmount() const { return amount;}
+    Player *getPayee() const { return payee; }
     std::string getMessage() const override {
         return "You do not have enough money. You owe " + (payee ? payee->getName() : "The Bank") + " $" + to_string(amount);
     }
@@ -98,6 +101,13 @@ class MortgagedPropertyError : public NotTradeablePropertyError {
   public:
     std::string getMessage() const override {
         return InvalidTradeError::getMessage() + "it has been mortgaged.";
+    }
+};
+
+class NotOwnerTradeError : public NotTradeablePropertyError {
+  public:
+    std::string getMessage() const override {
+        return InvalidTradeError::getMessage() + "not the owner.";
     }
 };
 

@@ -49,7 +49,7 @@ void Property::visit(Player &p) {
             owner->receiveMoney(tuition);
             return;
         } catch (NotEnoughMoneyError &e) {
-            throw NotEnoughMoneyError{e.getAmount(), owner};
+            throw NotEnoughMoneyError{&p, e.getAmount(), owner};
         }
     }
 

@@ -192,6 +192,7 @@ void Watopoly::save(string filename) {
 
 void Watopoly::play() {
     Display::printMessage("Welcome to Watopoly!");
+    NotEnoughMoneyError notEnoughMoney;
     while (true) {
         string cmd;
         if (gameboard.checkWinner()) return;
@@ -199,8 +200,16 @@ void Watopoly::play() {
         Display::printMessage(curPlayer.getName() + "'s turn.");
         bool hasRolled = false;
         int numDoubles = 0;
-        NotEnoughMoneyError notEnoughMoney;
         while (true) {
+            if (notEnoughMoney.owesMoney()) {
+                try {
+                    curPlayer.spendMoney(notEnoughMoney.getAmount());
+                    if (notEnoughMoney.getPayee()) {
+                        notEnoughMoney.getPayee()->receiveMoney(notEnoughMoney.getAmount());
+                    }
+                    notEnoughMoney = NotEnoughMoneyError{};
+                } catch (NotEnoughMoneyError &e) {}
+            }
             Display::printMessage("Enter command: ", false);
             string cmd;
             cin >> cmd;
@@ -236,6 +245,7 @@ void Watopoly::play() {
                     }
                 } else if (cmd == "next") {
                     if (!hasRolled) throw NextWithoutRollError{};
+                    if (notEnoughMoney.owesMoney()) throw notEnoughMoney;
                     else {
                         gameboard.next();
                         break;
@@ -276,11 +286,13 @@ void Watopoly::play() {
                     gameboard.unmortgage(curPlayer, propertyName);
                 } else if (cmd == "bankrupt") {
                     if (!notEnoughMoney.owesMoney()) throw InvalidCommandError{};
-                    gameboard.next();
                     try {
                         gameboard.bankrupt(&curPlayer, notEnoughMoney.getPayee());
+                        gameboard.next();
+                        notEnoughMoney = NotEnoughMoneyError{};
                     } catch (NotEnoughMoneyError &e) {
                         notEnoughMoney = e;
+                        gameboard.setCurPlayer(e.getPlayer());
                     }
                     break;
                 } else if (cmd == "assets") {
@@ -295,17 +307,6 @@ void Watopoly::play() {
                     return;
                 } else {
                     throw InvalidCommandError{};
-                }
-                if (notEnoughMoney.owesMoney()) {
-                    try {
-                        curPlayer.spendMoney(notEnoughMoney.getAmount());
-                        if (notEnoughMoney.getPayee()) {
-                            notEnoughMoney.getPayee()->receiveMoney(notEnoughMoney.getAmount());
-                        }
-                        notEnoughMoney = NotEnoughMoneyError{};
-                    } catch (NotEnoughMoneyError &e) {
-                        throw notEnoughMoney;
-                    }
                 }
             } catch (NotEnoughMoneyError &e) {
                 Display::printMessage(e.getMessage());
