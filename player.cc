@@ -67,7 +67,7 @@ void Player::giveProperty(Property &property) {
 }
 
 void Player::receiveProperty(Property &property) {
-    ownedProperties.push_back(&property);
+    ownedProperties.emplace_back(&property);
     property.setOwner(this);
     Display::printMessage("Player " + name + " receives property " + property.getName());
     if (property.getNumImprovements() == -1) {

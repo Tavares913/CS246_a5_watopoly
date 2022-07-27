@@ -178,8 +178,8 @@ void GameBoard::initBoard() {
 void GameBoard::initPlayers(vector<Player> &players) {
     for (auto &player : players) {
         unique_ptr<Player> playerPtr = make_unique<Player>(player);
+        nameToPlayers.insert({playerPtr->getName(), playerPtr.get()});
         this->players.emplace_back(move(playerPtr));
-        nameToPlayers.insert({player.getName(), playerPtr.get()});
     }
     auction.setPlayers(this->players);
 }
@@ -277,7 +277,6 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
         giveProperty = &getPropertyByName(give);
         giveProperty->tradeable();
         if (giveProperty->getOwner() != curPlayer) throw NotOwnerTradeError{};
-        cout << giveProperty->getName() << endl;
     } else giveMoney = true;
 
     istringstream receiveStream{receive};
@@ -287,7 +286,6 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
         receiveProperty = &getPropertyByName(receive);
         receiveProperty->tradeable();
         if (receiveProperty->getOwner() != otherPlayer) throw NotOwnerTradeError{};
-        cout << receiveProperty->getName() << endl;
     } else {
         if (giveMoney) throw TradeMoneyError{};
     }
@@ -296,10 +294,15 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
 }
 
 void GameBoard::trade(Trade &trade) {
-    if (trade.giveProperty) trade.receiver->receiveProperty(*trade.giveProperty);
-    else trade.receiver->receiveMoney(trade.giveAmt);
-    if (trade.receiveProperty) trade.giver->receiveProperty(*trade.receiveProperty);
-    else trade.giver->receiveMoney(trade.receiveAmt); 
+    if (trade.giveAmt) trade.receiver->receiveMoney(trade.giveAmt);
+    else {
+        trade.giver->giveProperty(*trade.giveProperty);
+        trade.receiver->receiveProperty(*trade.giveProperty);
+    } if (trade.receiveAmt) trade.giver->receiveMoney(trade.receiveAmt);
+    else {
+        trade.receiver->giveProperty(*trade.receiveProperty);
+        trade.giver->receiveProperty(*trade.receiveProperty);
+    }
 }
 
 void GameBoard::bankrupt(Player *player, Player *payee) {
