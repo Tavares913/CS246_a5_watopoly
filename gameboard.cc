@@ -6,6 +6,7 @@
 #include <utility>
 #include <sstream>
 #include "gameboard.h"
+#include "display_messages.h"
 #include "tile.h"
 #include "auction.h"
 #include "player.h"
