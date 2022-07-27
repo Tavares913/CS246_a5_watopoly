@@ -1,5 +1,5 @@
 2
-Professor P 0 1290 3
+Professor P 3 1290 10 1 2
 Student S 0 1450 39
 AL BANK 0
 ML Professor 0

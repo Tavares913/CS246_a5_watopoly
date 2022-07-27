@@ -19,6 +19,7 @@ class Auction {
 
   public:
     void setPlayers(std::vector<std::unique_ptr<Player>> &players);
+    void removePlayer(Player *player);
     void setProperty(Property *property);
     void auction(int curPlayerIdx = 0);
 };

@@ -29,6 +29,10 @@ void Auction::setPlayers(vector<unique_ptr<Player>> &players) {
     }
 }
 
+void Auction::removePlayer(Player *player) {
+    players.erase(find(players.begin(), players.end(), player));
+}
+
 void Auction::setProperty(Property *property) { this->property = property; }
 
 void Auction::auction(int curPlayerIdx) {

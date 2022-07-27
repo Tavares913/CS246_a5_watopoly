@@ -321,6 +321,7 @@ void GameBoard::bankrupt(Player *player, Player *payee) {
     for (; it != players.end(); ++it) {
         if (it->get() == player) break;
     }
+    auction.removePlayer(player);
     player->bankrupt(payee);
     players.erase(it);
 }

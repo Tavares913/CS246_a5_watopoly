@@ -42,6 +42,7 @@ void Property::sellImprovement() { throw CannotImproveError{}; }
 int Property::getImprovementCost() const { throw CannotImproveError{}; }
 
 void Property::visit(Player &p) {
+    if (owner == &p) return;
     if (owner) {
         try {
             int tuition = getTuition();
