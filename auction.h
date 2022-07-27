@@ -20,7 +20,7 @@ class Auction {
   public:
     void setPlayers(std::vector<std::unique_ptr<Player>> &players);
     void setProperty(Property *property);
-    void auction();
+    void auction(int curPlayerIdx = 0);
 };
 
 #endif

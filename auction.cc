@@ -31,9 +31,9 @@ void Auction::setPlayers(vector<unique_ptr<Player>> &players) {
 
 void Auction::setProperty(Property *property) { this->property = property; }
 
-void Auction::auction() {
-    curPlayer = 0;
-    propPrice = 0;
+void Auction::auction(int curPlayerIdx) {
+    curPlayer = curPlayerIdx;
+    propPrice = 1;
     withdrawnPlayers.clear();
     string cmd;
 
@@ -65,6 +65,6 @@ void Auction::auction() {
         }
         nextPlayer();
     }
-    cout << property->getName() << " sold to player " << players[0]->getName() << " for $" << propPrice << "." << endl;
-    players[0]->buyProperty(*property, propPrice);
+    cout << property->getName() << " sold to player " << curWinner().getName() << " for $" << propPrice << "." << endl;
+    curWinner().buyProperty(*property, propPrice);
 }
