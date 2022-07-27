@@ -217,6 +217,7 @@ void Watopoly::play() {
             try {
                 if (cin.fail()) return;
                 if (cmd == "roll") {
+                    if (notEnoughMoney.owesMoney()) throw notEnoughMoney;
                     if (hasRolled) throw AlreadyRolledError{};
                     else {
                         int die1 = 0;

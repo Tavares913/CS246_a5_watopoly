@@ -321,8 +321,8 @@ void GameBoard::bankrupt(Player *player, Player *payee) {
     for (; it != players.end(); ++it) {
         if (it->get() == player) break;
     }
-    players.erase(it);
     player->bankrupt(payee);
+    players.erase(it);
 }
 
 bool GameBoard::checkWinner() const {

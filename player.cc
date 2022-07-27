@@ -179,14 +179,15 @@ void Player::bankrupt(Player *payee) {
         }
         NotEnoughMoneyError notEnoughMoney;
         for (auto &property : ownedProperties) {
-            try {
-                payee->receiveProperty(*property);
-            } catch (NotEnoughMoneyError &e) {
-                Display::printMessage(e.getMessage());
-                notEnoughMoney = NotEnoughMoneyError{this, notEnoughMoney.getAmount() + e.getAmount()};
-            }
+            payee->receiveProperty(*property);
+            // try {
+            //     payee->receiveProperty(*property);
+            // } catch (NotEnoughMoneyError &e) {
+            //     Display::printMessage(e.getMessage());
+            //     notEnoughMoney = NotEnoughMoneyError{this, notEnoughMoney.getAmount() + e.getAmount()};
+            // }
         }
-        if (notEnoughMoney.owesMoney()) throw notEnoughMoney;
+        // if (notEnoughMoney.owesMoney()) throw notEnoughMoney;
     } else {
         totalTimsCups -= timsCups;
         for (auto &property : ownedProperties) {
