@@ -181,7 +181,7 @@ void Player::bankrupt(Player *payee) {
         for (auto &property : ownedProperties) {
             try {
                 payee->receiveProperty(*property);
-            } catch (NotEnoughMoneyError e) {
+            } catch (NotEnoughMoneyError &e) {
                 Display::printMessage(e.getMessage());
                 notEnoughMoney = NotEnoughMoneyError{this, notEnoughMoney.getAmount() + e.getAmount()};
             }

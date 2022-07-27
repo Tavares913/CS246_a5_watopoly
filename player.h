@@ -21,7 +21,7 @@ class Player {
 
   public:
     Player(
-        std::string name, char symbol, float money = 5, int location = 0,
+        std::string name, char symbol, float money = 1500, int location = 0,
         int timsCups = 0, bool inTimsLine = false, int numTurnsInTimsLine = 0
     );
     std::string getName() const;
@@ -35,7 +35,8 @@ class Player {
     void giveProperty(Property &property);
     void receiveProperty(Property &property);
     void buyProperty(Property &property, int purchaseCost = 0);
-    void buyImprovement(Property &property);
+    void buyImprovement(Property &pr
+    operty);
     void sellImprovement(Property &property);
     void mortgage(Property &property);
     void unmortgage(Property &property);
