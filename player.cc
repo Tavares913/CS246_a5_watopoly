@@ -177,7 +177,7 @@ void Player::bankrupt(Player *payee) {
             --totalTimsCups;
             payee->receiveTimsCup();
         }
-        NotEnoughMoneyError notEnoughMoney;
+        // NotEnoughMoneyError notEnoughMoney;
         for (auto &property : ownedProperties) {
             payee->receiveProperty(*property);
             // try {
