@@ -167,6 +167,7 @@ void GameBoard::initBoard() {
     board.emplace_back(move(esc));
     board.emplace_back(move(slc3));
     board.emplace_back(move(c2));
+    board.emplace_back(move(rev));
     board.emplace_back(move(needlesHall3));
     board.emplace_back(move(mc));
     board.emplace_back(move(coopFee));
@@ -200,6 +201,8 @@ void GameBoard::moveCurPlayer(int moveBy) {
     int oldTile = curPlayer.getLocation();
     if (curPlayer.moveBy(moveBy)) curPlayer.visit(*board[0]);
     int newTile = curPlayer.getLocation();
+    cout << oldTile << endl;
+    cout << newTile << endl;
     display->notify(PlayerMove{oldTile, newTile, curPlayer.getSymbol()});
     display->print();
     curPlayer.visit(*board[newTile]);
@@ -287,7 +290,7 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
     return Trade{curPlayer, giveAmt, giveProperty, otherPlayer, receiveAmt, receiveProperty};
 }
 
-void GameBoard::trade(Trade trade) {
+void GameBoard::trade(Trade &trade) {
     if (trade.giveProperty) trade.receiver->receiveProperty(*trade.giveProperty);
     else trade.receiver->receiveMoney(trade.giveAmt);
     if (trade.receiveProperty) trade.giver->receiveProperty(*trade.receiveProperty);

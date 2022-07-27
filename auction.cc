@@ -1,5 +1,6 @@
 #include <vector>
 #include <iostream>
+#include <algorithm>
 #include <memory>
 #include <string>
 #include "auction.h"

@@ -262,9 +262,10 @@ void Watopoly::play() {
                     Trade trade;
                     trade = gameboard.createTrade(tradeWith, give, receive);
 
-                    string response;
-                    Display::printMessage("Player " + tradeWith + ": Accept trade? (accept/reject) ");
-                    cin >> response;
+                    string response = getChoice(
+                        "Player " + tradeWith + ": Accept trade?",
+                        {"accept", "reject"}
+                    );
 
                     if (response == "accept") gameboard.trade(trade);
                     else if (response != "reject") throw InvalidCommandError{};
