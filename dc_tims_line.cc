@@ -22,7 +22,7 @@ void DCTimsLine::visit(Player &p) {
             "Would you like to use a Roll Up The Rim cup?",
             vector<string>{"y", "n"}
         );
-        if (c == "Y") {
+        if (c == "y") {
             p.useTimsCup();
             return;
         }
@@ -31,10 +31,10 @@ void DCTimsLine::visit(Player &p) {
     try {
         p.spendMoney(priceOfCoffee, true);
         c = Watopoly::getChoice(
-            "Would you like to pay $" + to_string(priceOfCoffee) + "to leave the Tim's line?",
+            "Would you like to pay $" + to_string(priceOfCoffee) + " to leave the Tim's line?",
             vector<string>{"y", "n"}
         );
-        if (c == "Y") {
+        if (c == "y") {
             p.spendMoney(priceOfCoffee);
             p.leaveTimsLine();
             return;

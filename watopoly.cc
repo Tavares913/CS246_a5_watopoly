@@ -25,7 +25,7 @@ Watopoly::Watopoly(string loadfile, bool testing) : testing{testing} {
 }
 
 unordered_map<char, string> Watopoly::playerPieces = {
-    {'G', "Goose"}, {'B', "GRT Bus"}, {'D', "Tim Hortons Doughnut"}, {'T', "Pink Tie"},
+    {'G', "Goose"}, {'B', "GRTBus"}, {'D', "TimHortonsDoughnut"}, {'T', "PinkTie"},
     {'P', "Professor"}, {'S', "Student"}, {'$', "Money"}, {'L', "Laptop"}
 };
 
