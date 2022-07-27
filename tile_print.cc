@@ -61,14 +61,7 @@ string alignLeft(string s, int rowNum, int rowSize) {
     return output;
 }
 
-string TilePrint::getRow(int row, bool flag) {
-    // if (flag) {
-    //     cout << "name: " << name << endl;
-    //     cout << "blank: " << blank << endl;
-    //     cout << "blankAndBottom: " << blankAndBottom << endl;
-    //     cout << "blankAndSide: " << blankAndSide << endl;
-    //     cout << "row: " << row << endl;
-    // }
+string TilePrint::getRow(int row) {
     if (blank && blankAndBottom && !blankAndSide && row == 7) {
         return "_______";
     } else if (blank && blankAndBottom && blankAndSide && row == 7) {

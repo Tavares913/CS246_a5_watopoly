@@ -18,7 +18,7 @@ class TilePrint {
 
     public:
         TilePrint(string name, bool buildable = false, bool endTile = false, bool blank = false, bool blankAndBottom = false, bool blankAndSide = false);
-        string getRow(int row, bool flag = false);
+        string getRow(int row);
         void improve();
         void unimprove();
         void addPlayer(char p);
