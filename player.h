@@ -35,8 +35,7 @@ class Player {
     void giveProperty(Property &property);
     void receiveProperty(Property &property);
     void buyProperty(Property &property, int purchaseCost = 0);
-    void buyImprovement(Property &pr
-    operty);
+    void buyImprovement(Property &property);
     void sellImprovement(Property &property);
     void mortgage(Property &property);
     void unmortgage(Property &property);
