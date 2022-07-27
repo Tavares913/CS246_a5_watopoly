@@ -59,7 +59,7 @@ class GameBoard : public Subject {
     void unmortgage(Player &p, std::string propertyName);
     static void startAuction(Property *p);
     Trade createTrade(std::string otherPlayerName, std::string give, std::string receive);
-    void trade(Trade trade);
+    void trade(Trade &trade);
     void bankrupt(Player *player, Player *payee = nullptr);
     bool checkWinner() const;
 
