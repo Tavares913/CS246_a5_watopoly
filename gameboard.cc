@@ -277,6 +277,7 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
         giveProperty = &getPropertyByName(give);
         giveProperty->tradeable();
         if (giveProperty->getOwner() != curPlayer) throw NotOwnerTradeError{};
+        cout << giveProperty->getName() << endl;
     } else giveMoney = true;
 
     istringstream receiveStream{receive};
@@ -286,6 +287,7 @@ Trade GameBoard::createTrade(string otherPlayerName, string give, string receive
         receiveProperty = &getPropertyByName(receive);
         receiveProperty->tradeable();
         if (receiveProperty->getOwner() != otherPlayer) throw NotOwnerTradeError{};
+        cout << receiveProperty->getName() << endl;
     } else {
         if (giveMoney) throw TradeMoneyError{};
     }

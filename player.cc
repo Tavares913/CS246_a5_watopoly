@@ -128,7 +128,7 @@ void Player::incrementNumTurnsInLine() { if (numTurnsInTimsLine < 3) ++numTurnsI
 int Player::getNumTurnsInLine() { return numTurnsInTimsLine; }
 
 void Player::goToTimsLine() {
-    Display::printMessage("You rolled 3 doubles and have been sent to the back of the DC Tims Line!");
+    Display::printMessage("You have been sent to the back of the DC Tims Line!");
     location = GameBoard::DC_TIMS_LOCATION;
     inTimsLine = true;
     numTurnsInTimsLine = 0;
