@@ -145,11 +145,7 @@ void Display::print() {
     for (int i = 1; i < 10; ++i) {
         for (int row = 2; row <= 7; ++row) {
             for (int j = 0; j < 11; ++j) {
-                if (i == 9 && (j == 8 || j == 9 || j == 10) && row == 7) {
-                    cout << display[i][j].getRow(row, true);
-                } else {
-                    cout << display[i][j].getRow(row);
-                }
+                cout << display[i][j].getRow(row);
             }
             cout << endl;
         }
@@ -187,8 +183,6 @@ pair<int, int> mapTileLocToDisplay(int tileLocation) {
         coord2 = 10;
     }
 
-    // cout << tileLocation << endl;
-    // cout << coord1 << " " << coord2 << endl;
     return pair<int, int>(coord1, coord2);
 }
 
