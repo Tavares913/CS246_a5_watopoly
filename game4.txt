@@ -1,9 +1,9 @@
 3
+Student S 0 1440 3
+Professor P 2 1110 10 1 0
 Laptop L 0 1550 7
-Student S 0 1500 0
-Professor P 0 1110 10 1 0
 AL BANK 0
-ML BANK 0
+ML Student 0
 MKV BANK 0
 ECH BANK 0
 PAS BANK 0

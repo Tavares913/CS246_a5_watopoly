@@ -47,7 +47,7 @@ void Property::visit(Player &p) {
         try {
             int tuition = getTuition();
             p.spendMoney(tuition);
-            owner->receiveMoney(tuition);
+            if (!mortgaged) owner->receiveMoney(tuition);
             return;
         } catch (NotEnoughMoneyError &e) {
             throw NotEnoughMoneyError{&p, e.getAmount(), owner};
