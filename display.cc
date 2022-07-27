@@ -183,8 +183,8 @@ pair<int, int> mapTileLocToDisplay(int tileLocation) {
         coord1 = 0;
         coord2 = tileLocation % 10;
     } else if (tileLocation < 40) {
-        coord1 = 10;
-        coord2 = tileLocation % 10;
+        coord1 = tileLocation % 10;
+        coord2 = 10;
     }
 
     // cout << tileLocation << endl;
