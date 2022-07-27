@@ -192,6 +192,7 @@ void Watopoly::save(string filename) {
 
 void Watopoly::play() {
     Display::printMessage("Welcome to Watopoly!");
+    gameboard.display->print();
     NotEnoughMoneyError notEnoughMoney;
     while (true) {
         string cmd;

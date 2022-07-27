@@ -178,6 +178,7 @@ void GameBoard::initBoard() {
 void GameBoard::initPlayers(vector<Player> &players) {
     for (auto &player : players) {
         unique_ptr<Player> playerPtr = make_unique<Player>(player);
+        display->notify(PlayerMove{0, 0, playerPtr->getSymbol()});
         nameToPlayers.insert({playerPtr->getName(), playerPtr.get()});
         this->players.emplace_back(move(playerPtr));
     }
