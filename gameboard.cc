@@ -228,11 +228,15 @@ Player &GameBoard::getPlayerByName(string playerName) const {
 }
 
 void GameBoard::buyImprovement(Player &p, string propertyName) {
-    p.buyImprovement(getPropertyByName(propertyName));
+    Property property = getPropertyByName(propertyName);
+    p.buyImprovement(property);
+    display->notify(Improvement{property.getLocation()});
 }
 
 void GameBoard::sellImprovement(Player &p, string propertyName) {
-    p.sellImprovement(getPropertyByName(propertyName));
+    Property property = getPropertyByName(propertyName);
+    p.sellImprovement(property);
+    display->notify(Unimprovement{property.getLocation()});
 }
 
 void GameBoard::buyProperty(Player &p, string propertyName) {
